@@ -1,0 +1,949 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Volta ao Brasil · Geometria Espacial</title>
+<meta name="description" content="Volta ao Brasil: viaje por 10 cidades resolvendo desafios de prismas, pirâmides, cilindros e cones. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta name="theme-color" content="#0E5E4A">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Volta ao Brasil · Geometria Espacial">
+<meta property="og:description" content="Volta ao Brasil: viaje por 10 cidades resolvendo desafios de prismas, pirâmides, cilindros e cones. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta property="og:url" content="https://mateusbibiano.github.io/missao-geometria-espacial/volta/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230E5E4A'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='34' font-weight='800' font-family='sans-serif' fill='%23F2B705'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=DM+Mono:wght@500&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<style>
+:root {
+  --ink: #14213D; --mute: #5B6478; --paper: #FBF7EE; --sand: #F1E9D6; --line: #DCCFB3;
+  --green: #0E5E4A; --green2: #13805F; --yellow: #F2B705; --sky: #DCEBF5;
+  --ok: #16A34A; --no: #DC2626;
+  --gold: #D4A017; --silver: #9AA3B2; --bronze: #B8733C;
+  --fd: 'Bricolage Grotesque', system-ui, sans-serif;
+  --fb: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --fm: 'DM Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background-color: var(--sand);
+  background-image: radial-gradient(circle at 1px 1px, rgba(20,33,61,.08) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--ink); font-family: var(--fb); font-size: 16px; line-height: 1.5; min-height: 100vh;
+}
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 2px; }
+#app { max-width: 1180px; margin: 0 auto; padding: 16px; }
+h1, h2, h3, h4 { font-family: var(--fd); line-height: 1.1; margin: 0 0 .4em; }
+.kicker { font-family: var(--fm); text-transform: uppercase; letter-spacing: .14em; font-size: 12px; color: var(--green2); margin: 0 0 6px; }
+.lead { color: var(--mute); font-size: 18px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.center { text-align: center; justify-content: center; }
+
+.go { background: var(--green); color: #fff; border: 0; border-radius: 14px; padding: 12px 20px; font-weight: 800; box-shadow: 0 4px 0 #083B2E; transition: transform .08s; }
+.go:hover:not(:disabled) { background: var(--green2); }
+.go:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #083B2E; }
+.go:disabled { opacity: .45; }
+.go.big { font-size: 19px; padding: 14px 28px; }
+.ghost { background: var(--paper); color: var(--ink); border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 16px; font-weight: 700; }
+.ghost:hover:not(:disabled) { border-color: var(--ink); }
+.ghost:disabled { opacity: .5; }
+.ghost.sm { padding: 6px 12px; font-size: 14px; border-radius: 10px; }
+.ghost.danger { color: var(--no); border-color: #F3B4B4; margin-top: 24px; }
+.tag { font-family: var(--fm); font-size: 12px; border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; margin-left: 4px; color: var(--mute); }
+
+/* home */
+.top { display: flex; justify-content: space-between; align-items: center; }
+.logo { height: 40px; width: auto; }
+.hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 28px; align-items: center; margin: 24px 0; }
+.hero h1 { font-size: clamp(52px, 9vw, 104px); letter-spacing: -.035em; font-weight: 800; }
+.hero h1 em { font-style: normal; color: var(--green); position: relative; }
+.hero h1 em::after { content: ''; position: absolute; left: 0; right: 0; bottom: .06em; height: .16em; background: var(--yellow); z-index: -1; border-radius: 4px; }
+.enter { margin-top: 18px; max-width: 420px; display: grid; gap: 14px; background: var(--paper); border: 1.5px solid var(--line); border-radius: 20px; padding: 18px; box-shadow: 0 10px 30px rgba(20,33,61,.08); }
+.enter label { display: grid; gap: 6px; font-weight: 700; font-size: 14px; }
+input:not([type=radio]) { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1.5px solid var(--line); background: #fff; color: var(--ink); }
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.seg { display: flex; gap: 8px; }
+.seg label { flex: 1; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: block; text-align: center; padding: 10px; border-radius: 12px; border: 1.5px solid var(--line); font-weight: 800; font-family: var(--fm); background: #fff; }
+.seg input:checked + span { background: var(--ink); color: #fff; border-color: var(--ink); }
+.seg input:focus-visible + span { outline: 3px solid var(--yellow); }
+.howto { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.howto li { background: var(--paper); border: 1.5px dashed var(--line); border-radius: 16px; padding: 12px 14px; color: var(--mute); }
+.howto b { color: var(--ink); }
+
+/* mapa */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+.bar h2 { margin: 0; }
+.kpis { display: flex; gap: 8px; flex-wrap: wrap; }
+.kpis span { background: var(--paper); border: 1.5px solid var(--line); border-radius: 999px; padding: 4px 12px; font-size: 14px; color: var(--mute); }
+.kpis b { color: var(--ink); font-family: var(--fd); font-size: 16px; }
+.mapgrid { display: grid; grid-template-columns: minmax(0, 1fr) 400px; gap: 20px; align-items: start; }
+.mapbox { background: var(--sky); border-radius: 24px; padding: 12px; border: 1.5px solid #B9D3E6; }
+.map { width: 100%; max-width: 520px; height: auto; display: block; margin: 0 auto; }
+.map .uf { font-family: var(--fm); font-size: 11px; font-weight: 500; }
+.map .route { fill: none; stroke: var(--ink); stroke-width: 2; stroke-dasharray: 2 6; stroke-linecap: round; opacity: .55; }
+.map .trip { stroke: var(--ink); stroke-width: 2.5; stroke-dasharray: 6 6; animation: dash 1.3s linear; }
+@keyframes dash { from { stroke-dashoffset: 120; } }
+.pin { cursor: pointer; }
+.pin .pc { fill: #fff; stroke: var(--rc); stroke-width: 3; transition: r .15s; }
+.pin:hover .pc, .pin:focus .pc { r: 21; }
+.pin:focus { outline: none; }
+.pin:focus-visible .pc { stroke: var(--ink); }
+.pin.done .pc { fill: #FFFBEA; }
+.pin .badge { fill: var(--silver); stroke: #fff; stroke-width: 1.5; }
+.pin.st3 .badge { fill: var(--gold); }
+.pin.st1 .badge { fill: var(--bronze); }
+.pin.st0 .badge { fill: #9CA3AF; }
+.pin .bt { fill: #fff; font-family: var(--fm); font-weight: 700; }
+.you { fill: none; stroke: var(--yellow); stroke-width: 3; stroke-dasharray: 4 4; animation: spin 6s linear infinite; transform-box: fill-box; transform-origin: center; pointer-events: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; justify-content: center; font-size: 13px; color: var(--mute); padding: 6px 0 2px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 5px; }
+.side { display: grid; gap: 14px; }
+.where { background: var(--paper); border-radius: 20px; padding: 16px; border: 1.5px solid var(--line); }
+.where h2 { font-size: 28px; margin-bottom: 4px; }
+.where h2 small { font-family: var(--fm); font-size: 14px; color: var(--mute); }
+.where p { margin: 0 0 10px; color: var(--mute); }
+.pass { background: #13294B; color: #fff; border-radius: 20px; padding: 14px; box-shadow: 0 12px 30px rgba(19,41,75,.25); }
+.pass header { display: flex; align-items: baseline; gap: 8px; margin-bottom: 10px; }
+.pass header span { font-family: var(--fm); letter-spacing: .2em; font-size: 12px; color: var(--yellow); }
+.pass header small { font-family: var(--fm); color: #A9B7D0; }
+.stamps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+.stamp { display: grid; grid-template-columns: 30px 1fr; grid-template-rows: auto auto; column-gap: 8px; align-items: center; text-align: left; padding: 8px 10px; border-radius: 14px; background: rgba(255,255,255,.06); border: 1.5px dashed rgba(255,255,255,.25); color: #fff; }
+.stamp .e { grid-row: span 2; font-size: 22px; filter: grayscale(1); opacity: .6; }
+.stamp .c { font-weight: 700; font-size: 14px; line-height: 1.2; }
+.stamp .m { font-family: var(--fm); font-size: 11px; color: #A9B7D0; }
+.stamp:hover { border-color: var(--yellow); }
+.stamp.on { border-style: solid; border-color: var(--rc); background: rgba(255,255,255,.1); }
+.stamp.on .e { filter: none; opacity: 1; }
+.stamp.st3 .m { color: #FCD34D; }
+.stamp.st2 .m { color: #E5E7EB; }
+.stamp.st1 .m { color: #F0B27A; }
+
+/* cidade */
+.crumbs { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-family: var(--fm); font-size: 13px; color: var(--mute); }
+.city { max-width: 860px; margin: 0 auto; }
+.postal { background: var(--paper); border-radius: 22px; padding: 16px 18px; border: 1.5px solid var(--line); border-top: 8px solid var(--rc); position: relative; }
+.postal .pt { display: flex; gap: 12px; align-items: center; }
+.postal .pt .e { font-size: 40px; }
+.postal h1 { font-size: 34px; margin: 0; }
+.postal .kicker { color: var(--rc); }
+.postal > p { margin: 8px 0 0; color: var(--mute); }
+.dots { position: absolute; top: 16px; right: 16px; display: flex; gap: 6px; }
+.dots span { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font-family: var(--fm); font-size: 13px; border: 1.5px solid var(--line); background: #fff; color: var(--mute); }
+.dots .cur { border-color: var(--ink); color: var(--ink); font-weight: 700; }
+.dots .ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+.dots .no { background: var(--no); border-color: var(--no); color: #fff; }
+.qcard { margin-top: 14px; background: #fff; border-radius: 22px; padding: 18px 20px; border: 1.5px solid var(--line); font-size: 18px; box-shadow: 0 10px 30px rgba(20,33,61,.06); }
+.qcard p { margin: 0 0 8px; }
+.qcard .ask { font-family: var(--fd); font-weight: 700; font-size: 22px; margin: 8px 0 0; }
+.fig { margin: 6px auto; max-width: 330px; }
+.fig svg { width: 100%; height: auto; display: block; font-family: var(--fb); }
+.solid text { fill: #1B1D2E; }
+.hint { margin-top: 12px; background: #FFF6D6; border: 1.5px solid #F2D27A; border-radius: 16px; padding: 10px 14px; }
+.opts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+.opt { display: flex; align-items: center; gap: 12px; text-align: left; padding: 12px 14px; border-radius: 16px; background: var(--paper); border: 2px solid var(--line); color: var(--ink); font-size: 18px; font-weight: 600; transition: border-color .15s, transform .1s; }
+.opt:hover:not(:disabled) { border-color: var(--ink); transform: translateY(-1px); }
+.opt .let { flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--ink); color: #fff; font-family: var(--fd); font-weight: 800; }
+.opt.sel { border-color: var(--green); background: #E3F4EC; }
+.opt.sel .let { background: var(--green); }
+.opt.right { border-color: var(--ok); background: #DCFCE7; }
+.opt.right .let { background: var(--ok); }
+.opt.wrong { border-color: var(--no); background: #FEE2E2; }
+.opt.wrong .let { background: var(--no); }
+.opt:disabled { opacity: 1; }
+.actions { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.verdict { margin-top: 14px; border-radius: 20px; padding: 14px 18px; background: var(--paper); border: 2px solid; }
+.verdict.ok { border-color: var(--ok); }
+.verdict.no { border-color: var(--no); }
+.verdict h3 { font-size: 22px; }
+.steps { margin: 6px 0 14px; padding-left: 22px; }
+.steps li { margin: 3px 0; }
+
+.sum { margin-top: 18px; display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; background: var(--paper); border-radius: 22px; padding: 20px; border: 1.5px solid var(--line); }
+.sum p { color: var(--mute); }
+.bigstamp { width: 170px; height: 170px; border-radius: 50%; border: 5px double var(--rc); color: var(--rc); display: grid; place-items: center; align-content: center; gap: 2px; text-align: center; transform: rotate(-9deg); animation: stampin .45s cubic-bezier(.2,1.6,.4,1); background: rgba(255,255,255,.6); }
+.bigstamp .e { font-size: 42px; }
+.bigstamp b { font-family: var(--fd); font-size: 17px; letter-spacing: .06em; }
+.bigstamp small { font-family: var(--fm); font-size: 12px; text-transform: uppercase; }
+.bigstamp.st3 { box-shadow: 0 0 0 6px #FCE7A6; }
+.bigstamp.st0 { filter: grayscale(1); opacity: .7; }
+@keyframes stampin { from { transform: rotate(-9deg) scale(2.2); opacity: 0; } }
+
+/* fim */
+.end { max-width: 820px; margin: 0 auto; }
+.cert { margin: 20px 0; background: var(--paper); border-radius: 26px; padding: 28px; text-align: center; border: 2px solid var(--ink); outline: 6px double var(--line); outline-offset: -14px; }
+.cert h1 { font-size: clamp(34px, 6vw, 56px); color: var(--green); }
+.stats { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 18px 0 8px; }
+.stats div { background: #fff; border-radius: 14px; padding: 8px; border: 1.5px solid var(--line); }
+.stats dt { font-family: var(--fm); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--mute); }
+.stats dd { margin: 2px 0 0; font-family: var(--fd); font-weight: 800; font-size: 20px; }
+.code { font-family: var(--fm); color: var(--mute); }
+
+/* páginas */
+.page { max-width: 760px; margin: 0 auto; }
+.note, .empty { color: var(--mute); }
+.hall { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 6px; }
+.hall li { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 14px; border-radius: 14px; background: var(--paper); border: 1.5px solid var(--line); }
+.hall .pos { font-family: var(--fd); font-weight: 800; color: var(--green); }
+.hall small { font-family: var(--fm); color: var(--mute); margin-left: 6px; }
+.hall .pz { font-family: var(--fd); font-weight: 800; }
+.hall .dt { font-family: var(--fm); font-size: 12px; color: var(--mute); }
+.tcards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.tcards section { background: var(--paper); border-radius: 18px; padding: 16px; border: 1.5px solid var(--line); }
+.tcards p { color: var(--mute); margin-top: 0; }
+.th { margin-top: 18px; }
+.gab { margin-top: 18px; background: var(--paper); border-radius: 16px; padding: 12px 16px; border: 1.5px solid var(--line); }
+.gab summary { font-weight: 700; cursor: pointer; }
+.gab h4 { margin: 14px 0 4px; }
+.gab ol { margin: 0; padding-left: 22px; color: var(--mute); }
+.gab b { color: var(--ink); }
+
+/* modal */
+.veil { position: fixed; inset: 0; background: rgba(20,33,61,.5); display: grid; place-items: center; padding: 16px; z-index: 10; }
+.modal { width: min(460px, 100%); background: var(--paper); border-radius: 22px; padding: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.3); }
+.modal h3 { font-size: 24px; }
+.modal p { color: var(--mute); }
+.modal form { display: grid; gap: 12px; }
+.modal label { display: grid; gap: 6px; font-weight: 700; }
+.err { color: var(--no) !important; margin: 0; }
+
+/* projeção */
+body.proj #app { max-width: 1500px; }
+body.proj .city { max-width: 1200px; }
+body.proj .qcard { font-size: 24px; }
+body.proj .qcard .ask { font-size: 30px; }
+body.proj .fig { max-width: 440px; }
+body.proj .opt { font-size: 24px; }
+
+@media (max-width: 900px) {
+  .hero, .mapgrid { grid-template-columns: 1fr; }
+  .tcards { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .opts { grid-template-columns: 1fr; }
+  .qcard { padding: 16px; font-size: 16px; }
+  .qcard .ask { font-size: 19px; }
+  .opt { font-size: 16px; }
+  .postal h1 { font-size: 26px; }
+  .dots { position: static; margin-top: 10px; }
+  .sum { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .sum .row { justify-content: center; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .hall li { grid-template-columns: 34px 1fr auto; }
+  .hall .dt { display: none; }
+  .cert { padding: 22px 16px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const IMG = {"logo": {"uri": "data:image/webp;base64,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"}};
+/* ---------- Desenho dos sólidos (SVG, fora de escala) ---------- */
+const SOLID = {
+  a: { f: '#D6F3EE', t: '#B4E9E0', s: '#0B7C70' },
+  b: { f: '#FFE3DE', t: '#FFC9BF', s: '#C2372A' },
+  c: { f: '#E3E4FC', t: '#C9CBF8', s: '#4338CA' },
+  d: { f: '#FFEFD2', t: '#FFE0A6', s: '#B86E00' },
+};
+const RED = '#E0322B';
+const BLUE = '#2563EB';
+const n1 = (v) => (Math.round(v * 10) / 10).toString();
+const pt = (p) => `${n1(p[0])},${n1(p[1])}`;
+function hull(points) {
+  const p = points.map((q) => [q[0], q[1]]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = []; const up = [];
+  p.forEach((q) => { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); });
+  p.slice().reverse().forEach((q) => { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); });
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+const ROT = { 3: (3 * Math.PI) / 2, 4: Math.PI / 4 + 0.35, 5: (3 * Math.PI) / 2 + 0.2, 6: 0.26, 8: 0.2 };
+function basePts(n, cx, cy, R, k) {
+  const r0 = ROT[n];
+  return [...Array(n)].map((_, i) => { const t = r0 + (i * 2 * Math.PI) / n; return [cx + R * Math.cos(t), cy + k * R * Math.sin(t), t]; });
+}
+const backEdge = (P, i) => { const a = P[i][2]; const b = P[(i + 1) % P.length][2]; let m = (a + b) / 2; if (b < a) m += Math.PI; return Math.sin(m) < -0.02; };
+const line = (a, b, c, w, dash) => `<line x1="${n1(a[0])}" y1="${n1(a[1])}" x2="${n1(b[0])}" y2="${n1(b[1])}" stroke="${c}" stroke-width="${w}"${dash ? ' stroke-dasharray="5 4"' : ''} stroke-linecap="round"/>`;
+const label = (x, y, txt, anchor, color, size) => `<text x="${n1(x)}" y="${n1(y)}" text-anchor="${anchor || 'middle'}" font-size="${size || 13}" font-weight="700" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"${color ? ` style="fill:${color}"` : ''}>${txt}</text>`;
+const tagTxt = (W, txt, col) => (txt ? `<g><rect x="${W - 8 - txt.length * 6.6 - 16}" y="6" rx="10" width="${txt.length * 6.6 + 16}" height="20" fill="${col.t}"/><text x="${W - 16}" y="20.5" text-anchor="end" font-size="11" font-weight="700" style="fill:${col.s}">${txt}</text></g>` : '');
+const wrap = (W, H, body, aria) => `<svg class="solid" viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">${body}</svg>`;
+
+/* prisma reto de base regular */
+function prismBody(o) {
+  const { n, cx = 130, cy = 186, R = 66, k = 0.36, H = 110, col, edge, height, edgeColor } = o;
+  const B = basePts(n, cx, cy, R, k);
+  const T = B.map((p) => [p[0], p[1] - H, p[2]]);
+  let s = `<polygon points="${hull(B.concat(T)).map(pt).join(' ')}" fill="${col.f}" stroke="none"/>`;
+  s += `<polygon points="${T.map(pt).join(' ')}" fill="${col.t}" stroke="${col.s}" stroke-width="2" stroke-linejoin="round"/>`;
+  B.forEach((p, i) => { s += line(p, B[(i + 1) % n], col.s, 2, backEdge(B, i)); });
+  B.forEach((p, i) => { const hid = backEdge(B, i) && backEdge(B, (i - 1 + n) % n); s += line(p, T[i], col.s, 2, hid); });
+  let fi = 0; let best = -9;
+  B.forEach((p, i) => { const q = B[(i + 1) % n]; const my = (p[1] + q[1]) / 2; if (my > best) { best = my; fi = i; } });
+  const a = B[fi]; const b = B[(fi + 1) % n];
+  if (edge) s += label((a[0] + b[0]) / 2, Math.max(a[1], b[1]) + 19, edge, 'middle', edgeColor);
+  const right = B.reduce((m, p) => (p[0] > m[0] ? p : m), B[0]);
+  if (height) s += label(right[0] + 9, right[1] - H / 2 + 4, height, 'start');
+  return s;
+}
+function PRISM(n, edge, height, ph, tag, extra) {
+  const col = SOLID[ph];
+  const o = Object.assign({ n, edge, height, col }, extra || {});
+  return wrap(280, 240, prismBody(o) + tagTxt(280, tag, col), `Prisma reto de base ${n === 3 ? 'triangular' : n === 4 ? 'quadrada' : 'hexagonal'}: aresta da base ${edge}, altura ${height}`);
+}
+/* pirâmide reta de base regular */
+function pyrBody(o) {
+  const { n, cx = 130, cy = 190, R = 70, k = 0.36, H = 130, col, edge, height, apo, apoColor = BLUE } = o;
+  const B = basePts(n, cx, cy, R, k);
+  const A = [cx, cy - H];
+  let s = `<polygon points="${hull(B.concat([A])).map(pt).join(' ')}" fill="${col.f}" stroke="none"/>`;
+  B.forEach((p, i) => { s += line(p, B[(i + 1) % n], col.s, 2, backEdge(B, i)); });
+  B.forEach((p, i) => { const hid = backEdge(B, i) && backEdge(B, (i - 1 + n) % n); s += line(A, p, col.s, 2, hid); });
+  let fi = 0; let best = -9;
+  B.forEach((p, i) => { const q = B[(i + 1) % n]; const my = (p[1] + q[1]) / 2; if (my > best) { best = my; fi = i; } });
+  const a = B[fi]; const b = B[(fi + 1) % n];
+  const M = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  if (height) { s += line(A, [cx, cy], RED, 2.2, true) + `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${RED}"/>`; s += label(cx - 7, cy - H * 0.42, height, 'end', RED); }
+  if (apo) { s += line(A, M, apoColor, 2.4); s += label((A[0] + M[0]) / 2 + 9, (A[1] + M[1]) / 2 + 4, apo, 'start', apoColor); }
+  if (edge) s += label(M[0], Math.max(a[1], b[1]) + 19, edge);
+  return s;
+}
+function PYR(n, edge, opts, ph, tag) {
+  const col = SOLID[ph];
+  const o = Object.assign({ n, edge, col }, opts || {});
+  return wrap(280, 244, pyrBody(o) + tagTxt(280, tag, col), `Pirâmide reta de base ${n === 3 ? 'triangular' : n === 4 ? 'quadrada' : 'hexagonal'}`);
+}
+/* cilindro reto */
+function cylBody(o) {
+  const { cx = 130, cy = 186, rx = 62, ry = 19, H = 120, col, r, d, h, band } = o;
+  const top = cy - H;
+  let s = `<path d="M${cx - rx},${top} L${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy} L${cx + rx},${top} Z" fill="${col.f}"/>`;
+  if (band) s += `<path d="M${cx - rx},${top + H * 0.3} L${cx - rx},${top + H * 0.72} A${rx},${ry} 0 0 0 ${cx + rx},${top + H * 0.72} L${cx + rx},${top + H * 0.3} A${rx},${ry} 0 0 1 ${cx - rx},${top + H * 0.3} Z" fill="#F7A9A3"/><text x="${cx}" y="${top + H * 0.56}" text-anchor="middle" font-size="12" font-weight="800" style="fill:#fff" letter-spacing="1">${band}</text>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 1 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2"/>`;
+  s += line([cx - rx, top], [cx - rx, cy], col.s, 2) + line([cx + rx, top], [cx + rx, cy], col.s, 2);
+  s += `<ellipse cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  if (r) { s += line([cx, top], [cx + rx, top], RED, 2.4) + `<circle cx="${cx}" cy="${top}" r="2.6" fill="${RED}"/>`; s += label(cx + rx / 2, top - 7, r, 'middle', RED); }
+  if (d) { s += line([cx - rx, top], [cx + rx, top], RED, 2.4); s += label(cx, top - 8, d, 'middle', RED); }
+  if (h) s += label(cx - rx - 9, top + H / 2 + 4, h, 'end');
+  return s;
+}
+function CYL(opts, ph, tag) {
+  const col = SOLID[ph];
+  return wrap(280, 226, cylBody(Object.assign({ col }, opts)) + tagTxt(280, tag, col), 'Cilindro reto');
+}
+/* cone reto */
+function coneBody(o) {
+  const { cx = 130, cy = 190, rx = 66, ry = 19, H = 140, col, r, d, h, g } = o;
+  const A = [cx, cy - H];
+  let s = `<path d="M${cx - rx},${cy} L${A[0]},${A[1]} L${cx + rx},${cy} A${rx},${ry} 0 0 1 ${cx - rx},${cy} Z" fill="${col.f}"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 1 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2"/>`;
+  s += line(A, [cx - rx, cy], col.s, 2) + line(A, [cx + rx, cy], g ? BLUE : col.s, g ? 2.6 : 2);
+  if (h) { s += line(A, [cx, cy], RED, 2.2, true); s += label(cx - 7, cy - H * 0.45, h, 'end', RED); }
+  if (r) { s += line([cx, cy], [cx + rx, cy], RED, 2.4) + `<circle cx="${cx}" cy="${cy}" r="2.6" fill="${RED}"/>`; s += label(cx + rx / 2, cy + 16, r, 'middle', RED); }
+  if (d) { s += line([cx - rx, cy], [cx + rx, cy], RED, 2.4); s += label(cx, cy + 17, d, 'middle', RED); }
+  if (g) s += label(cx + rx / 2 + 12, cy - H / 2 + 4, g, 'start', BLUE);
+  if (h || r) s += `<circle cx="${cx}" cy="${cy}" r="2.4" fill="${RED}"/>`;
+  return s;
+}
+function CONE(opts, ph, tag) {
+  const col = SOLID[ph];
+  return wrap(280, 228, coneBody(Object.assign({ col }, opts)) + tagTxt(280, tag, col), 'Cone reto');
+}
+/* planificação do cilindro */
+function NETCYL(ph) {
+  const col = SOLID[ph];
+  let s = `<circle cx="150" cy="44" r="24" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  s += line([150, 44], [174, 44], RED, 2.4) + label(162, 36, '2 cm', 'middle', RED, 12);
+  s += `<rect x="70" y="68" width="160" height="84" fill="${col.f}" stroke="${col.s}" stroke-width="2"/>`;
+  s += `<circle cx="150" cy="176" r="24" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  s += label(62, 114, '6 cm', 'end') + label(150, 116, '?', 'middle', col.s, 18);
+  s += `<path d="M70,212 H230" stroke="#1B1D2E" stroke-width="1.4"/><path d="M70,207 V217 M230,207 V217" stroke="#1B1D2E" stroke-width="1.4"/>`;
+  s += label(150, 230, 'comprimento = ?', 'middle', null, 12);
+  return wrap(300, 238, s + tagTxt(300, 'planificação', col), 'Planificação do cilindro: dois círculos de raio 2 cm e um retângulo de altura 6 cm');
+}
+/* comparação: prisma × pirâmide e cilindro × cone */
+function CMP_PP(ph) {
+  const col = SOLID[ph];
+  const s = prismBody({ n: 4, cx: 88, cy: 190, R: 52, H: 112, col, edge: '3 cm', height: '6 cm' }) + pyrBody({ n: 4, cx: 236, cy: 190, R: 52, H: 112, col: SOLID.b, edge: '3 cm', height: '6 cm' });
+  return wrap(320, 236, s + tagTxt(320, 'comparação', col), 'Prisma e pirâmide de mesma base quadrada de 3 cm e mesma altura de 6 cm');
+}
+function CMP_CC(ph) {
+  const s = cylBody({ cx: 104, cy: 192, rx: 50, ry: 15, H: 112, col: SOLID.c, r: '3 cm', h: '6 cm' }) + coneBody({ cx: 250, cy: 192, rx: 50, ry: 15, H: 112, col: SOLID.d, r: '3 cm', h: '6 cm' });
+  return wrap(330, 228, s + tagTxt(330, 'comparação', SOLID[ph]), 'Cilindro e cone de mesmo raio 3 cm e mesma altura 6 cm');
+}
+
+/* =========================================================
+   VOLTA AO BRASIL — Geometria Espacial · 9º ano
+   10 cidades, 3 desafios cada. Medidas simplificadas
+   para fins didáticos (indicado no cartão-postal).
+   ========================================================= */
+
+/* paralelepípedo em perspectiva (a = largura, b = profundidade, c = altura) */
+function BOX(o) {
+  const { W = 170, H = 90, D = 60, a, b, c, ph = 'a', tag } = o;
+  const col = SOLID[ph];
+  const x0 = 40; const y0 = 50 + D * 0.55; const dx = D; const dy = D * 0.55;
+  const F = [[x0, y0], [x0 + W, y0], [x0 + W, y0 + H], [x0, y0 + H]];
+  const T = F.map((p) => [p[0] + dx, p[1] - dy]);
+  let s = `<polygon points="${pt(F[0])} ${pt(T[0])} ${pt(T[1])} ${pt(F[1])}" fill="${col.t}" stroke="${col.s}" stroke-width="2" stroke-linejoin="round"/>`;
+  s += `<polygon points="${pt(F[1])} ${pt(T[1])} ${pt(T[2])} ${pt(F[2])}" fill="${col.t}" opacity=".75" stroke="${col.s}" stroke-width="2" stroke-linejoin="round"/>`;
+  s += `<polygon points="${F.map(pt).join(' ')}" fill="${col.f}" stroke="${col.s}" stroke-width="2" stroke-linejoin="round"/>`;
+  s += line(F[3], T[3], col.s, 1.6, true) + line(T[3], T[0], col.s, 1.6, true) + line(T[3], T[2], col.s, 1.6, true);
+  if (a) s += label(x0 + W / 2, y0 + H + 19, a);
+  if (c) s += label(x0 - 8, y0 + H / 2 + 4, c, 'end');
+  if (b) s += label(x0 + W + dx / 2 + 8, y0 + H - dy / 2 + 14, b, 'start');
+  const WW = x0 + W + dx + 70;
+  return wrap(WW, y0 + H + 34, s + tagTxt(WW, tag || '', col), 'Paralelepípedo');
+}
+/* silo: cilindro com teto cônico */
+function SILO() {
+  const cx = 120; const base = 250; const rx = 60; const ry = 16; const Hc = 150; const Hk = 70;
+  let s = cylBody({ cx, cy: base, rx, ry, H: Hc, col: SOLID.d, h: '10 m' });
+  s += coneBody({ cx, cy: base - Hc, rx, ry, H: Hk, col: SOLID.b, h: '4 m', r: '3 m' });
+  return wrap(300, 282, s + tagTxt(300, 'silo de grãos', SOLID.d), 'Silo: cilindro de raio 3 m e altura 10 m com teto cônico de altura 4 m');
+}
+/* cilindro deitado (estação-tubo) */
+function TUBE() {
+  const col = SOLID.c;
+  const x0 = 60; const x1 = 250; const cy = 110; const ry = 52; const rx = 18;
+  let s = `<path d="M${x0},${cy - ry} L${x1},${cy - ry} A${rx},${ry} 0 0 1 ${x1},${cy + ry} L${x0},${cy + ry} Z" fill="${col.f}" stroke="${col.s}" stroke-width="2"/>`;
+  for (let i = 1; i < 6; i++) { const x = x0 + ((x1 - x0) * i) / 6; s += `<path d="M${x},${cy - ry} A${rx},${ry} 0 0 1 ${x},${cy + ry}" fill="none" stroke="${col.s}" stroke-width="1" opacity=".35"/>`; }
+  s += `<path d="M${x1},${cy - ry} A${rx},${ry} 0 0 0 ${x1},${cy + ry}" fill="none" stroke="${col.s}" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s += `<ellipse cx="${x0}" cy="${cy}" rx="${rx}" ry="${ry}" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  s += line([x0, cy - ry], [x0, cy + ry], RED, 2.4) + label(x0 - 12, cy + 4, '3 m', 'end', RED);
+  s += `<path d="M${x0},${cy + ry + 18} H${x1}" stroke="#1B1D2E" stroke-width="1.4"/><path d="M${x0},${cy + ry + 13} V${cy + ry + 23} M${x1},${cy + ry + 13} V${cy + ry + 23}" stroke="#1B1D2E" stroke-width="1.4"/>`;
+  s += label((x0 + x1) / 2, cy + ry + 38, '10 m');
+  return wrap(310, 210, s + tagTxt(310, 'estação-tubo', col), 'Cilindro deitado com diâmetro de 3 m e comprimento de 10 m');
+}
+/* pirâmide de base heptagonal */
+function HEPTA() {
+  const n = 7; const cx = 130; const cy = 190; const R = 80; const k = 0.34; const H = 140;
+  const col = SOLID.c;
+  const B = [...Array(n)].map((_, i) => { const t = -Math.PI / 2 + 0.25 + (i * 2 * Math.PI) / n; return [cx + R * Math.cos(t), cy + k * R * Math.sin(t), t]; });
+  const A = [cx, cy - H];
+  let s = `<polygon points="${hull(B.concat([A])).map(pt).join(' ')}" fill="${col.f}" stroke="none"/>`;
+  B.forEach((p, i) => { s += line(p, B[(i + 1) % n], col.s, 2, backEdge(B, i)); });
+  B.forEach((p, i) => { const hid = backEdge(B, i) && backEdge(B, (i - 1 + n) % n); s += line(A, p, col.s, 2, hid); });
+  return wrap(280, 230, s + tagTxt(280, '7 faces laterais', col), 'Pirâmide de base heptagonal');
+}
+
+const REGIONS = {
+  N: { nome: 'Norte', cor: '#2E8B57' },
+  NE: { nome: 'Nordeste', cor: '#E07A2F' },
+  CO: { nome: 'Centro-Oeste', cor: '#C9A227' },
+  SE: { nome: 'Sudeste', cor: '#2F6FB3' },
+  S: { nome: 'Sul', cor: '#8A55C2' },
+};
+/* mosaico dos estados: [UF, coluna, linha, região] */
+const TILES = [
+  ['RR', 1, 0, 'N'], ['AP', 3, 0, 'N'],
+  ['AM', 1, 1, 'N'], ['PA', 2, 1, 'N'], ['MA', 3, 1, 'NE'], ['CE', 4, 1, 'NE'], ['RN', 5, 1, 'NE'],
+  ['AC', 0, 2, 'N'], ['RO', 1, 2, 'N'], ['TO', 2, 2, 'N'], ['PI', 3, 2, 'NE'], ['PE', 4, 2, 'NE'], ['PB', 5, 2, 'NE'],
+  ['MT', 1, 3, 'CO'], ['GO', 2, 3, 'CO'], ['BA', 3, 3, 'NE'], ['SE', 4, 3, 'NE'], ['AL', 5, 3, 'NE'],
+  ['MS', 1, 4, 'CO'], ['DF', 2, 4, 'CO'], ['MG', 3, 4, 'SE'], ['ES', 4, 4, 'SE'],
+  ['SP', 2, 5, 'SE'], ['RJ', 3, 5, 'SE'],
+  ['PR', 2, 6, 'S'],
+  ['SC', 2, 7, 'S'],
+  ['RS', 1, 8, 'S'],
+];
+const HOME = { id: 'itajuba', nome: 'Itajubá', uf: 'MG', lat: -22.43, lon: -45.45 };
+
+const P = (txt) => `<p>${txt}</p>`;
+const CITIES = [
+  {
+    id: 'manaus', nome: 'Manaus', uf: 'AM', reg: 'N', lat: -3.12, lon: -60.02, emoji: '🚢',
+    postal: 'Capital do Amazonas, às margens do Rio Negro. Pelo porto de Manaus passam milhares de contêineres com produtos da Zona Franca.',
+    qs: [
+      { body: P('Um contêiner de navio tem a forma de um <b>paralelepípedo</b> (prisma de base retangular).'), fig: BOX({ ph: 'a', tag: 'contêiner' }), ask: 'Quantas arestas tem o contêiner?', opts: ['12', '8', '6', '24'], hint: 'Conte 4 arestas embaixo, 4 em cima e as que ligam as duas bases.', sol: ['Base de baixo: 4 arestas. Base de cima: 4 arestas.', 'Arestas laterais: 4.', 'Total: 4 + 4 + 4 = <b>12 arestas</b>.'] },
+      { body: P('Por dentro, o contêiner mede <b>12 m</b> de comprimento, <b>2,4 m</b> de largura e <b>2,5 m</b> de altura.'), fig: BOX({ ph: 'a', a: '12 m', b: '2,4 m', c: '2,5 m', tag: 'contêiner' }), ask: 'Qual é o volume interno do contêiner?', opts: ['72 m³', '16,9 m³', '28,8 m³', '144 m³'], hint: 'Volume do paralelepípedo: comprimento × largura × altura.', sol: ['V = 12 · 2,4 · 2,5.', '12 · 2,4 = 28,8 e 28,8 · 2,5 = <b>72 m³</b>.'] },
+      { body: P('Uma empresa quer encher o contêiner (12 m × 2,4 m × 2,5 m) com <b>caixas cúbicas de 0,5 m</b> de aresta, sem cortar nenhuma caixa e sem deitá-las de outro jeito.'), ask: 'Quantas caixas cabem, no máximo?', opts: ['480', '576', '96', '144'], hint: 'Cuidado: 2,4 m não é múltiplo de 0,5 m. Conte quantas caixas cabem em cada direção.', sol: ['Comprimento: 12 ÷ 0,5 = 24 caixas.', 'Largura: 2,4 ÷ 0,5 = 4,8 ⇒ só cabem <b>4</b> caixas inteiras.', 'Altura: 2,5 ÷ 0,5 = 5 caixas.', 'Total: 24 · 4 · 5 = <b>480 caixas</b>. Dividir os volumes (72 ÷ 0,125 = 576) ignora a sobra de 0,4 m.'] },
+    ],
+  },
+  {
+    id: 'belem', nome: 'Belém', uf: 'PA', reg: 'N', lat: -1.46, lon: -48.5, emoji: '🫐',
+    postal: 'No mercado do Ver-o-Peso, em Belém, o açaí chega de barco toda manhã e é vendido em potes e baldes.',
+    qs: [
+      { body: P('Um pote de açaí tem a forma de um cilindro com <b>raio da base de 5 cm</b>.'), fig: CYL({ r: '5 cm', H: 90 }, 'c', 'pote de açaí'), ask: 'Qual é a área da base do pote, em função de π?', opts: ['25π cm²', '10π cm²', '5π cm²', '100π cm²'], hint: 'Área do círculo: π · r².', sol: ['A = π · r² = π · 5².', 'A = <b>25π cm²</b>.'] },
+      { body: P('O pote tem <b>raio 5 cm</b> e <b>altura 8 cm</b>. Use π ≈ 3,14 e lembre que 1 cm³ = 1 mL.'), fig: CYL({ r: '5 cm', h: '8 cm', H: 100 }, 'c', 'pote de açaí'), ask: 'Quantos mL de açaí cabem no pote?', opts: ['628 mL', '251,2 mL', '209,3 mL', '2 512 mL'], hint: 'V = π · r² · h.', sol: ['V = 3,14 · 5² · 8 = 3,14 · 25 · 8.', '3,14 · 200 = <b>628 cm³ = 628 mL</b>.'] },
+      { body: P('Um balde tem <b>10 litros</b> de açaí. Com ele, um vendedor enche os potes de <b>628 mL</b> da questão anterior.'), ask: 'Quantos potes ficam completamente cheios?', opts: ['15', '16', '159', '6'], hint: 'Passe 10 L para mL e divida pelo volume do pote.', sol: ['10 L = 10 000 mL.', '10 000 ÷ 628 ≈ 15,9.', 'O 16º pote não enche: são <b>15 potes cheios</b>.'] },
+    ],
+  },
+  {
+    id: 'salvador', nome: 'Salvador', uf: 'BA', reg: 'NE', lat: -12.97, lon: -38.5, emoji: '🛗',
+    postal: 'O Elevador Lacerda liga a Cidade Baixa à Cidade Alta de Salvador, vencendo cerca de 70 m de desnível em poucos segundos.',
+    qs: [
+      { body: P('A cabine de um elevador tem forma de paralelepípedo com piso de <b>2 m × 1,5 m</b> e altura de <b>2,2 m</b>.'), fig: BOX({ ph: 'd', a: '2 m', b: '1,5 m', c: '2,2 m', W: 120, H: 120, D: 60, tag: 'cabine' }), ask: 'Qual é a área do piso da cabine?', opts: ['3 m²', '3,5 m²', '7 m²', '6,6 m²'], hint: 'O piso é um retângulo.', sol: ['Piso: retângulo de 2 m por 1,5 m.', 'A = 2 · 1,5 = <b>3 m²</b>.'] },
+      { body: P('A mesma cabine tem piso de <b>2 m × 1,5 m</b> e altura de <b>2,2 m</b>.'), ask: 'Qual é o volume da cabine?', opts: ['6,6 m³', '3 m³', '5,7 m³', '13,2 m³'], hint: 'Volume do prisma: área da base × altura.', sol: ['Área da base: 2 · 1,5 = 3 m².', 'V = 3 · 2,2 = <b>6,6 m³</b>.'] },
+      { body: P('Numa maquete, a torre do elevador é um prisma de base quadrada com <b>6 cm de lado</b> e <b>72 cm de altura</b>. Os alunos vão pintar as <b>4 faces laterais e o topo</b> (a base fica colada na mesa).'), fig: PRISM(4, '6 cm', '72 cm', 'd', 'maquete', { R: 40, H: 140, cy: 210 }), ask: 'Quantos cm² serão pintados?', opts: ['1 764 cm²', '1 728 cm²', '1 800 cm²', '2 592 cm²'], hint: 'Some 4 retângulos de 6 × 72 com um quadrado de 6 × 6.', sol: ['Faces laterais: 4 · 6 · 72 = 1 728 cm².', 'Topo: 6 · 6 = 36 cm².', 'Total: 1 728 + 36 = <b>1 764 cm²</b>.'] },
+    ],
+  },
+  {
+    id: 'recife', nome: 'Recife', uf: 'PE', reg: 'NE', lat: -8.05, lon: -34.88, emoji: '🍰',
+    postal: 'O bolo de rolo é patrimônio cultural de Pernambuco: camadas finíssimas de massa enroladas com goiabada.',
+    qs: [
+      { body: P('Um bolo de rolo tem forma de cilindro. Ele é fatiado com cortes <b>paralelos às bases</b>.'), fig: CYL({ H: 70, rx: 50 }, 'b', 'fatia'), ask: 'Cada fatia tem a forma de', opts: ['um cilindro de altura menor', 'um cone', 'um prisma de base retangular', 'uma pirâmide'], hint: 'O corte paralelo à base produz outro círculo igual.', sol: ['Cada fatia tem duas bases circulares iguais e paralelas.', 'Logo, cada fatia é <b>um cilindro de altura menor</b>.'] },
+      { body: P('O bolo inteiro é um cilindro de <b>raio 4 cm</b> e <b>25 cm de comprimento</b> (que funciona como a altura do cilindro).'), fig: CYL({ r: '4 cm', h: '25 cm', H: 120, rx: 44 }, 'b', 'bolo de rolo'), ask: 'Qual é o volume do bolo, em função de π?', opts: ['400π cm³', '200π cm³', '1 600π cm³', '100π cm³'], hint: 'V = π · r² · h.', sol: ['V = π · 4² · 25 = π · 16 · 25.', 'V = <b>400π cm³</b>.'] },
+      { body: P('A confeiteira vai polvilhar açúcar <b>só na lateral</b> do bolo (raio 4 cm, comprimento 25 cm). Use π ≈ 3,14.'), ask: 'Qual é a área polvilhada?', opts: ['628 cm²', '314 cm²', '728,48 cm²', '1 256 cm²'], hint: 'A lateral aberta é um retângulo de comprimento 2πr.', sol: ['Área lateral: 2 · π · r · h.', '2 · 3,14 · 4 · 25 = <b>628 cm²</b>.', 'As bases (as pontas do bolo) não entram.'] },
+    ],
+  },
+  {
+    id: 'brasilia', nome: 'Brasília', uf: 'DF', reg: 'CO', lat: -15.79, lon: -47.88, emoji: '🏛️',
+    postal: 'O Templo da Boa Vontade, em Brasília, tem a forma de uma pirâmide de sete faces laterais e recebe visitantes do mundo todo.',
+    qs: [
+      { body: P('Considere uma pirâmide de <b>base heptagonal</b> (7 lados), como o formato do templo.'), fig: HEPTA(), ask: 'Quantas arestas tem essa pirâmide?', opts: ['14', '7', '8', '21'], hint: 'Arestas da base + arestas que sobem até o vértice.', sol: ['Base: 7 arestas.', 'Laterais: 7 arestas, uma para cada vértice da base.', 'Total: <b>14 arestas</b>.'] },
+      { body: P('Uma maquete de pirâmide tem base quadrada de <b>10 cm</b> de lado e <b>12 cm</b> de altura.'), fig: PYR(4, '10 cm', { height: '12 cm' }, 'c', 'maquete'), ask: 'Qual é o volume da maquete?', opts: ['400 cm³', '1 200 cm³', '600 cm³', '40 cm³'], hint: 'Pirâmide: (área da base × altura) ÷ 3.', sol: ['Área da base: 10² = 100 cm².', 'V = (100 · 12) ÷ 3 = <b>400 cm³</b>.'] },
+      { body: P('A mesma maquete (base quadrada de 10 cm, altura 12 cm) vai ter as <b>4 faces laterais</b> cobertas de papel dourado.'), fig: PYR(4, '10 cm', { height: '12 cm', apo: 'g' }, 'c', 'use Pitágoras'), ask: 'Quantos cm² de papel são necessários?', opts: ['260 cm²', '240 cm²', '360 cm²', '520 cm²'], hint: 'A altura de cada triângulo é o apótema g: g² = 12² + 5².', sol: ['Apótema: g² = 12² + 5² = 144 + 25 = 169 ⇒ g = 13 cm.', 'Cada face: (10 · 13) ÷ 2 = 65 cm².', '4 faces: <b>260 cm²</b>.'] },
+    ],
+  },
+  {
+    id: 'cuiaba', nome: 'Cuiabá', uf: 'MT', reg: 'CO', lat: -15.6, lon: -56.1, emoji: '🌾',
+    postal: 'Mato Grosso é o maior produtor de grãos do país. Nas fazendas, a soja e o milho ficam guardados em grandes silos.',
+    qs: [
+      { body: P('O teto de um silo é um cone com <b>raio 3 m</b> e <b>altura 4 m</b>.'), fig: CONE({ r: '3 m', h: '4 m', H: 110 }, 'b', 'teto do silo'), ask: 'Quanto mede a geratriz do teto?', opts: ['5 m', '7 m', '1 m', '25 m'], hint: 'Raio, altura e geratriz formam um triângulo retângulo.', sol: ['g² = 3² + 4² = 9 + 16 = 25.', 'g = <b>5 m</b>.'] },
+      { body: P('O corpo do silo é um cilindro de <b>raio 3 m</b> e <b>altura 10 m</b>.'), fig: SILO(), ask: 'Qual é o volume do corpo cilíndrico, em função de π?', opts: ['90π m³', '30π m³', '60π m³', '360π m³'], hint: 'V = π · r² · h.', sol: ['V = π · 3² · 10 = π · 9 · 10.', 'V = <b>90π m³</b>.'] },
+      { body: P('O silo completo é o cilindro (raio 3 m, altura 10 m) com o teto cônico (raio 3 m, altura 4 m). Use π ≈ 3,14.'), fig: SILO(), ask: 'Qual é o volume total do silo?', opts: ['320,28 m³', '395,64 m³', '282,6 m³', '37,68 m³'], hint: 'Some o volume do cilindro com o do cone. O cone é um terço do cilindro de mesma base e altura.', sol: ['Cilindro: 90π m³.', 'Cone: (π · 9 · 4) ÷ 3 = 12π m³.', 'Total: 102π ≈ 102 · 3,14 = <b>320,28 m³</b>.'] },
+    ],
+  },
+  {
+    id: 'rio', nome: 'Rio de Janeiro', uf: 'RJ', reg: 'SE', lat: -22.91, lon: -43.17, emoji: '🏖️',
+    postal: 'Nas praias cariocas não faltam guarda-sóis coloridos e vendedores de mate gelado carregando seus galões.',
+    qs: [
+      { body: P('A lona de um guarda-sol aberto lembra a superfície lateral de um cone.'), fig: CONE({ H: 80, rx: 90 }, 'b', 'guarda-sol'), ask: 'Planificada, a lona do guarda-sol forma um', opts: ['setor circular', 'retângulo', 'triângulo', 'círculo completo'], hint: 'Pense na planificação da lateral de um cone.', sol: ['A lateral do cone, aberta, é um <b>setor circular</b> (uma “fatia de pizza”).', 'O raio do setor é a geratriz do cone.'] },
+      { body: P('Um guarda-sol tem <b>raio 1,2 m</b> e <b>geratriz 1,5 m</b>. Use π ≈ 3,14.'), fig: CONE({ r: '1,2 m', g: '1,5 m', H: 80, rx: 90 }, 'b', 'guarda-sol'), ask: 'Quantos m² de lona tem o guarda-sol, aproximadamente?', opts: ['5,65 m²', '4,52 m²', '11,30 m²', '10,17 m²'], hint: 'Área lateral do cone: π · r · g.', sol: ['A = π · r · g = 3,14 · 1,2 · 1,5.', 'A ≈ <b>5,65 m²</b>.'] },
+      { body: P('O galão de mate é um cilindro de <b>raio 15 cm</b> e <b>altura 40 cm</b>. O mate é vendido em copos de <b>300 mL</b>. Use π ≈ 3,14.'), fig: CYL({ r: '15 cm', h: '40 cm', H: 120, rx: 50 }, 'd', 'galão de mate'), ask: 'Quantos copos cheios dá para vender com um galão cheio?', opts: ['94', '31', '9', '942'], hint: 'Calcule o volume em cm³ (= mL) e divida por 300.', sol: ['V = 3,14 · 15² · 40 = 3,14 · 225 · 40 = 28 260 cm³ = 28 260 mL.', '28 260 ÷ 300 = 94,2.', 'São <b>94 copos</b> cheios.'] },
+    ],
+  },
+  {
+    id: 'saopaulo', nome: 'São Paulo', uf: 'SP', reg: 'SE', lat: -23.55, lon: -46.63, emoji: '🍕',
+    postal: 'São Paulo é famosa pelas pizzarias e pelos prédios. No alto de muitos deles há uma caixa-d’água que abastece os apartamentos.',
+    qs: [
+      { body: P('Uma caixa de pizza é um prisma de base quadrada com <b>35 cm</b> de lado e <b>4 cm</b> de altura.'), fig: PRISM(4, '35 cm', '4 cm', 'b', 'caixa de pizza', { R: 90, H: 22, cy: 150 }), ask: 'Qual é o volume da caixa?', opts: ['4 900 cm³', '1 225 cm³', '560 cm³', '140 cm³'], hint: 'Área da base × altura.', sol: ['Base: 35² = 1 225 cm².', 'V = 1 225 · 4 = <b>4 900 cm³</b>.'] },
+      { body: P('Uma pizza é um cilindro bem baixinho, com <b>raio 17 cm</b> e <b>1 cm</b> de espessura.'), fig: CYL({ r: '17 cm', h: '1 cm', H: 16, rx: 100, ry: 28, cy: 150 }, 'd', 'pizza'), ask: 'Qual é o volume da pizza, em função de π?', opts: ['289π cm³', '34π cm³', '1 156π cm³', '17π cm³'], hint: 'A espessura é a altura do cilindro.', sol: ['V = π · 17² · 1.', 'V = <b>289π cm³</b>.'] },
+      { body: P('A caixa-d’água de um prédio é um cilindro de <b>raio 2 m</b> e <b>altura 3 m</b>. O prédio tem <b>15 apartamentos</b>, e cada um gasta <b>500 L por dia</b>. Use π ≈ 3,14 e 1 m³ = 1 000 L.'), fig: CYL({ r: '2 m', h: '3 m', H: 100 }, 'c', 'caixa-d’água'), ask: 'A caixa cheia abastece o prédio por quantos dias completos?', opts: ['5 dias', '75 dias', '15 dias', '2 dias'], hint: 'Calcule a capacidade em litros e o consumo diário do prédio inteiro.', sol: ['V = 3,14 · 2² · 3 = 37,68 m³ = 37 680 L.', 'Consumo do prédio: 15 · 500 = 7 500 L por dia.', '37 680 ÷ 7 500 ≈ 5,02 ⇒ <b>5 dias</b> completos.'] },
+    ],
+  },
+  {
+    id: 'portoalegre', nome: 'Porto Alegre', uf: 'RS', reg: 'S', lat: -30.03, lon: -51.23, emoji: '🧉',
+    postal: 'No Rio Grande do Sul, a roda de chimarrão é tradição: cuia, bomba e uma garrafa térmica de água quente.',
+    qs: [
+      { body: P('A bomba de chimarrão é um tubinho de metal, longo e fino, com seção circular.'), ask: 'Que sólido melhor representa o tubo da bomba?', opts: ['Cilindro', 'Cone', 'Prisma', 'Pirâmide'], hint: 'Duas pontas circulares iguais, ligadas por uma superfície lisa.', sol: ['O tubo tem seções circulares iguais ao longo de todo o comprimento.', 'Por isso é um <b>cilindro</b>.'] },
+      { body: P('A garrafa térmica é um cilindro de <b>raio 5 cm</b> e <b>altura 20 cm</b>. Use π ≈ 3,14 e 1 L = 1 000 cm³.'), fig: CYL({ r: '5 cm', h: '20 cm', H: 130, rx: 40 }, 'a', 'garrafa térmica'), ask: 'Qual é a capacidade da garrafa?', opts: ['1,57 L', '0,628 L', '6,28 L', '0,52 L'], hint: 'V = π · r² · h, e depois divida por 1 000.', sol: ['V = 3,14 · 5² · 20 = 3,14 · 500 = 1 570 cm³.', '1 570 cm³ = <b>1,57 L</b>.'] },
+      { body: P('Cada vez que a cuia é servida, gastam-se <b>150 mL</b> de água. A garrafa da questão anterior tem <b>1,57 L</b>.'), ask: 'Quantas vezes dá para servir a cuia com a garrafa cheia?', opts: ['10', '11', '104', '4'], hint: 'Passe 1,57 L para mL.', sol: ['1,57 L = 1 570 mL.', '1 570 ÷ 150 ≈ 10,5.', 'Dá para servir <b>10 vezes</b> completas.'] },
+    ],
+  },
+  {
+    id: 'curitiba', nome: 'Curitiba', uf: 'PR', reg: 'S', lat: -25.43, lon: -49.27, emoji: '🚌',
+    postal: 'As estações-tubo de Curitiba viraram símbolo da cidade: o passageiro paga antes e embarca no ônibus pelo mesmo nível do piso.',
+    qs: [
+      { body: P('Uma estação-tubo é como um cilindro <b>deitado</b>.'), fig: TUBE(), ask: 'Nesse cilindro deitado, a “altura” do cilindro corresponde', opts: ['ao comprimento do tubo', 'ao diâmetro do tubo', 'ao raio do tubo', 'à distância do chão ao teto'], hint: 'A altura do cilindro é a distância entre as duas bases circulares.', sol: ['As bases circulares ficam nas pontas do tubo.', 'A distância entre elas é <b>o comprimento do tubo</b>, que faz o papel de altura.'] },
+      { body: P('Com medidas simplificadas, a estação tem <b>diâmetro 3 m</b> e <b>comprimento 10 m</b>.'), fig: TUBE(), ask: 'Qual é o volume interno, em função de π?', opts: ['22,5π m³', '90π m³', '30π m³', '7,5π m³'], hint: 'O raio é metade do diâmetro.', sol: ['Raio: 3 ÷ 2 = 1,5 m.', 'V = π · 1,5² · 10 = π · 2,25 · 10 = <b>22,5π m³</b>.'] },
+      { body: P('Só a <b>lateral</b> da estação (diâmetro 3 m, comprimento 10 m) é de vidro. Use π ≈ 3,14.'), ask: 'Quantos m² de vidro tem a estação?', opts: ['94,2 m²', '47,1 m²', '108,33 m²', '70,65 m²'], hint: 'Área lateral do cilindro: 2 · π · r · h.', sol: ['A = 2 · 3,14 · 1,5 · 10.', 'A = 3,14 · 30 = <b>94,2 m²</b>.'] },
+    ],
+  },
+];
+
+(function () {
+  'use strict';
+  const KEY = 'volta-brasil-geo-9ano-v1';
+  const TURMAS = ['F91', 'F92'];
+  const PIN_HASH = 2392177968;
+  const PTS = { first: 100, firstHint: 60, retry: 50, retryHint: 30 };
+  const $app = document.getElementById('app');
+  const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  function fnv(str) { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); } return h >>> 0; }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const fmt = (n) => Math.round(n).toLocaleString('pt-BR');
+  const L = 'ABCD';
+  const CITY = {}; CITIES.forEach((c) => { CITY[c.id] = c; });
+  const placeOf = (id) => (id === HOME.id ? HOME : CITY[id]);
+  function km(a, b) {
+    const R = 6371; const r = Math.PI / 180;
+    const dLa = (b.lat - a.lat) * r; const dLo = (b.lon - a.lon) * r;
+    const h = Math.sin(dLa / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLo / 2) ** 2;
+    return 2 * R * Math.asin(Math.sqrt(h));
+  }
+  const shuffled = (n) => { const a = [...Array(n).keys()]; for (let i = n - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+
+  /* ---------- armazenamento ---------- */
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } },
+    set(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { /* sem armazenamento */ } },
+  };
+  let DB = Object.assign({ cur: null, hall: [] }, store.get());
+  const save = () => store.set(DB);
+  let S = DB.cur; // perfil em jogo
+
+  let screen = S ? 'map' : 'home';
+  let cityId = null; // cidade aberta
+  let sel = null; // alternativa marcada
+  let showHint = false;
+  let modal = null;
+  let projection = false;
+  let trip = null; // {from,to}
+  let cityAnswerOpen = null; // resposta recém-dada {q, ok, pts}
+
+  function newProfile(name, turma) {
+    S = { name, turma, at: HOME.id, km: 0, visits: {}, route: [], finished: false, t0: Date.now() };
+    DB.cur = S; save();
+  }
+  function visit(id) {
+    if (!S.visits[id]) S.visits[id] = { ans: [null, null, null], ord: CITY[id].qs.map((q) => shuffled(q.opts.length)), retried: false, retry: false };
+    return S.visits[id];
+  }
+  const okCount = (v) => (v ? v.ans.filter((a) => a && a.ok).length : 0);
+  const isDone = (v) => !!v && v.ans.every((a) => a);
+  const ptsOf = (v) => (v ? v.ans.reduce((s, a) => s + (a ? a.pts : 0), 0) : 0);
+  const total = () => CITIES.reduce((s, c) => s + ptsOf(S.visits[c.id]), 0);
+  const doneCount = () => CITIES.filter((c) => isDone(S.visits[c.id])).length;
+  const STAMP = ['sem carimbo', 'bronze', 'prata', 'ouro'];
+
+  /* ---------- mapa ---------- */
+  const TS = 62; const GAP = 6; const PAD = 14;
+  const tileXY = (uf) => { const t = TILES.find((x) => x[0] === uf); return [PAD + t[1] * (TS + GAP) + TS / 2, PAD + t[2] * (TS + GAP) + TS / 2]; };
+  const W = PAD * 2 + 6 * (TS + GAP) - GAP; const H = PAD * 2 + 9 * (TS + GAP) - GAP;
+  function pinXY(id) {
+    const p = placeOf(id); const [x, y] = tileXY(p.uf);
+    return id === HOME.id ? [x + 14, y + 14] : [x + 3, y + 9];
+  }
+  function mapSVG() {
+    let s = '';
+    TILES.forEach(([uf, c, r, rg]) => {
+      const x = PAD + c * (TS + GAP); const y = PAD + r * (TS + GAP);
+      s += `<g class="tile"><rect x="${x}" y="${y}" width="${TS}" height="${TS}" rx="12" fill="${REGIONS[rg].cor}" opacity=".2"/><rect x="${x}" y="${y}" width="${TS}" height="${TS}" rx="12" fill="none" stroke="${REGIONS[rg].cor}" stroke-opacity=".55" stroke-width="1.5"/><text x="${x + 8}" y="${y + 17}" class="uf" style="fill:${REGIONS[rg].cor}">${uf}</text></g>`;
+    });
+    // rota já percorrida
+    const pts = [HOME.id].concat(S.route).map(pinXY);
+    if (pts.length > 1) s += `<polyline points="${pts.map((p) => p.join(',')).join(' ')}" class="route"/>`;
+    if (trip) { const a = pinXY(trip.from); const b = pinXY(trip.to); s += `<line x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}" class="trip"/><text class="plane" font-size="22" text-anchor="middle" dominant-baseline="central"><animateMotion dur="1.3s" fill="freeze" path="M${a[0]},${a[1]} L${b[0]},${b[1]}"/>✈️</text>`; }
+    // casa
+    const [hx, hy] = pinXY(HOME.id);
+    s += `<g class="home-pin"><circle cx="${hx}" cy="${hy}" r="11" fill="#fff" stroke="#14213D" stroke-width="2"/><text x="${hx}" y="${hy + 1}" text-anchor="middle" dominant-baseline="central" font-size="12">🏠</text></g>`;
+    CITIES.forEach((c) => {
+      const [x, y] = pinXY(c.id); const v = S.visits[c.id]; const done = isDone(v); const k = okCount(v);
+      const here = S.at === c.id;
+      s += `<g class="pin ${done ? 'done st' + k : ''} ${here ? 'here' : ''}" data-act="goto" data-id="${c.id}" tabindex="0" role="button" aria-label="${c.nome} (${c.uf})${done ? ', visitada: carimbo ' + STAMP[k] : ''}">
+        <circle cx="${x}" cy="${y}" r="18" class="pc" style="--rc:${REGIONS[c.reg].cor}"/>
+        <text x="${x}" y="${y + 1}" text-anchor="middle" dominant-baseline="central" font-size="16">${c.emoji}</text>
+        ${done ? `<circle cx="${x + 14}" cy="${y - 13}" r="7.5" class="badge"/><text x="${x + 14}" y="${y - 12.5}" text-anchor="middle" dominant-baseline="central" font-size="10" class="bt">${k}</text>` : ''}
+      </g>`;
+    });
+    if (S.at) { const [ax, ay] = pinXY(S.at); s += `<circle cx="${ax}" cy="${ay}" r="24" class="you"/>`; }
+    return `<svg class="map" viewBox="0 0 ${W} ${H}" role="img" aria-label="Mapa do Brasil em mosaico de estados, com as cidades da viagem">${s}</svg>`;
+  }
+
+  /* ---------- telas ---------- */
+  const logo = () => (typeof IMG !== 'undefined' && IMG.logo ? `<img class="logo" src="${IMG.logo.uri}" alt="Curso G9">` : '');
+  function homeView() {
+    const last = DB.last || {};
+    return `<main class="home">
+      <header class="top">${logo()}<button class="ghost sm" data-act="teacher">Área do professor</button></header>
+      <section class="hero">
+        <div class="htxt">
+          <p class="kicker">Geometria Espacial · 9º ano</p>
+          <h1>Volta ao <em>Brasil</em></h1>
+          <p class="lead">Saia de Itajubá, visite 10 cidades na ordem que quiser e resolva os desafios de prismas, pirâmides, cilindros e cones que cada lugar esconde. Cada cidade vale um carimbo no passaporte.</p>
+          <form class="enter" data-form="start" autocomplete="off">
+            <label>Seu nome<input name="nome" maxlength="40" required value="${esc(last.name || '')}" placeholder="Nome e sobrenome"></label>
+            <fieldset><legend>Turma</legend><div class="seg">${TURMAS.map((t) => `<label><input type="radio" name="turma" value="${t}" ${t === last.turma ? 'checked' : ''} required><span>${t}</span></label>`).join('')}</div></fieldset>
+            <button class="go big" type="submit">Embarcar</button>
+          </form>
+        </div>
+        <ul class="howto">
+          <li><b>3 desafios por cidade.</b> Acertou de primeira: 100 milhas. Com dica: 60.</li>
+          <li><b>Carimbo</b> de ouro (3 acertos), prata (2) ou bronze (1).</li>
+          <li>Errou? Depois de terminar a cidade, você pode <b>tentar de novo</b> os erros uma vez, valendo 50 milhas.</li>
+          <li>Depois das 10 cidades, <b>volte para casa</b> e receba seu certificado de viajante.</li>
+        </ul>
+      </section>
+      <p class="center"><button class="ghost" data-act="hall">Viajantes de destaque</button></p>
+    </main>`;
+  }
+
+  function passport() {
+    return `<section class="pass" aria-label="Passaporte">
+      <header><span>PASSAPORTE</span><b>${esc(S.name)}</b><small>${esc(S.turma)}</small></header>
+      <div class="stamps">${CITIES.map((c) => {
+        const v = S.visits[c.id]; const done = isDone(v); const k = okCount(v);
+        return `<button class="stamp ${done ? 'on st' + k : ''}" data-act="goto" data-id="${c.id}" style="--rc:${REGIONS[c.reg].cor}" title="${c.nome}"><span class="e">${c.emoji}</span><span class="c">${c.nome}</span>${done ? `<span class="m">${STAMP[k]}</span>` : v ? '<span class="m">em andamento</span>' : ''}</button>`;
+      }).join('')}</div>
+    </section>`;
+  }
+  function mapView() {
+    const d = doneCount();
+    const all = d === CITIES.length;
+    return `<main class="mapscreen">
+      <header class="bar">
+        <div class="who"><b>${esc(S.name)}</b> <span class="tag">${esc(S.turma)}</span></div>
+        <div class="kpis"><span><b>${fmt(total())}</b> milhas</span><span><b>${fmt(S.km)}</b> km</span><span><b>${d}</b>/10 cidades</span></div>
+        <button class="ghost sm" data-act="switch">Trocar viajante</button>
+      </header>
+      <div class="mapgrid">
+        <section class="mapbox">
+          ${mapSVG()}
+          <div class="legend">${Object.values(REGIONS).map((r) => `<span><i style="background:${r.cor}"></i>${r.nome}</span>`).join('')}</div>
+        </section>
+        <aside class="side">
+          <div class="where"><p class="kicker">Você está em</p><h2>${esc(placeOf(S.at).nome)} <small>${placeOf(S.at).uf}</small></h2>
+            <p>${all ? 'Passaporte completo! Hora de voltar para casa.' : 'Escolha o próximo destino no mapa ou no passaporte.'}</p>
+            ${all ? '<button class="go" data-act="gohome">Voltar para Itajubá 🏠</button>' : ''}
+          </div>
+          ${passport()}
+        </aside>
+      </div>
+    </main>`;
+  }
+
+  function cityView() {
+    const c = CITY[cityId]; const v = visit(cityId);
+    const rg = REGIONS[c.reg];
+    const qi = cityAnswerOpen ? cityAnswerOpen.q : v.ans.findIndex((a) => !a || (v.retry && !a.ok && !a.re));
+    const head = `<header class="postal" style="--rc:${rg.cor}">
+      <div class="pt"><span class="e" aria-hidden="true">${c.emoji}</span><div><p class="kicker">${rg.nome} · ${c.uf}</p><h1>${c.nome}</h1></div></div>
+      <p>${c.postal}</p>
+      <div class="dots">${v.ans.map((a, k) => `<span class="${a ? (a.ok ? 'ok' : 'no') : k === qi ? 'cur' : ''}">${k + 1}</span>`).join('')}</div>
+    </header>`;
+    // resumo da cidade
+    if (qi < 0) {
+      return `<main class="city">${head}${summaryView(c, v)}</main>`;
+    }
+    const q = c.qs[qi]; const ord = v.ord[qi];
+    const answeredNow = cityAnswerOpen && cityAnswerOpen.q === qi;
+    const opts = ord.map((oi, k) => {
+      let cls = 'opt';
+      if (answeredNow) { if (oi === 0) cls += ' right'; else if (k === sel) cls += ' wrong'; } else if (k === sel) cls += ' sel';
+      return `<button class="${cls}" data-act="pick" data-k="${k}" ${answeredNow ? 'disabled' : ''}><span class="let">${L[k]}</span><span class="txt">${q.opts[oi]}</span></button>`;
+    }).join('');
+    let foot;
+    if (answeredNow) {
+      const r = cityAnswerOpen;
+      foot = `<section class="verdict ${r.ok ? 'ok' : 'no'}" aria-live="polite"><h3>${r.ok ? `Acertou! +${r.pts} milhas` : `Não foi dessa vez. A resposta é ${L[ord.indexOf(0)]}.`}</h3><ol class="steps">${q.sol.map((x) => `<li>${x}</li>`).join('')}</ol>
+        <button class="go" data-act="nextq">${nextLabel(v)}</button></section>`;
+    } else {
+      foot = `<div class="actions">
+        <button class="ghost" data-act="hint" ${showHint ? 'disabled' : ''}>💡 Dica (vale ${v.retry ? PTS.retryHint : PTS.firstHint} em vez de ${v.retry ? PTS.retry : PTS.first})</button>
+        <button class="go" data-act="confirm" ${sel == null ? 'disabled' : ''}>Confirmar resposta</button>
+      </div>`;
+    }
+    return `<main class="city">
+      <div class="crumbs"><button class="ghost sm" data-act="map">← Mapa</button><span>${v.retry ? 'Nova tentativa' : 'Desafio'} ${qi + 1} de 3</span></div>
+      ${head}
+      <section class="qcard">${q.body}${q.fig ? `<figure class="fig">${q.fig}</figure>` : ''}<p class="ask">${q.ask}</p></section>
+      ${showHint ? `<div class="hint">💡 ${q.hint}</div>` : ''}
+      <div class="opts">${opts}</div>
+      ${foot}
+    </main>`;
+  }
+  function nextLabel(v) {
+    const pending = v.ans.some((a) => !a) || (v.retry && v.ans.some((a) => !a.ok && !a.re));
+    return pending ? 'Próximo desafio' : 'Ver carimbo';
+  }
+  function summaryView(c, v) {
+    const k = okCount(v);
+    const canRetry = !v.retried && k < 3;
+    return `<section class="sum">
+      <div class="bigstamp st${k}" style="--rc:${REGIONS[c.reg].cor}"><span class="e">${c.emoji}</span><b>${c.nome.toUpperCase()}</b><small>${k ? 'carimbo ' + STAMP[k] : 'visitada'}</small></div>
+      <div>
+        <h2>${k === 3 ? 'Carimbo de ouro!' : k === 2 ? 'Carimbo de prata!' : k === 1 ? 'Carimbo de bronze' : 'Cidade visitada'}</h2>
+        <p>${k} de 3 desafios certos · ${ptsOf(v)} milhas nesta cidade.</p>
+        <div class="row">
+          <button class="go" data-act="map">Voltar ao mapa</button>
+          ${canRetry ? '<button class="ghost" data-act="retry">Tentar de novo os erros (vale 50)</button>' : ''}
+        </div>
+      </div>
+    </section>`;
+  }
+
+  function endView() {
+    const t = total(); const per = [0, 0, 0, 0];
+    CITIES.forEach((c) => { per[okCount(S.visits[c.id])]++; });
+    const code = certCode();
+    return `<main class="end">
+      <section class="cert">
+        <p class="kicker">Certificado de viajante · Geometria Espacial</p>
+        <h1>${esc(S.name)}</h1>
+        <p class="lead">deu a Volta ao Brasil, visitou 10 cidades e voltou para Itajubá.</p>
+        <dl class="stats">
+          <div><dt>Milhas</dt><dd>${fmt(t)}</dd></div>
+          <div><dt>Distância</dt><dd>${fmt(S.km)} km</dd></div>
+          <div><dt>Ouro</dt><dd>${per[3]}</dd></div>
+          <div><dt>Prata</dt><dd>${per[2]}</dd></div>
+          <div><dt>Bronze</dt><dd>${per[1]}</dd></div>
+        </dl>
+        <p class="code">Turma ${esc(S.turma)} · código <b>${code}</b></p>
+      </section>
+      <div class="row center">
+        <button class="go" data-act="copy">Copiar resultado</button>
+        <button class="ghost" data-act="map">Rever o passaporte</button>
+        <button class="ghost" data-act="hall">Viajantes de destaque</button>
+        <button class="ghost" data-act="newtrip">Nova viagem</button>
+      </div>
+    </main>`;
+  }
+  function certCode() {
+    const base = `${norm(S.name)}|${S.turma}|${total()}|g9-volta-brasil`;
+    return (fnv(base) % 46656).toString(36).toUpperCase().padStart(3, '0') + '-' + (fnv(base + '#') % 46656).toString(36).toUpperCase().padStart(3, '0');
+  }
+
+  const sortedHall = () => DB.hall.slice().sort((a, b) => b.pts - a.pts || a.t - b.t);
+  function hallList(rows) {
+    if (!rows.length) return '<p class="empty">Nenhum viajante terminou a volta neste computador ainda.</p>';
+    return `<ol class="hall">${rows.map((h, k) => `<li><span class="pos">${k + 1}º</span><span class="nm">${esc(h.name)} <small>${esc(h.turma)}</small></span><span class="pz">${fmt(h.pts)} milhas</span><span class="dt">${esc(h.date)}</span></li>`).join('')}</ol>`;
+  }
+  function hallView() {
+    return `<main class="page"><header class="bar"><h2>Viajantes de destaque</h2><button class="ghost sm" data-act="${S ? 'map' : 'home'}">Voltar</button></header>
+      <p class="note">Quem completou a volta neste computador, por milhas.</p>${hallList(sortedHall().slice(0, 20))}</main>`;
+  }
+  function teacherView() {
+    return `<main class="page">
+      <header class="bar"><h2>Área do professor</h2><button class="ghost sm" data-act="${S ? 'map' : 'home'}">Voltar</button></header>
+      <div class="tcards">
+        <section><h3>Modo projeção</h3><p>Letras e figuras maiores para resolver com a turma no projetor.</p><button class="go" data-act="proj">${projection ? 'Desligar' : 'Ligar'}</button></section>
+        <section><h3>Viagem da turma</h3><p>Começa uma viagem coletiva com o nome “Turma”.</p><div class="row">${TURMAS.map((t) => `<button class="ghost" data-act="classtrip" data-t="${t}">Com a ${t}</button>`).join('')}</div></section>
+      </div>
+      ${TURMAS.map((t) => `<h3 class="th">${t}</h3>${hallList(sortedHall().filter((h) => h.turma === t))}`).join('')}
+      <details class="gab"><summary>Gabarito das 30 questões</summary>
+        ${CITIES.map((c) => `<h4>${c.emoji} ${c.nome}</h4><ol>${c.qs.map((q) => `<li>${q.ask} <b>${q.opts[0]}</b></li>`).join('')}</ol>`).join('')}
+      </details>
+      <button class="ghost danger" data-act="wipe">Apagar viagem atual e destaques deste computador</button>
+    </main>`;
+  }
+
+  function modalView() {
+    if (!modal) return '';
+    let inner = '';
+    if (modal.type === 'travel') {
+      const to = placeOf(modal.to); const d = km(placeOf(S.at), to);
+      inner = `<h3>Viajar para ${to.nome}?</h3><p>${placeOf(S.at).nome} → ${to.nome}: cerca de <b>${fmt(d)} km</b>.</p><div class="row"><button class="go" data-act="fly">Embarcar ✈️</button><button class="ghost" data-act="close">Ficar aqui</button></div>`;
+    }
+    if (modal.type === 'pin') inner = `<h3>Área do professor</h3><form data-form="pin" autocomplete="off"><label>Senha<input name="pin" type="password" required></label>${modal.err ? '<p class="err">Senha incorreta.</p>' : ''}<div class="row"><button class="go" type="submit">Entrar</button><button class="ghost" type="button" data-act="close">Cancelar</button></div></form>`;
+    if (modal.type === 'switch') inner = `<h3>Trocar de viajante?</h3><p>A viagem de <b>${esc(S.name)}</b> será encerrada neste computador. ${S.finished ? '' : 'Ela ainda não terminou e não entra nos destaques.'}</p><div class="row"><button class="go" data-act="switchYes">Trocar</button><button class="ghost" data-act="close">Cancelar</button></div>`;
+    return `<div class="veil" data-act="veil"><div class="modal" role="dialog" aria-modal="true">${inner}</div></div>`;
+  }
+
+  function render() {
+    document.body.classList.toggle('proj', projection);
+    let html = '';
+    if (screen === 'home') html = homeView();
+    else if (screen === 'map') html = mapView();
+    else if (screen === 'city') html = cityView();
+    else if (screen === 'end') html = endView();
+    else if (screen === 'hall') html = hallView();
+    else if (screen === 'teacher') html = teacherView();
+    $app.innerHTML = html + modalView();
+    const f = $app.querySelector('.modal input'); if (f) f.focus();
+  }
+  const go = (s) => { screen = s; modal = null; render(); window.scrollTo(0, 0); };
+
+  /* ---------- ações ---------- */
+  function openCity(id) { cityId = id; sel = null; showHint = false; cityAnswerOpen = null; visit(id); save(); go('city'); }
+  function flyTo(id) {
+    const from = S.at;
+    modal = null;
+    if (from === id) { openCity(id); return; }
+    S.km += km(placeOf(from), placeOf(id));
+    S.route.push(id);
+    trip = { from, to: id };
+    S.at = id; save();
+    screen = 'map'; render();
+    setTimeout(() => { trip = null; if (id === HOME.id) finishTrip(); else openCity(id); }, 1500);
+  }
+  function confirmAnswer() {
+    const v = visit(cityId); const c = CITY[cityId];
+    const qi = v.ans.findIndex((a) => !a || (v.retry && !a.ok && !a.re));
+    if (qi < 0 || sel == null) return;
+    const ok = v.ord[qi][sel] === 0;
+    const pts = ok ? (v.retry ? (showHint ? PTS.retryHint : PTS.retry) : (showHint ? PTS.firstHint : PTS.first)) : 0;
+    if (v.retry) v.ans[qi] = { ok, pts, hint: showHint, re: true };
+    else v.ans[qi] = { ok, pts, hint: showHint };
+    cityAnswerOpen = { q: qi, ok, pts };
+    save(); render();
+    const el = $app.querySelector('.verdict'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    return c;
+  }
+  function nextQ() {
+    const v = visit(cityId);
+    cityAnswerOpen = null; sel = null; showHint = false;
+    if (v.retry && !v.ans.some((a) => !a.ok && !a.re)) { v.retry = false; v.ans.forEach((a) => { delete a.re; }); }
+    save(); render(); window.scrollTo(0, 0);
+  }
+  function finishTrip() {
+    S.finished = true;
+    const d = new Date();
+    DB.hall = DB.hall.filter((h) => !(h.id === S.t0 && h.name === S.name));
+    DB.hall.push({ id: S.t0, name: S.name, turma: S.turma, pts: total(), km: Math.round(S.km), t: d.getTime(), date: d.toLocaleDateString('pt-BR') });
+    save(); go('end');
+  }
+  function copyText() {
+    const t = `Volta ao Brasil · Geometria Espacial\n${S.name} (${S.turma})\n${fmt(total())} milhas · ${fmt(S.km)} km · ${doneCount()}/10 cidades\nCódigo: ${certCode()}\n${new Date().toLocaleString('pt-BR')}`;
+    const done = () => { const b = $app.querySelector('[data-act="copy"]'); if (b) b.textContent = 'Copiado!'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, () => window.prompt('Copie o resultado:', t));
+    else window.prompt('Copie o resultado:', t);
+  }
+
+  function act(a, el, e) {
+    switch (a) {
+      case 'veil': if (e && e.target === el) { modal = null; render(); } break;
+      case 'teacher': modal = { type: 'pin' }; render(); break;
+      case 'hall': go('hall'); break;
+      case 'home': go('home'); break;
+      case 'map': if (S) go('map'); else go('home'); break;
+      case 'close': modal = null; render(); break;
+      case 'goto': {
+        if (trip) return;
+        const id = el.dataset.id;
+        if (S.at === id) openCity(id); else { modal = { type: 'travel', to: id }; render(); }
+        break;
+      }
+      case 'gohome': modal = { type: 'travel', to: HOME.id }; render(); break;
+      case 'fly': flyTo(modal.to); break;
+      case 'pick': sel = +el.dataset.k; render(); break;
+      case 'hint': showHint = true; render(); break;
+      case 'confirm': confirmAnswer(); break;
+      case 'nextq': nextQ(); break;
+      case 'retry': { const v = visit(cityId); v.retried = true; v.retry = true; v.ord = v.ord.map((o) => shuffled(o.length)); save(); sel = null; showHint = false; render(); break; }
+      case 'switch': modal = { type: 'switch' }; render(); break;
+      case 'switchYes': DB.cur = null; S = null; save(); go('home'); break;
+      case 'newtrip': DB.cur = null; S = null; save(); go('home'); break;
+      case 'copy': copyText(); break;
+      case 'proj': projection = !projection; render(); break;
+      case 'classtrip': newProfile('Turma', el.dataset.t); projection = true; go('map'); break;
+      case 'wipe': if (window.confirm('Apagar a viagem atual e todos os destaques deste computador?')) { DB = { cur: null, hall: [] }; S = null; save(); go('home'); } break;
+      default: break;
+    }
+  }
+  $app.addEventListener('click', (e) => { const el = e.target.closest('[data-act]'); if (el) act(el.dataset.act, el, e); });
+  $app.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('g[data-act]')) { e.preventDefault(); act(e.target.dataset.act, e.target, e); } });
+  $app.addEventListener('submit', (e) => {
+    e.preventDefault(); const f = e.target;
+    if (f.dataset.form === 'start') {
+      const name = f.nome.value.trim().replace(/\s+/g, ' ');
+      const tr = f.querySelector('input[name="turma"]:checked');
+      if (!name || !tr) return;
+      DB.last = { name, turma: tr.value };
+      newProfile(name, tr.value); go('map');
+    }
+    if (f.dataset.form === 'pin') {
+      if (fnv('missao:' + norm(f.pin.value)) === PIN_HASH) go('teacher');
+      else { modal = { type: 'pin', err: true }; render(); }
+    }
+  });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal) { modal = null; render(); } });
+  if (S && S.finished) screen = 'end';
+  render();
+}());
+
+</script>
+</body>
+</html>

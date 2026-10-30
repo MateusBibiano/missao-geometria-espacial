@@ -16,3 +16,9 @@ O site é um único arquivo (`index.html`).
 Jogo de perguntas com escada de prêmios, 16 perguntas inéditas (as medidas mudam a cada partida) e ajudas: pular, cartas, universitários e placas.
 
 **Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/show/
+
+## Volta ao Brasil
+
+Viagem por 10 cidades (2 por região), com 3 desafios de geometria espacial em contexto em cada uma. O aluno escolhe a ordem, ganha milhas e carimbos no passaporte e recebe um certificado ao voltar para Itajubá.
+
+**Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/volta/
