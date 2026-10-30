@@ -10,3 +10,9 @@ Trilha gamificada de introdução à Geometria Espacial para as turmas **F91 e F
 - XP, níveis, estrelas, medalhas, certificado e ranking da turma para o professor.
 
 O site é um único arquivo (`index.html`).
+
+## Show do Milhão
+
+Jogo de perguntas com escada de prêmios, 16 perguntas inéditas (as medidas mudam a cada partida) e ajudas: pular, cartas, universitários e placas.
+
+**Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/show/

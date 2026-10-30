@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Show do Milhão · Geometria Espacial</title>
+<meta name="description" content="Show do Milhão de Geometria Espacial: 16 perguntas inéditas sobre prismas, pirâmides, cilindros e cones. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta name="theme-color" content="#12114A">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Show do Milhão · Geometria Espacial">
+<meta property="og:description" content="Show do Milhão de Geometria Espacial: 16 perguntas inéditas sobre prismas, pirâmides, cilindros e cones. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta property="og:url" content="https://mateusbibiano.github.io/missao-geometria-espacial/show/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%2312114A'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-size='34' font-weight='800' font-family='sans-serif' fill='%23F6C445'%3E$%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600..800&family=DM+Mono:wght@500&family=Plus+Jakarta+Sans:wght@400..800&display=swap">
+<style>
+:root {
+  --ink: #0A0A26; --navy: #12114A; --plum: #2B1166; --violet: #4B22A8;
+  --gold: #F6C445; --gold2: #FFE08A; --goldd: #B8860B;
+  --paper: #FFFBF0; --text: #F3F1FF; --mute: #B9B4E0;
+  --ok: #22C55E; --no: #EF4444;
+  --fd: 'Bricolage Grotesque', system-ui, sans-serif;
+  --fb: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --fm: 'DM Mono', ui-monospace, monospace;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: radial-gradient(1200px 700px at 50% -10%, #3A1A86 0%, var(--plum) 30%, var(--navy) 62%, var(--ink) 100%) fixed, var(--ink);
+  color: var(--text); font-family: var(--fb); font-size: 16px; line-height: 1.5; min-height: 100vh;
+}
+button { font: inherit; cursor: pointer; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid var(--gold2); outline-offset: 2px; }
+#app { max-width: 1180px; margin: 0 auto; padding: 16px; }
+h1, h2, h3 { font-family: var(--fd); line-height: 1.1; margin: 0 0 .4em; }
+.kicker { font-family: var(--fm); text-transform: uppercase; letter-spacing: .14em; font-size: 12px; color: var(--gold2); margin: 0 0 8px; }
+.lead { color: var(--mute); font-size: 18px; max-width: 46ch; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+
+/* botões */
+.gold { background: linear-gradient(180deg, var(--gold2), var(--gold) 55%, #E0A82A); color: #2A1A00; border: 0; border-radius: 999px; padding: 12px 22px; font-weight: 800; box-shadow: 0 6px 0 var(--goldd), 0 10px 24px rgba(246,196,69,.25); transition: transform .08s; }
+.gold:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--goldd); }
+.gold.big { font-size: 19px; padding: 15px 30px; }
+.ghost { background: rgba(255,255,255,.06); color: var(--text); border: 1.5px solid rgba(255,255,255,.22); border-radius: 999px; padding: 10px 18px; font-weight: 700; }
+.ghost:hover:not(:disabled) { border-color: var(--gold); }
+.ghost.sm { padding: 6px 14px; font-size: 14px; }
+.ghost.danger { border-color: rgba(239,68,68,.5); color: #FCA5A5; margin-top: 24px; }
+button:disabled.ghost { opacity: .4; }
+
+/* home */
+.home { position: relative; display: grid; gap: 28px; }
+.spot { position: absolute; inset: -40px 0 auto; height: 420px; pointer-events: none; background: conic-gradient(from 200deg at 50% 0%, transparent 0 20deg, rgba(255,224,138,.09) 26deg, transparent 34deg 60deg, rgba(255,224,138,.07) 66deg, transparent 74deg 100deg, rgba(255,224,138,.08) 106deg, transparent 114deg); z-index: -1; -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent); mask-image: linear-gradient(180deg, #000 40%, transparent); }
+.home-top { display: flex; justify-content: space-between; align-items: center; }
+.logo { height: 40px; width: auto; filter: brightness(0) invert(1); opacity: .9; }
+.hero { text-align: center; display: grid; justify-items: center; padding-top: 10px; }
+.hero h1 { font-size: clamp(48px, 11vw, 112px); letter-spacing: -.03em; font-weight: 800; text-transform: uppercase; }
+.hero h1 { margin-bottom: 0; }
+.hero h1 span { display: block; font-size: .42em; letter-spacing: .12em; color: var(--text); }
+.hero h1 em { font-style: normal; background: linear-gradient(180deg, #FFF3C4, var(--gold) 50%, #C9901A); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 4px 0 rgba(0,0,0,.35)); }
+.enter { margin-top: 18px; width: min(420px, 100%); display: grid; gap: 14px; text-align: left; background: rgba(10,10,38,.55); border: 1.5px solid rgba(246,196,69,.35); border-radius: 22px; padding: 20px; }
+.enter label { display: grid; gap: 6px; font-weight: 700; font-size: 14px; }
+input[type=text], input:not([type]), input[type=password] { font: inherit; padding: 12px 14px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.25); background: rgba(255,255,255,.08); color: var(--text); }
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+.seg { display: flex; gap: 8px; }
+.seg label { flex: 1; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: block; text-align: center; padding: 10px; border-radius: 12px; border: 1.5px solid rgba(255,255,255,.25); font-weight: 800; font-family: var(--fm); }
+.seg input:checked + span { background: var(--gold); color: #2A1A00; border-color: var(--gold); }
+.seg input:focus-visible + span { outline: 3px solid var(--gold2); }
+.rules { background: rgba(255,255,255,.04); border-radius: 22px; padding: 20px; border: 1px solid rgba(255,255,255,.1); }
+.rules ul { margin: 0 0 16px; padding-left: 20px; color: var(--mute); }
+.rules b { color: var(--text); }
+
+/* jogo */
+.bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 4px 0 14px; flex-wrap: wrap; }
+.bar h2 { margin: 0; }
+.who span, .qn { font-family: var(--fm); font-size: 13px; color: var(--mute); }
+.who span { margin-left: 6px; border: 1px solid rgba(255,255,255,.25); border-radius: 6px; padding: 1px 6px; }
+.qn b { color: var(--gold2); }
+.stage { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 20px; align-items: start; }
+.topic { font-family: var(--fm); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold2); margin: 0 0 8px; }
+.qcard { background: var(--paper); color: #1B1A33; border-radius: 22px; padding: 20px 22px; box-shadow: 0 0 0 4px rgba(246,196,69,.55), 0 18px 50px rgba(0,0,0,.4); font-size: 18px; }
+.qcard p { margin: 0 0 10px; }
+.qcard .ask { font-family: var(--fd); font-weight: 700; font-size: 22px; margin: 10px 0 0; }
+.fig { margin: 6px auto; max-width: 330px; }
+.fig svg { width: 100%; height: auto; display: block; font-family: var(--fb); }
+.solid text { fill: #1B1D2E; }
+.final .qcard { box-shadow: 0 0 0 4px var(--gold), 0 0 60px rgba(246,196,69,.45); }
+.opts { display: grid; gap: 10px; margin-top: 18px; }
+.opt { display: flex; align-items: center; gap: 14px; text-align: left; width: 100%; padding: 12px 18px 12px 12px; color: var(--text); font-size: 18px; font-weight: 600; background: linear-gradient(180deg, #2A2380, #17135A); border: 2px solid rgba(246,196,69,.55); border-radius: 999px; transition: transform .1s, background .2s, border-color .2s; }
+.opt:hover:not(:disabled) { transform: translateX(4px); border-color: var(--gold2); background: linear-gradient(180deg, #3A31A6, #211A78); }
+.opt .let { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: var(--gold); color: #2A1A00; font-family: var(--fd); font-weight: 800; }
+.opt .txt { flex: 1; }
+.opt.gone { opacity: .18; text-decoration: line-through; }
+.opt.sel { background: linear-gradient(180deg, #F6C445, #D99B1E); color: #2A1A00; border-color: #FFF0B8; }
+.opt.sel .let { background: #2A1A00; color: var(--gold); }
+.suspense .opt.sel, .opt.sel:disabled { animation: none; }
+.opt.right { background: linear-gradient(180deg, #34D671, #15803D); border-color: #BBF7D0; color: #fff; animation: flash .5s 3; }
+.opt.right .let { background: #fff; color: #15803D; }
+.opt.wrong { background: linear-gradient(180deg, #F87171, #B91C1C); border-color: #FECACA; color: #fff; }
+.opt.wrong .let { background: #fff; color: #B91C1C; }
+@keyframes flash { 50% { filter: brightness(1.35); } }
+@keyframes pulse { 50% { filter: brightness(1.25); transform: scale(1.01); } }
+.opt.sel:not(.right):not(.wrong):disabled { animation: pulse .7s infinite; }
+.frac { display: inline-flex; flex-direction: column; vertical-align: middle; text-align: center; font-size: .85em; line-height: 1.1; }
+.frac span:first-child { border-bottom: 1.5px solid currentColor; }
+
+.hintbox { margin-top: 14px; background: rgba(255,255,255,.07); border: 1.5px dashed rgba(246,196,69,.5); border-radius: 16px; padding: 12px 16px; }
+.hk { margin: 0 0 6px; font-family: var(--fm); font-size: 12px; text-transform: uppercase; letter-spacing: .12em; color: var(--gold2); }
+.univ { margin: 0; padding-left: 18px; }
+.bars { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: end; height: 130px; }
+.barc { display: grid; grid-template-rows: 1fr auto; height: 100%; text-align: center; }
+.bv { align-self: end; height: var(--p); min-height: 4px; background: linear-gradient(180deg, var(--gold2), var(--gold)); border-radius: 8px 8px 2px 2px; position: relative; }
+.bv span { position: absolute; top: -20px; left: 0; right: 0; font-family: var(--fm); font-size: 13px; color: var(--text); }
+.barc b { font-family: var(--fd); }
+
+.verdict { margin-top: 18px; border-radius: 20px; padding: 16px 18px; background: rgba(255,255,255,.06); border: 2px solid; }
+.verdict.ok { border-color: var(--ok); }
+.verdict.no { border-color: var(--no); }
+.verdict h3 { font-size: 24px; }
+.verdict details { margin: 6px 0 14px; }
+.verdict summary { cursor: pointer; font-weight: 700; color: var(--gold2); }
+.steps { margin: 10px 0 0; padding-left: 22px; }
+.steps li { margin: 4px 0; }
+.steps b { color: var(--gold2); }
+
+.side { display: grid; gap: 14px; position: sticky; top: 12px; }
+.money { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.m { border-radius: 14px; padding: 8px 6px; text-align: center; background: rgba(255,255,255,.06); border: 1.5px solid rgba(255,255,255,.14); }
+.m span { display: block; font-family: var(--fm); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--mute); }
+.m b { font-family: var(--fd); font-size: 17px; white-space: nowrap; }
+.m.err b { color: #FCA5A5; }
+.m.hit { border-color: var(--gold); background: rgba(246,196,69,.12); }
+.m.hit b { color: var(--gold2); }
+.helps { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.help { display: flex; align-items: center; gap: 8px; padding: 9px 10px; border-radius: 14px; background: rgba(75,34,168,.55); border: 1.5px solid rgba(255,255,255,.2); color: var(--text); font-weight: 700; font-size: 14px; text-align: left; }
+.help:hover:not(:disabled) { border-color: var(--gold); }
+.help:disabled { opacity: .35; text-decoration: line-through; }
+.help .ico { width: 26px; height: 26px; border-radius: 8px; display: grid; place-items: center; background: rgba(255,255,255,.12); font-size: 14px; flex: none; }
+.help small { font-family: var(--fm); color: var(--gold2); }
+.stopbtn { width: 100%; }
+.ladder { list-style: none; margin: 0; padding: 8px; border-radius: 18px; background: rgba(10,10,38,.55); border: 1px solid rgba(255,255,255,.12); display: grid; gap: 2px; }
+.ladder li { display: flex; justify-content: space-between; padding: 3px 12px; border-radius: 8px; font-family: var(--fm); font-size: 14px; color: var(--mute); }
+.ladder li.mark { color: var(--text); }
+.ladder li.done { color: rgba(185,180,224,.45); }
+.ladder li.now { background: var(--gold); color: #2A1A00; font-weight: 700; }
+.ladder li.top .v { color: var(--gold2); font-weight: 700; }
+.ladder li.top.now .v { color: #2A1A00; }
+
+/* fim */
+.end { position: relative; text-align: center; display: grid; justify-items: center; padding-top: 40px; }
+.prize { font-size: clamp(44px, 10vw, 96px); background: linear-gradient(180deg, #FFF3C4, var(--gold) 50%, #C9901A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 18px 0 24px; width: min(560px, 100%); }
+.stats div { background: rgba(255,255,255,.06); border-radius: 16px; padding: 10px; }
+.stats dt { font-family: var(--fm); font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--mute); }
+.stats dd { margin: 4px 0 0; font-family: var(--fd); font-weight: 700; font-size: 18px; }
+.end .row { justify-content: center; }
+
+/* páginas */
+.page { max-width: 760px; margin: 0 auto; }
+.note, .empty { color: var(--mute); }
+.hall { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 6px; }
+.hall li { display: grid; grid-template-columns: 44px 1fr auto auto; gap: 12px; align-items: center; padding: 10px 14px; border-radius: 14px; background: rgba(255,255,255,.06); }
+.hall .pos { font-family: var(--fd); font-weight: 800; color: var(--gold2); }
+.hall small { font-family: var(--fm); color: var(--mute); margin-left: 6px; }
+.hall .pz { font-family: var(--fd); font-weight: 800; }
+.hall .dt { font-family: var(--fm); font-size: 12px; color: var(--mute); }
+.tcards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.tcards section { background: rgba(255,255,255,.05); border-radius: 18px; padding: 16px; border: 1px solid rgba(255,255,255,.12); }
+.tcards p { color: var(--mute); margin-top: 0; }
+.th { margin-top: 18px; color: var(--gold2); }
+
+/* modal */
+.veil { position: fixed; inset: 0; background: rgba(5,5,20,.72); display: grid; place-items: center; padding: 16px; z-index: 10; backdrop-filter: blur(3px); }
+.modal { width: min(520px, 100%); background: linear-gradient(180deg, #241C78, #120F48); border: 2px solid var(--gold); border-radius: 24px; padding: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.6); }
+.modal h3 { font-size: 26px; }
+.modal p { color: var(--mute); }
+.modal form { display: grid; gap: 12px; }
+.modal label { display: grid; gap: 6px; font-weight: 700; }
+.err { color: #FCA5A5 !important; margin: 0; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 8px 0 16px; }
+.card { aspect-ratio: 2/3; border-radius: 14px; border: 2px solid var(--gold); padding: 0; position: relative; background: repeating-linear-gradient(45deg, #3B2AA6 0 8px, #2B1E86 8px 16px); color: var(--gold2); transition: transform .2s; }
+.card:hover:not(:disabled) { transform: translateY(-4px); }
+.card .back { font-family: var(--fd); font-weight: 800; font-size: 22px; }
+.card .face { display: none; }
+.card.open { background: var(--paper); color: #9B1C1C; }
+.card.open .back { display: none; }
+.card.open .face { display: grid; gap: 2px; font-family: var(--fd); font-weight: 800; font-size: 40px; line-height: 1; }
+.card.open .face small { font-family: var(--fb); font-size: 12px; color: #1B1A33; }
+.card.dim { opacity: .45; }
+
+/* projeção */
+body.proj #app { max-width: 1500px; }
+body.proj .qcard { font-size: 24px; }
+body.proj .qcard .ask { font-size: 30px; }
+body.proj .fig { max-width: 440px; }
+body.proj .opt { font-size: 24px; padding: 16px 22px 16px 14px; }
+body.proj .stage { grid-template-columns: minmax(0, 1fr) 300px; }
+
+@media (max-width: 860px) {
+  .stage { grid-template-columns: 1fr; }
+  .side { position: static; order: -1; }
+  .ladder { display: none; }
+  .helps { grid-template-columns: repeat(4, 1fr); }
+  .help { flex-direction: column; gap: 2px; font-size: 12px; text-align: center; padding: 8px 4px; }
+  .tcards { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .qcard { padding: 16px; font-size: 16px; }
+  .qcard .ask { font-size: 19px; }
+  .opt { font-size: 16px; padding: 10px 14px 10px 10px; gap: 10px; }
+  .opt .let { width: 32px; height: 32px; }
+  .stats { grid-template-columns: 1fr; }
+  .hall li { grid-template-columns: 36px 1fr auto; }
+  .hall .dt { display: none; }
+  .m b { font-size: 15px; }
+}
+@media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const IMG = {"logo": {"uri": "data:image/webp;base64,UklGRt5KAABXRUJQVlA4WAoAAAAQAAAAAwEAuQAAQUxQSMQcAAAB/yckSPD/eGtEpO4TENs2kiRZ5b7f+Sfc1V0zuAQi+j8BmrKv+wFpeMzmuPSk9xP1gF/za+4B1npF+zdQI7fqC/jT8GdSBRMPbI/i5VzYZlQVV1VJSmL2WZokMW1d1bYkULICEui22gWE3d6ASXG0NZ64IYmkRIk+73zQ9ee6UZNSm052F9TnqAsD6MVl/Xfgw7ZtndNo1/P8ZqI4IXjwFnenLrvVLdt136Vd98q6u7X7yXr71V223u1Wv60XaCnQYsUheAKEhCST+b33H5lMJpOZ8G9ETAA9QQOMQPZmCMSJsRlItLcBoweqJLJ0Gwe3HqW9WzjxMSMAlJSMmjpxpI2e1hd3Qio+snZ761srtrTG4HYiY4YEjBs+eVZN5ZgR5HDX1v0vvbyOGLcTFE/EgjEzByw8t19fAAksG4EZcOjFL8xGshMPcwOYu/Cksyc6QAxu5FABN5Z+8dOLEXZCYZEDyXN/OHPJYEDCMHIvJMZ/aOkUZCcO5sCAd/32keOCIDfy0ImpPm9eUicI5kH0m7R0dgoIMidvA67rq04IzGMYs+ArSSBgEfkt+ZRhqIdnbqLk9PMuHQ2xWUT+KzBsPGY9uchg9MJPnFOCZAm67cAI1GMzYPoPPzke0pHRjY2mhp6aReBL/rxPELvRvUV6P9YTM4NFNzVIaTcK4Z6dPTB3OO3WBikdiwL59n5Cz8oIzPzY0t4EdwqlN9+O96TMAqM+/IFexGYUzmBvlJv3mCwKDProh/oT3CikIrWMHpNByeL3jiY2o8DKV/bCekTmcOoX5hHMKLwWPo33hBx6/6oBzCnEQU8kzXo85kQfXSPFRmGWGubiPR2HKdfHCoGCHcKPMOvhULLoIkdGAbMzy0VPNgqMXjqYYBRyo6YK68EI5k5CZhS4EVPouZoYfcYYglHgLS5ZgHoqJsafYRiF31hQKeuh0GfhcGKnKNSAeiImei+poGgO7IX1RGDacIIXjX4jeyImWzgejKLpZfQ8jfLqUoqql/Y4DMZNcFkRMaykxyEmjEcUVy/FehZiYDVYkbEK1JMwlQyvoAgn6UkaA8ajYtTD7DUMvBi19CBE/ypEMQ7NPQgGDKIoC7X2FAxaQUUJlOohyBiSxCjSId0zMNHmFO+4oWcA/ZKoeB2rQ8VPRlkFRvFWOcXfBG0U9YOpngBRhBUx8dIuU9HjON1ZoCwMrBvA+mAU+cDhFOomIeBOZ0Na+SZvW0eRF4wCoxuK4AbEjfXvrK1PmGhLV8+YUlXiCeUbdTuLnXFYiLwPcgN2rFu/a+eOA/VNdNivetzEh1J4UD5B3eFix9E0ea+gBDSvf3Tlpi1p2ptlkoD//v3fj+P5JDbUo+K2vQHlmTCo2/LIk1vqgMgkJDo0MyO8dM+DMcofZ13aKOqNx+hChVzEwTj+xOrH324GMyRyGLvx4vMHUb7I2tZgKmb1dXSl03lZxJ7fnhoB7kYXurF4necN+5dTxOVHt5J7CbbGnYhxVvzjNsAjo4stYkFseYLe3E0oXrRtxpQrOSu+9J2QVTBj+a1/Wosbeem8jvLEXg9O0Tb2x0aO1ULLyuX/eJrQkXDevO6OOiLy1XxNQ6ksH7z5BYp3xP5WlKtStj1xeFwVRmYFZ+X//bMODyFvcNZVez4E3n4NFStn80EzcquI119n8ggCmRVR+/gD9UQS+WyHK/rKug7WNFKszSpWEchtoHVNba/F1XQYRONj99USSeS3UT6Xrgt+5A5cxcr/l1wbTZsZOZXgHUSsvWstHgJ5r901idBlULeGYu1hG5abdJpN25g4DpFRcPBHgzGnWzbuQl1mvFKBFSmeP2QhNyne3Mr4fphlkLP6HHCjmxpdb9yOU5QDO98xchqVpA82lI+vxOiw+bXlREY3NRq6TrZ5A1acoqN7yHFp2yHGjUWivYyNrzTgdFc5DagzCspghhkQoie2G8VYtD4Cyk35cWomE5z2MtatwUX3FeVYZ7JXMPzwo3hRCqyvNZFDC63ViZo+ZJnaugsT3deCVdFJ0fhyY0RIVPbt1atv7wjY9mJxMtu8x4xceulP/vLuXlgmsXuVTHTvZF8su+DXfCcNUNK7esiQkSP6Lup7c5NRhC2qf4ZAbpOfXQpGexlNW7BAN5fIXlZ/7huJGBCZJ1esozjrzVZTjkCBzEZtMxjdvXIwlh2PrfWYbEWx1tEtLnJtbh1QuxdENzfOGt3kWZF+vA0pGwwVJT9+EqLrw/5mjAK4pK/INvYVjyN6gBYnpnvXmTXHBLq/mJioyEbO4w3eI+DYZBddHdIpUQgjzZjV7MqG7bdh9ASPjh0sutqTEV4QElzc0EDWdvsOj3sABtOwzqkTikEqBGbl8144mk3wLbdLFH+32skJ0bWmqBSMQui8r/LIiGzgz+u9BxBoujsWOWxVNoFBCQqkWeO4N8j6g/1lFH+zB3ZHnRP3XVaPOnCGlsoKg/PR3s+mTB24Zi+RUfyNza8gOj/grstSZDmkDwXSvGp5+XNkqZILS+kJOjcfz8WI6o0Npo769qJQRvzinuuPoA6M80YG7wG4/WetBzobakauX04go2nERMwKgzP7/yf93gIdhpoFGD1A4/600Umnz0SeDWQ29Z4KoiCaRU9+ZeieSJnM/Nwo9ATMBta6OiM7h1daImXC5pUGozA6V92TvAGRWSysET1B5ycEOmlh/qh1qxEdLpggozA6s5aPuyTuyMKIiVhPwOOTFnvcCWnMmUfeJNBh22kUSvF263nPbXCR0ag8y3sG4gqMTgbOt382RcoUEv8sLxQWpTaefuwtOhaz+oqeoIUJ06ROBJbUrNhjIqP8yPXBC0TEpjOGPQfKZAyulvUM9E1E9orj847eDFn8HawwJFg+8KyG42TZuw9GTzBqmzhVdDK2N6M79prIqGjnk2YUxIiT9wytk3dgDBqH6BEGvkqc6IT8/O2PGFn+A6MgOtVrR6zZQuggJMci6xF4OGkiRvaBx5M3t7gyhejtlQXCrOKR+suPYGQ0T1YmjB6ilhES2SnE5170IoHMskfxdCEw+I6OLsbIrLS5eRRFkbt7O6lYWej3IdHJkHiIpa0ok6J9t5rRzQ3Mgr4yMPRDZI6jJ84nh4bJQKBiAp8YjWenRPo6XxYFOuDF9YRuZJgpBonLJiGMDmXv3NLcizgEDqfKW9Oh5dDWXYEszYVUHEz9PmeBTthLqQvN6dDCs8HVLQwDBSQ8QZ/J765ETpc2r97V1NSQSjZsWHWwVQIwc7fC51w0MXgn4M98idBBsDeeJJD3Fpm1ScCgin4T5k5L4imQk72yM7I9tvdAS/Ora3enj+yiSH4sgWUXEut2zOqrDlys3ILyy8wjkBgzpXXS/PED6DB2p6sDApk57ePjYctzm85/V3+swDkLTsfphD/NN0iTOTK24eSvRxEZ5580eNYwSjny5qoDR3qdPVDmCfJXksyN9jr8p1IK3ufLA9kr0fJo70WKOjBPbSRvLXKAaPIVf3kpDbz8z/17drQCw3+UoDsKEG16awBe0JzhZ6LO+JstnyZ0YIED6/MH6D/pMze9mtKRzQ88vXlXL4BE395zz0HeHTKnw0t9sIIW8YmRijphuo93kaXYfwDlh2nIvPPmgF68e8WqFtr3Hzlu2tghySYwOpQEWDsDywfMREE3/IEo0BleGTkd6wjSIj8t+Pfmq/buf68qAUhUnzSupv+gBO2D07GTfchkYF0AVticOU2KOsOBPe9TduVJLD/Uf/7arxwCKBtQM2dhWUMz7RXMIjoMhDXHEyLZpwz1row8U/sgMLPcFHjnyxKdDP4S55NOZBMH8rVX0++B4dMmDB/atxUgYJg5WR+94ZGWpKmkulKWLE8M6Ntr2MjWlkljoxIyps3MiotR8Xygs7JNPp3s0wHlS3yMRe+rMjp2Ot+wZjudH9icGjas18QxyTEjqwYnACTMsnEvaM7kBlnndg9M4lkY/SqxvDCp1/tGTSXj8bVrd7VdcEonZGw/RhSyMUAiy6rJJ42omLqkD4ACbplKygqbfT0EOmvsOa0By2rEbPLVWy9aAvtTW+47nGiBsV9Flo2MzQdAdN6QGcKDAAZOHzH7XQMSVUDAMCPhhczp/ZrS1glF4dDZhCibuHw+ypNQkn6pfvWrzf0Byj9zCc0VZBmsbetBRBeazIRJwND+g981tWzGICDEkhUyqBqB0elUsgpZFoTosd+Y8sGo+u5HekUAyTbO/Cap+qFkKWq/j0WxdyR1qmMzAkCi9NQza+aMSUibx+KF7KxhIQf0NrKXp+9q8nzo0COl22Z9aRyhpA9ZijW/AQWyNwOpc4AZEu2HnTvv2fp1YwpZ4FzIQbJvCssKsfoJlB/mFlmakV+aSyBB9vZNykcNKa1ICpzW4w21u0XXWgZB2aVLSyjcxsCFGJ21kBxxiM5vOU6+OEx973mQLqHTa0+hvI+D0V5tGzYcPtR04PndzTnLbBR6Z1FNDpBNOYJ1xtidxrvMIgem3ToWRJIcziWnux7/AdYlYGZWyGCKic47p+cAVOpEXWIYMOD8Rw+L2J1cShiWjSRCsvn7f6K4B59HyIExjBzKrE81uFsuDDMFqJr9vfWS0p4gx0bng++74k6sqLlq5mE5AFkOILDuU0nAzSwbA5OAiilzV9RJcRxE/gY/9LkHjOJuTBmm3Bg5NTNevOPBuhRglkmifWXF1DPOSQABJ7/dMRU5GJYIucl5MGP9thteSzUfo8Oob2nl8PNmJ1IAASfPExVgFHkxHJHfwYz00eZdqzfVNsSVlX1HTp1WGZUDxG7ku1E5gkCRNDPPVUjOx/IMgiI6r4AnyHvREkdGtu5m7oWqC41BM/G8AwHKwgB3umWpBbI2MlpBcub/+r+vHozlApL9KNrGcZG1QdUpV31ldn+wAmR2l3R0Op4LY2iZrEiJeL9nZbBsVV1I71v+HjAVGqNiVYgfr8JyASONou0hRlmV/T0o49GfV7SzdmpnCAwQGKAODKwjMzMwA8wMzMw6MLOIwZsUrsTA2mcnplCkRYjAyNL5vIJqH/73Tump0Zgb7a0dYLQ3jPbWzslo7cwA3OjQnI7NAWxurXQBbkZ7syxMfc9GxYk4kL1TtTKE1Uui0qn/umeImUHljPljIwArKTHoPX1OJY6NWVBNe4PBc2YPpb1D/zkTE1BaApRWJKF0+vwRmYjGL6jmyrT2jSSC8pPnTexNtka/kRRlQ5F36ox66RNE0LsXGAO/++LOvVsfmoclvvjsM+/p+5NXd+z///Esumfj/rXfLjdzpl+3Zueu9df2NjP6f3/51m2PnvOZ55/7CNOfXPmP5AXP7jqw4eeOw7sf2bLvjctvlZ4rM3p/+YVte7Yu/xpmHYhWFSVx5CCddRYflB6YABGYMek5ZXxlENWrpBdfVvunf1IrSakLSbJsuzL+F868F9S+7ph0uX1danusSZLaLsCiP9RLUltzrH8mqLkrVvu272OWCZraipERHwlSp4a8Hdq0dVkSN2P8K9LaH/zueNDXGbM/Tknrt4SQlprW1odY34SPt+n4Y998KI53zmXCcoXwyiMHpHjbKK4NKWnf28fUph/DdyQd+ufytGL93KoeUGh+5o7DQQ0X0YHRr7wIBewITqeNL0kpHb9vJkbp7dIDI+GKlnAjSxoVDn+i74g3FOulRb0+1ar0V5m6SQ1fSDL4ETV/iL8qnfpp/+T5h4L+Qb9nFDf/fVyfLzaG8BPm1sVavSiquiHo4Cx+o7j1m2V8qDHW/+KZoFdJ8THKq8ilWeIXrYqlA1e7XZoKW4bjVGwLN/LJlNIfAW6WNo6CafVKfYS/BT0CST4qXTS+IdYNQOVy6XPM3ifd5jCzVm3f4DaFY4uJ+Li0sW9VbdBtGAPWKTw5kI7dio2c+lawHGBwwYtSSuFi/qaw99uf/9V3rj2i6/lhrNc9supV0u8psQ8HHZs44B3ptc9+61ffeizE7/+cQuNplNrsOsWf45wmtSylxD55THsXDtwUdBeR+zXSmj6fkRpPIWnVa6TnarKz4gL79iKRQ3M3+l9dp5RuGfm04oiMLetKZ8FqjCnN8LqlooWwVfOV5ZYP/p/0QiUJ+7x0UNQE6g5amtmw9dApdQqXW0TVLNhUsQg2pwhERri1TxaiuMrYcQwnlwaYw1mHYj2wZJXY8GCyt7VU7hlYXY12ACMbqdsLJaPgLR8fFP/rZ3+64bo/33zprOelaywyrpFWNDAIdotQOhZ2MaZF+6dawk4ug5f6D4K9fTBmHJG+gHcUB1RMaD4aELk0el04Ek9GfW9XuHnRavH5f7gpJBIsbuBYHWKO2CaoHAC1VEt7x5JMOKWctFv6ESWUPyj9iaHD4S08VFcTdtrEoNqRluS8RtJPlQ2BtkQU6zzS9TOxjoIooqJ+7TFELo3qv7Y8NBqYt076Vcl94q9fjQHM5sKhPahiMmzCNLYONrOpVk3vIaON2SHdn4DPH431eUaOg414GBNIbcFa1foeqHpB7INVizRt/z6dPSCUXGeWxZGW4iFnz9Y0OTZ+IGn5b770y+VS69l8WSF13Q2NC8+65i2GiN2Npn4lsgOYZjbp6HqW/1Nx7WcmTv/Zr6sY8Z84brj+U/+9X+H4ZZREsloCE6TW7exqCFp91ZeeV+Cd4U0vLWLcV++dOgM2TMTJLBoaioaMjduw3E15WJJiSfphwqpXzRR7U9UVz33XR8NeEvHsRqU2IxbDNnH0vc1Sy87d0o9J/kBtsYIUwt6LGZXSsTpCxVw4tIcnN6hVQRJWO5BnUxfGl16Wgrd/h5FlZbJocGxTE65cYfT52V6137jMcCZftxhg/3U+qYbWzYixbdRvgNIhxDsrMC4/IEltWy+B4S9Iavru+Rv1xnBbmOadVuhzEmET0eavHZP02ln/9dWwBT/27UvPoYrGp+/B6NjgeHEQbFlxjC51mPyZ/77m2k+PBcOoOn2RH9+0ejW7vpxWNTH3Xl9SlkTp777NeEMw/Sv/8/vvXzAKYNiy//rxKTD74mnY/z5eNgA4fMXBeBzBSk/5+X8vG0n/V2wQwbZeWTbP618vw8i67kmsCMjCuu2y0CWYkdkBTOStgdHejC50MhuZjaxdyyn8gsNv7COiy6PI3CMno5vACFiUiAywKBG1ixIJzxBF5h45gLt5BFEiAk8konZRIuGARW6RY4mEAVjk5pGRvfFWk6nAyXln3RFidV3xNvbVUtgFqTc2YnRjc8sDM7NuBMfXEApZMLat2oGpGxlFMIoflxUuycPLr8bks7m7ZzIQwMD3LwHDzLqibMKUautG8PJBD4Uqjti4dhuufOq8MfJp7f24mdGVVnL16nX/VYZ1m8D210Vhllw3XdOERD6f8sXPfnFpbwxs4IDDB032A7Xo6RKsevzgnDk166Tb3em+xifOxwtQiKVXPlyOk8/GjKv+8o+/3Dgec0Y9uPZvfTC7uEHh086Ux966tjRH5sw6FOsJIoFZFmb5FGp+TAGOg3ZfWwOu/ApLAaWOQxR9QnqsMuH4WVdeGkXlf5DuLk+YJxIJA6JEwttZZJTa0rTYi8yJLfIMUWTmUd4Ay0YEKzCSpx84HSIjrz2evUBH6qxiMLRxR4h/SpZla0Pz+8ihkfHH0tvDsBBob4CR565xnxUFNeAs/3IlZuS3SZehv/4P5eMpPf0bu4Ie+filw8vf+6kPTCi/4AdH46affPh9vca+72OX9ofE4o9+YFEZTtUHf/Y/n63+vbRVli5dMnnIzy8bgxnM+8LPf/6Nc8DyBFg6DBUOhYhtN98GTt5r8QBturMOksy/WwpBceqymfVKfem8eimoLX2g7w+CDs2GURuk+/sZix9ok3TLQyEshwlXDAPpP+NxLtsjSY1/GIHlianXhwmFIuAcuuWW1bjRDd4H964dRDSBSYMVS9L2Mz51NKydfUVriCXpef5X4ZH+sGS/9Cm46KCklKS0DjH5e5De3iTdVsYlaWn7601qmJE3mM6cEakgKETU3XPfsxjd0OMFw0PbM1YCw3ni+3uk9cuuurD0t+nw78rJP2mRVnznG2eMWRHC78356JFwdBxTNiqu+90lvzoQdCDd79fw5J+OLzscNg2KnlR4aHzVxfddgpE3+LxUIZCcg/ff+yxO6Aam6Aq4wUnCgOT2616VfgBEj0q3wKT9ij8HzNmulvfjXCutGR39VXHqK8DfpFfbriY8eitwn9YPLXs16PtAhJG3zo+G7SJ0MwU3ap+8Dszplha/27X7XnhndEllaJndCls9kR7dC3Zgs8SxzZ5Ij2zg0F6wGthfOXq8ovsPuqcb+rB5zhtB3+g1ceyM/wubxiVfUFvd18aCk7fpwOQVabq35LD7n7cvx5xuqpJPwc7zh2zbIgu9mqqgrhExRRzZRrIG9uyxNBfBPhEmtsE+LmhD9xC11fSBbQtj6eDKrZsPpLV+MJc2KcSrPpokPy0Sdv7n35/w7iSZW8v6J29fixndNUp/oDlwypUVAxphUEntKDiYRoyApr30mQMbDJXVwIESbPhReJlzUO1Bk42pgtSHJB1rampurm++xY0P7ZKk30RmeRAB0y//KAp0X4WEsf/lRx/bj4G6i/uA9yGDRF+Ce2PJBFhb4unyQXCknv7VsD6ZphrCyhKPk705vJ7h2MYB5mEYtBy4MmjT+xYsOe3MU84fTQQzbj+i0HIa3lXmBmd8+2IjdrqpkLm3bXzpQQAPdF/nI0HxvcsTyePnXkyfKDUW9pNQ1SzYBL1bYTtRGBYTr4KSD8I+8whKyo6mORPWHV0mrayg437AhbXSr7AuioAz7/twkhDRPSUc2PbmC28YGIjua1Z9Pjx1L+k2jl5dPqjXriRM33mIgf3gdShtdkYePsbQmOisrfZN4mhPFTtGxwuGvVb+0bY4Olp/8pE4/n4fmDoR73f5o9Oh5LWQ/ireRSTP+meziN3ojhIObYdW/GenABPd2/l23BbdRUnsYZ/3T5Q0uOuUz2x+cEeLWrdCU2Wwr5188Of1lQn/8vmlQKjtxcp5ofL7J/cjpPU60YNqix/8zm+2r6zhCmn7j5fd2axNQ7ts/t+ONynt5L8kc+DY/nV3vrELMFOgezuL9uGbtlobMO4onPzas+8zXzr3nR2Q3Ilt1kn0vWTUC79lATYh9buLp/K68+8RM+k9kwemn8wqOL1WmZcxbaUyNn4Sp2sHHdhx7k9Dmq6VdUYSbgC1T//lfePLATej+xsfe/7Jpz6OgTHt9n+/sIxht+xtaXzju9/81zM398Y561+HWhpXnM05y5uPPfU+PvHigyfjnPty3cFXv9L7S/9+bAbO/Dt2HG/e+/Bn+0H1z16tP779jvdj1jWWvKf+mrcUukIYQpaFyQCaD23bvvaxJIC7UUiN7E+aNWsAHRqJKXNm9sLpP2dmCY4BGL1nTKukQ4NRM+eOA3ComDa7BowuNqo2SFIXxBHpI1V0sumdbfX7al9dlxJgbhRWI2sjSwOMzAZgdGgAZpYBJ6MbmNHe6OoQMedAOuROWOv1d6enDK1KlpWGdEuq9cjextKjb++IyWgUfnO3DJnNzQBzI1szM7I1c6NDcyMfnZ8qzpVkPP+HR2hviSRKx4EODRPiRNGs4kWF3ARnx5/+1mgmQyKjWTshTjCd2YdD6JxCRPNT928jisloGcSJasTV6pwM/vPgNlziBNmSz9BJIb19UQKME2dn8YLYspCcrVcMAjdOpI2zKr0jOfWPjQXnBNu8/CxkgIJz7KHrtuLOCbeHsbPaBYeVt63HnBPz9/aLJfSf/321DQuckDtli0n4y3e8cBwXJ+oK48atWtb/EC5x4m4MHQJunNgbuHFCDlZQOCD0LQAAUI4AnQEqBAG6AD4xFolDIiEhFMuNkCADBKbvx8ewAZkW4MM8sfqH5CezvUv5b9yP65/0f790GlM/2b7Vfg18U/Mf89/Zf3g/vX0M9E/5u/yXuBfw/+Jf2H+gf33/s/2//////6oP1V94H9I9AX8p/qv/b/x37//MV/nf9V7LvQA/qn+M/6/ta/9D2F/2k9gD9jvVd/1X/k/1/7//Qz+yn/v/0P7//QN/LP6//3Pz//830AegB/2fY0/gH74dyB/SPwy/Ub5aeAn0v8R/53/0/Xf8O+W/rX90/Xz+zf9n/X/B7+1+Ynzj9r/xX5k+pf7B/cf7b+1/97/bj5U/3P9p8g/w39k/3vqBfhn8d/sv9x/a//A/t17gP7t39ecf4//hf332C/Vn5f/ef73+3f97/cT2Gf5H+fewP1Y/w35hf4/7Af5L/Ov7x/cP2u/tf/59zn/M/2LyWu9/8z/mPgB/i/81/v39z/xX+8/v3//+0/+O/2H+S/0H/U/xP//98X5H/a/9Z/k/3C/w3///+/6B/xL+Uf3b+yf43/gf3z//f+PyL/q77Dv6X/ed+///ea788iUB49J4HIbBaNyxBn//FxTRndwZcHKQQnbqBgoiIicNcIOxZu3s+GiH8K48B06BEnzy//m+dJiX3x6MyeeWQTthLO3CjVIBvdVd8Y7QxnFhJpHq/PJN+vETp/+ylHKAaH+Yuu/3JLMeGnrV7///jezbc/Fb5rcKIU4ilqlfURQ1B8IsxR42OuDqR40fEIg3jPXMM3vVSdDz3canP/35wrMSlC8K5h+RJNhf/mOoEqpI7Gfo15JS5Wo13Xo2yhZWQrjwHnH+EqaFNX+kY2dl6sFaCIlJ9pOHDvq/vsxx+SEfCSRqKUDCpBixEUDx7S2djyvldex3oh/CWA4q0MSyeGvMlwKgz9CwykSPJFVKs86NJcZ7Q0e5+M2sDXuY2A+KIfwraiYHae0c/9mTyS8w8MCG6MTDQZt73GnIxNkuf468mSNEfDsWSqF3mBYmFMycQBJ4pYLbxgjhDmR5agJe8Q/eCKhq2fvAUPMKIko2LnMJ4JknE73GGUQrXog4IWL7UklxBpoLFF6CxDFeIF/Ty1rwgHHv7V4j3L1LPU/0CidN722TFCELJUGx/TUCUbyIb1fV/G8wndxvmu4PgpOQPaZ64AjgTDJ15xaYL9Z8Mj8gcYeiflHdpEXGHgIf89xNVjUAIu12b2zmxANmrX8ocBAAEO+uB7XboFfj40gWN3iiN2Vgv/cRSzTNV1+KYPeiQWqBDv2B9ulIneccmbjTOX9v//5YbSfixYYBNDC1is2nT40FMldXPoeFm8AHjRCPs1yDm1wCSWbG94tryWAaJ2g8Oy+9s4BWTDavEmXaFLv9nigRd9EYKkE/QTSf8IB0iQCai0XW6Dkm/1908AAjV4Xt5X2vNYMs2YyHza6l/gPf0MxjVqxU8beucTe8K0QyEeu0RX7Gfh/HJRIkqBj3r31KTOdbV145f/W0zBUO+ZmSh+6CEAxzj+iLAAD+9pGhyF0bvdK/iGpvBsi99F3fSHLnybsTdOuIArBTtxdK1Nr2uCP2zyTBOrfxgk9ic7kqy895K/Ci498re6NxJCkbDuYJSmrEJlnkvnxfiuO/8f5hj1380voYZFc4E3vbq5e7jj9X1vS14t+JbJJjj5UB+vQyQdVbY2EXJ72V8YxNyNLOJJZpaJWcYcY/TG+S5qgm9fMTDG5NoWSAbrjaBFqahl1fhEebop82cAnpFe4mqE8ocQRO2SktEtpIhpU/2RZQZoygUrKIadiaS6OaE82YoY7UubDjZcpUR0nYyvQI5uLWUDrTZBcInqCvBE20kd3OJGcSEophTlJVbVIXAHVHm6XTQk+jyIuJl+O0mGc8JRaSUF2p8Xn3b9/r4RJdEugAJGMGrnAVbTNHx9gs310OaQIds3QhSIg2ABEo7dkUjQPWzQnv/ehiE8UkPf4XUBex28+dmAqJlt8K5kyn+ErqZUTBwjbdHfrYGJBgvBPJ9FbykaWAfYQn/LQvxLs17ZJncJThif43WP+XOigUAuFWgzH7j5SlUACLebpdJ7N7D5K5WQyqLLTn0dMKHh7DjfNmcuZQSHd/M41zlHdKuZ+0UtEBDFHy8/kUtx/5Gj/jovh61qgCr8cdAPQQJbHbiCxm+tRNQctV4kTcBKMvDZsw+rEt2y8fSnZMLOkXboqhK5edXhBwGNeIS7LqiweOPx/6peT6dEMN76osJ22P8Tec7yw5DyTwg2MSVnv8iDKRSA/6RsckpocVwhoNEj/El5Ydf4N1z1JH0VfnrVGvFRIm+oIBjKQtruTnFH6JO+5K7n0zyPamJoLEd3YrqXZ4AFxmTJc6y9iECMQj6TGzalyRf7Nz9pESaU7qivCl2TFCY+Q3+Zj1QzV+J14xYBwMkV9EwS1MuoxpmwoPKlEKA3sJv0XchDAjGj/GZGusm3BQWQGWWEt2R9tnFpaHokevGdMw58dx25he6pDDS95SGmwZP3vex9U0fMgDo++xSuE84n0lJFs0NVqXumOxms1OBlCH/Oiwvl6P8E6UBK5GPNcYB8IFB5alYwslbs5h+jeTE13rZS+wvkeGVWf8+1lVpQW5Gb7ypkbafHZ9gk7raBk54rvYbzTmWk7OlQzHLiRbw3Novv7FJEyxMbe8EzMWkPIRQFaTWM8UYYDFsySJ4QOnqyeNnOUPVzaHEwv73ORvQLE7cyI5EHA+OpqP+4r5+yPXMgEb/3OtRXycOpnKz/9WfuWF6Oqa9jyr4dUjImktCx9IZyGDgp2YGt5cbsGuu+I8Bq5KxrXpVYUQ5T9rfM0soSsYOj0aVNYHnl2Ntdzhj+cGpQtm8mqDby8KHp5DxGEQTAOb5/1MVP4lLVjuVvpcpM00ZA5UgGhZOgpRGM2ZpnWloKDJT07IUG4hMmVuRStgZU11g49IACmfIC+9lX6ueG+ulshmrLkTL46Zfk4lQiobBjiUgjeHdrGec/Kf7uJNqtjHN0EPR9ApZqjxvSZGhw+ow/vbBIajpyOuqOydAgMEJ6flHaGM88eWaxd6XQMJnjDFKiP3sG5pMnECWG/ZDXcEyQSsiK3Y4dihDLvli0wa//tRWrJsFXKw/C//fFIOJJLzD6AJAIrrTnox2USbMOGdTlgcOs4BEkQlHQsQ8n+CYi5uYO8v20qqH/tLTWhIC6X6VFrjK9B57VPnZUhoOf/7yJd9fYMcSEIE1pgIMbkZoPPdAI+nFEg8Rd1Ie1TuQgdr2CUW+UOADYdRumzrNsTenQjoBfqkJYs9wjLuLnvuI+/jPCp9cDbJXMiD908oA6JV8XbmFCCB1gGhEwUtQJ52LLWQRfk9t0sTmEp2pIIZuWVJJMrD+gA0PCIpdm5vRB5Xz37/8T/yUwx9NGS8E6FhS0oe07PZTppSw/ax7S9OvwNlBM3DetDufZARcjFMOY0yCQF6cmNaYvPW9qskfb6Vof1vEiC2+Fih1PrWTk98v5PeQdLQOiR37fhLBya5UQsaBcbdN5pjFRL3ZZ8YLpg/LP2i6+BfiryCKeDqMDc9DjDR5uOqgXJKgnzEwEsBuuw68Xw4s82JweA5xxi/U/Mr0lFhZPzlGnuqtyIEM0y+mjgcmrE8Cb2UkhJQqMNEc0gHWLJbsUs+hecMm18V5PaqKunpQ+2QHE1FvlLVdMZyA4OJkjx0K0vjSx2gyh5mn76/AhOHXpD2Apai6lfQVFAhECA0k+OyZaCMTq+mjJgPZuvOchU28Ieayx8X1LfLxsmvxPz4Xb7GHmYHyGs04QX8/JsjtRmOKq7Gx7yBkgCHQ8MVfVGlxn85PnkNp91eZ4URTSxFkwTfzONsmM+BpxhNpBMKyfBVLHWwnREpUSTDdbWemFuHFBw35ghtw7jVQnqIRugrT9jCxNQmGkWt/zAWB9tnW9xDqUqW3cwlLS1/P9PK95aQoHjEBXFgciidJ5//Z2zV2dgrm7TlAhoRpfG+ZieKSxP1F03Hd5eVCtyxdI26MpoiqDOdxyvvOM7o29UfCJNaNrl0VPhOY3GJXQUW3CzUOfyVxLcwdbOE9xgWj4XMwTlnzTEsa5S5J1B5qcza2sN8dwMgo8zFeQyeBgOEl4Ew2yns05z3uL61sU5vncFEEnT7ATyu3dM9HSj0zLXeqkYKoqdaIhrXxlCfoeW8UooOrxF+Azq7a7p2D1ZxLXhYrPCdnGxI+EAvEeJy1Np95X/l4hHznVXugbuV2j0ggjsWNjJW4mTcdg/hHjKbSH8dl5q2zs8LLcRzn6MXiLgr2wqPZjjqk29rg5s3EQp9cVukW5TpLFAapm+1fsWUZVHJEgCctlYkg1jqR0YFwYrfsfLaRgsO4Q5Bt59difIQTGaTVvyyUD7ukeBbAOAAf5vgQ14c5qEsfGr2/jEU3mXjC9OExMviopMQPL8yZILrsD6k+z/4aQ/SB26lxH30hgkf5yCdM94XMODKA5N4axFNKdehY+gA1LVOTFXwBfAOtIoiyGF69MrKWD4wxKuRJTDo8gguHgYE+HHcBAS2n/Pp6i+Xkfvkpe9rG34VGys/BdfTxG6u0CmRrTjPsXsIiMb3/ClT6W72Cq8w8s0Kk26ZjHKsEFpDSlLRR+IG1TqEDd31nbZfh1yDQWE0zdhgnbSTAHxVAXWwZjVKS0xBErr9C3ziDFJ2Ny03w33FlvYe5FI3OtrUD4d4gpUKgFpICr2zF4TjiVBUun9mZwNhF/0/oJleUGlvp2uDvsiajNud8bfRUXdLQ5eOzFn6D5YCNZSg09EvHg8NYKLd+cRc3/f5Jb78GedJvjMWQlFg5t8UzRHE66Nhr0pkmQIw9OcG5XSUWvwRvmD6bUvwCmd7w3YfdTI8r5pODn0q0lIhRBvxzku8vRrznzW+Owv+xKeHCHhLk12A9PwedzYVhYmHUEiYN6bZxOsr6/tbjucUYyjhbg/7y8IiL6vKUyinDBqV7hQWdJB18J076A/F0lvo6+mvbhl/2U6mNCQYK1iz39k1ktwpZGOWRJOWHi8mscCjeIUcGbYGFpVMm2iRSF4ugdtYCeVfdCIA4YsAYEYAlZUNXc+kIvdRqoyOq+79OBU7a54ERumr2UwLmmGc47L+A+qdiXcd++x+g/xllqfuRmEHK1Bd/01QTko6d0qmRBrIKcvURE6cVRfqjx5t6efqKX/DKbd15mgU/IpNiPjTPhkD8B7hKN2HuASed4wzYY+W/fv2Teu38Sddpfibe6vQmOzRgr8s54IwC8aJuQWWWbSTQmOMGiZLXpY3L5+lKR4wVB3VAn/LHUaVKaar18JkAMyPDx97giGBtYv045a3xdJcYS/BLm9fL3vPeIeh1y3K0Nbcb1429Di5EeNChgHqiEfw1NMUvWhO1rVdT4f+5ktPBqvhAMxAB43+DvxnA4w/Nicvbv+tSs9cRKfmVP0Wi3UXLr9PZaF9Uvd+9mV4LkVFudzdvr3KrtADL7yDcRkl2DX/jXZbb8kiPbXIdCkv18yAmRV/UGJ8SSdkBPJwH3WkJ4oVpXUrBGUrUUvnHD3xBzhyfpPo3iaH3JjdT5PDLlFSFN3JLTo3qFBRfxwrELMQQZZk1S7/cT8oDuyl1M7wDZge1sbf572cKl05mfHNDwVtlzTYEpfleR/EiFCGlY0xdfnzO1sczKHY8j8bvnG2pcb35ZenJ49jRfL5nBsAZaD10eIrsWPG5DZXXTz9U+CnQfAC2t2D9TVNgUNhfVjWJsJCdIg0aodk1NpIcwEoCJaSBIr2t1rXpuT8XQU3w+mECJY+N3rSYWESx9SXvu3PsAOaFsUoUpBmUSX6lBV0z6zN/GKERKTibr10ehnbJVg3gXAwiJWQndRIr7SHlY0AiZPpLBMLZkPzf84xbrg3NdQoUYHlPcp8IGp0SwteJ25HovjTBbu4kdD9rDp4BXPOvndhNKaNUxcI/WjYcQXOUwS3IAWiLgto8gepgTHGIna9fKu5I2seuKPXQSoLNdWx5bqu1JX6HPKpnKdWWedhik1bvfD7cI9AMSU/mLEYbT8Kzlys9SAMWwkHttm2ABFigALv430eWk/D1OXeib8xYfy2hWRyNnkmx23yP3I8B//F+mt3M5i7Qgif9GgewnuVm+cRSLt/E6nSu1QEO4kpTaEeYuWsJemsNOBi1wWVXYfufU7chs/uzFBp06EN7zaLh1T/hKQ67dmOTp4NzqGfpNNql/ikljPXdXe6WTrJzLJmumXgyGn9wZtjb4l7bBnBMyoRKve9/oL0MtHAdNiOX6SeyNwRrcAvnytSJ04CCDGv+gPgQ0OJA1NrccOoL/li6xx69FhhkNB1uaIkptjvgwzSfOIsByemcz6TSv106a6gh+4f1MG0QCJ4hGPY32CpFTytmxcWI6n/UJ7OvlSiTZkEPfXYYbBJJhS13w52OetLEyrUVLNgsHDD8yLajNQFxD22kyS4rg0OaYcQ+T9v8omKQFR4mzuBhgY5VSIPHiPM8yFChTmZFF9zY9Tzxp8UNFUc2rlTXSx44CgopssmzisKuyo8DnprmcDax6ZYoOPacwxgojfx2uOioxKWRlYaWqepzdElLpBBpqISTspkNO+IWunnGruUgHiao68vEJam/fS2Jy5n9VVzoSytZzElKJ/7XzDdEyY0ngFdtsLNUq7l9SIvjcElKfkp8w7UnOtxmEV1f+7xkEcbsiCraE86UoM2r/2cazuT3kDMKOj2Wrgwb+7UNjp/xToqhK5S4A6aYHTNb+dkiytcm+nzBzfViXY+tIcB9wix6mDUOPcE0gGUCkj8hNYOaIbwAZc6yQV+KztM0PvMOjyXfj/ywCAOpOyME9OH/PlSB4wtpVAyin843auCgWsM+ACEFJGV6cSFvdk8EyFX61ZftQOQSLrBrofv+9McsiYAkKi3tuMg+19US21XASfqzcJYQJN+vhpvojhJJoe9l4eYGmfeWPrkfl+4UEFItcrTIr62tTl+PJu8Fjqyy3ojS9midARlpfT71xbHG59Zck+NgHFS628M1bMLXrm+DeH1jNEBjKDeAyHZ4ufeF/oXVWiaKVRi9wnkt9zDwRJwsq+dxphgC4veurlI2cyhnE/QRUwZQ9kFLlNydCeGanGVd+fkjtYWySj7k0ab1y6RQxDzSJOuRTeIC21fYaeN8fhLggjyEQyGdWw5vXvDVKktCj9EV1H24b/IlUVlBUnOo/k0SRGYYjnB9QJy2AoOww9CVTF5Li46LDHSS76s2u46MTm0elBvh3MPkGQdPKRFKy/dxg4Zof0RescLTHG19KX1nrH1yPBqoQ2Bn6QwSrk1p7pCDJOmS47DgrflArV2rLo/gE7P6OW/efWJHIPSLsd5S6MiOWYqzcNR0G3TxC1ioo5yi7CgMLJ4dMnJ8SjfEXhMaqsxcRiGbUXyAm4M/1TbAM77s2mhFytjz915e4NKYWbd8LMKbSPrwTZyR8mXMgP/m4Y1nv+9G5Q9Qlkm4OQazHlv5If7KeqDhLHq7lLxX5dAjuQur8Jw7AI3iI7PRWwhbbQdNdSjavp/iPpLTUs5u7Y+0ekKzNhw3bNj+b2fa6UZ64zQr0lpPfEfStfUb9dsktdVCAmzeNEP/zmA3Z5zGBu1XtZ5oLK1IBJYL9TxfpTkU4LECBcPDXc+z7ygY/ktbSEOND3Nlc7AUa/zGTNzGcKJhqYBqph/0fPVoSL27AjquiWcA24rOnpc04LYna1zrLF/EH5b34ScViWXv7r7RDzUZ6xRD9MUguklDzcgf4/Rl+m8rpyFB2s9SZC4StP5FI9UwfQEdWatoVwezINIXKiW3NheqQrTIHl8+mRJ+nR3/xrhHAT0eu86v6DRcNjb+tAQ1ZWibJEzXVeaVjp3xJwNyjKPT16xfTlqsayGjPfggCJ6JzvbD3wgbhUIj1TrcvQ7aS1PUJ+6fJ7N+h/MkizumZw4810KiD+A76gD8NVr4mTxLpzkEmLkCq/TFeYQtE0Hmy8ZLg8yHioKpwimDgswtshc4buL9NwoF3NLcqT1LeyKXIhdAZlYQzNs/hCR/RldEJ+yqfFEeBaTQLiBM+COR0/QWBSjuz6eYvRIfOkC7CgZkYwEH+Ey/O47uJU50ch5YBQgvALh7GmZpiFaLDkAuaLOsl0tiPnlMuJtRHT6tMenpXXwwLoyH7IdTjAHkeL9DqPW5Ua7oD8TI7fzUbSQEJ9wrZFBPJu1NFy2cFk+VPSpW5/wqtFaGxYU22QRiCBObEhabhnOb3qbuOLALUfse6EA+XlUq57817ni0ayGowfxHhgwbCAVF6XywZs0Yvwq+xmfBVvS6BnNbMlgBfImh8WgZDlI0yO0Sx2MFw0eDU1ki5q4bkyL659OLJu4XztbOHZoYgOIPZJB+Ame3HSkVfJYkkQnlfuhdPuo+bmpIid2Y4rOI5kejOgPzgEIueE1FikqlsB1sTKjL2in/WY+eoNdo8Xp3f2XCUK3DMb8ifIV9UNkOBq9VvnHN1JzLF/R2TlICV+foD40VoYyI0XN7vHPCUpRWf51FvujXExoi6GrkDg1uNHjBkp/vQ/dYTSEf2GNO987XBcHTvvLHvnWSW2BLF0wu4zfPxpZN+ImWe5fSrnPcMBIiRLXHmJQ6qpSNUWcZ1kiLRNnKIEz9iNNzlxrZxzuYSe4XW/p++mHrxgXjLJmrP6UyPc3ISahYovdieacnhS7uSdVJQo+W9GCaJFDOpkwqISHVJJbDWcgRqhBAYuuqIMQb6ZEGoZVKrWZbz1HnTO7IFtoNaML2BCWTAIloINv2BKuRDZPmqP058mo///r7rER/NYNrj9Px7V4gow0evLkG8k5yMohvA+z2IGmpQf65k6OvH710OHYFKFzkxnBZjkCvByCjMDgyCQ1pgqBYryGXsqy+7PVmUmj78ID2IpFu8sVYdAhkkda5w5sCv2RhzEB1mMDxGb5ErChr0BlDEWM3AroEVzu5u7bN6TmmuDJWlTvyyYhX/V6rT6cKlT4RMM6H9m0i6hQuKcFBDtL6TMBrItvQ10ZCshiX90JCo12+1/FlYrt0icfRh48FYW15P6o038LaJdjIXkc1eq9g2fOO5NxWdDAF6OGUUodSzTU3h0kNFlBAjfr7Zadj7HgdHIwo0GYLnzocCq+NyxOJnn+yTY+a5kjF8uO2zTRZmKOXX9Msz/+fBCcLOw1aHpNGGe8dlUqu4F5HOp1/CaAZDARXelcsI8nxaATDH4MHK/U2E16BHHdaFzbfHVk1NjULiWUGAXwcbFEt5FTzmZLg9b8Vxx0RE2nc7bssPh2LqFfft0INHtzu35GU7Nt/DTQKuw+pLmDV8cdkl9NRKxtFoZZJsbinZMrvavxQazAq5DXiQWyAiJOj7Q+ROgX6wxBnOLCJBetVgEkP6UUsM5Qv1jo9kx1dUxbe+R1BnK0D0zqV9X1n9lULPSysHpFdnQuGKO2Mc6air+s7lTdF5IXOwufRu1H3d2LmaqHpCbMM5pcrH84T+nxDggPoF/JpFy8UmWLMMuXL178UhasXkRXMDcvs2HAsK1WBEX1ofrxnLIgT4oHQiwZ7gcEspS4bgJf5l8guLdLb0wX3+STwBymMe+AX1BRKalSWuvDAK2YhJ5+n3EVtxqIX//Q/+igwdQSAWDEFUL1j/KaFVL7Ul165jtd750UwASsaLcK8diCLgDhQge0IuBjLG8zgkBPBpc5FDwfN7AnhOWSJVCK7dtlyritxQ8HVyXjf0L4u/Tr2nSECXDT2QQ1aef2+Ihz/DgdL8e6FXbfb7mMtm+dbInonDjfu5/ZtSC6Dwo5K9422xancCgcjjURgnhNGKL2yYiheFiD3n/wfGKj0aErYlrwwM+Evf4LFBE0mXMmHGGDpXJsD3nLyfH88g2o2n7DqYAmfdo0Rm9uJpxLLdTAhE+Kzigiy4TTGFAxs/1nytbssmVbgkexa+aqJalyMkcwsiveKrumsJBwFwolSz749RAOtB4QQI7aERnEKYdgvcre2NFgJjpFiu9kYRKSsB7z9QjDIlRfpZ7ayuYDvTwdLpNJJwbNykYrnvG3l9D/VN78wJ8gNjgK8djkuD/kudNwDkefQdNwHXdK7E1/LtVukxpZefWuqmKSoPFrZegYB2AZT234vV2jQ0of11drvWMcC959vS+aq4RhTf+HkeemWO0zcIGBRmotvBlKi4OqsMeahnSyU73HAfNwV8AA2DOoPZI9UdxrqNIeEIMyLEQDwlz0vzirWjAblRiIuY5X3aipeb5De59SgOGTv53QINLVWN7eN6Fy4u3FI56O3YMxifvihTxpD/SfD85PnbnuXiB/lPhmDQOb57lu5w0YPM3WN/iUUWyXmVUBmtDl72KyytZ8MxekL9aW/72mrzmhC6tZ07hiX6A0dszINDSs5IfN2Iq0KOXim9MFuNDKV8yGaA15BZiS//VY676UdJ64DiazXDxg4OKw3N/MLO41o3RfOCg1NONX/F8+H3mssUM6tzSRWsh6g6WoucqYx4AFcLQGKHpjAXpw59GyGP0ZTVVIOlwCAjHK3skLllkCur1hzC91DXpbAmWPLPS4EgELSRA1f3c4t5McswF09nn4+F0xNTKuBFQljQdyoLyB+vzUvPt+zbIN0eC78CyO34kbuRbStv19+dDRPdCJjcKWb/ZDe/DuM/Po4V3wt+mGBU2f39A+XI9v7tihOX9vdgW70ZRzPO13ecYMso/XmHbgXWwF0vddd7xeGgg1vOd+I38RawCZ79t+ZG59Ffs/iv61kR0WFdCqnG7YitHuqe0hw5pjWYYNmL9Zk5ZiYlKtvLw/mzSy6po7pLClslT6Eshvo6DXSsmz35MKsTA3HqBdWb66jNSA4BeOI4hv1WIxCNHA0/A9IMNysI9LuUtMt3ZGU8g+t4E2WOnHsB1tabaRVLBZSH9/QQ6QyczxRtEaQQqzW+9aAHlpQczrXBNlSFf2yeNdcvrro7Yqs5FDaZX7MMQeZu5D3wGVVPK04SU3LKt6ZxqOkYb2Jm1EsDtxYSnEk6RA6K/a5TfP8wNOl8zph/dIaZKWoRaxITGmAoBH7v74f63s2JlOoa7OlvSdtW7Vvn1UBk7l/NrEyve5jeX0knfQUCr/5kNHjq/BqZJZaNXxF4bSeul2qkC9GrCDgNxpgCK376HbL+kDmEtfNHo5LBxAyGWzWiVGnAi+dn83+KPITYomea84mkGX5P4KiijjofhiIF4y3JRWsjcBpBgQ0gYqd/xwjr2K5c6daNLrTaiesr3Zba/UoHu61uMGCe+VwWTijxmgvAa5SaDlNQzt/pHudBb/vCKFQEuRgaKLDpIp0slGz9F61UkVzEGDXomaH5EW/qXQQWL9gFIlUwBfNASfZQUuerrtV0E62EVNNKWqAv7ABv5HTe/UIka3DdmmrJfbojuneFWJC/rlNcF7UGLVnfhnpbwQyAytBZEaQFOS/FKH1t7OfSMklLLblZ+i9A7tIoT+9jqR74fgoMLsYQzKv1wYFk2lxcvLkEcI/CI5GSSx/i6gQ1+m6+nOXRbNgrSd5Ez5YbopqugZJT9Tnn2HnIcNMzomrTJn77/av6YgrRErGkouWQnAd8yDmXbDvNWXJfo7MmJqLrZI6pVLntcjdbvSUiwEf3oUBqOTHMmFrtZPh+FaX1mjNBfVwouFWup1DcMGhTHIphZhxORkMuyooXU3yHt/oZT7Mbj6RFJdaotTEcB14TluuG3rU9OMZgHEQI+mWXtNFXcswZgFABv6V9QCT9u3tSxLvG14LG9zQzl1kLUaJXZNxr2IPqEJxBkJ7qjgtW3jozR95Ws9oqk7mORau9mT8l4xAvgjm8arqYU7+PY8hqaadoPjezvm6cozRUcuS09vGYuk1tePAnZUCYD9ANKwLAFXMrfQRpVGPdGF0+NUjP9dq9TwN0hTvm9t7K60JE7tlONp2MoVnPFbHCdsp8rPUB02c6r6yHCFVAn+7GwtQ39gpbwrAcivMrP/94uE4leECSisdGBGlkrXYMmyuG7r+hjm2co027xkmXQ4J7MwURuebli0eNOAABnLhl7X6xka0iGi689z9m7uyIXJ/PT7hkNYnjM5KpogDfeeG0cyx53dSkJCvshv2yWtcb1pOx4kv+C+b0pG8aAbtbXYc9PZrDalWQQDr9ERf8wTtclR6gpEscu1gppj/nb+H1G27xnidkRbwHlYApx7O+/yYGL1jrhC1A5DnSayD1Ul1RrYFSpGsYcic6SgNOpF9hk8zeR5Fh139l0bJgZ2bULwdcHAmLDToYWrw+sqfRYDUB33Kq7VuM4meGl1A5D4KJapfQuV0xaw+psgIrwiVHc0P9lO5JmHVc1dVKX/9S5/t20onUAJs6JZgOdMbgOw0jS+2rTC+DHL9keoI0IbRmN2MICW7GJHxda2r1qfxRquBOGSnCtUgL3HtfrIGA6VICQCCUoEpsLIM1iENRG4/ITZ4aZIedHfMQSBTIVTsmrr9RSoTiG506sm+rMld7MXGd1G/uTINvYq+nMCGGHbU4K7uYpc1trW5U/GHf6RrvvVrss6Q2QPydsfyPQAAQXUa0QvrfaB1lRBccSE8dKQZzGc69tRPnIInAwxmAeH0fW8XpXIeFQ2mBTAN9BNKMMlOMYUHsVVlzPM/FSI/3Cw5qi73VMEAUxPmufS4Lzf0+9eXql6+2GAs9i/dqf/iTGjnluWTTlf7DNt5HMSigEXW75bTVUbB8FY5VAAjAp+113iAr8T8P9eee305qvkk/uLuExwNZPQzALh7/lnXu2u+2gMEuL3un1WSD272cE/maagwxVHw8SoFWGaBaW6HU2vjfcjpOFVE0cswXzJWN9ZTJyaY25b9MG4bE/OjMbr4/fb5ITjkIA/29qgYt+jEOUfXdCJCQuWVLV1pHVCUT4ASbamXoPCM8uNXMH2EeFzKN/lKQnN/xn2Ac1OnS1ADme6xOFWyde631jDObyvSm+fndWSSdDtLfmoP+XmR5DO5mgNuCX8UYwrw0FV6uiyj89SMfKLGfYbKGioVZFTXhkSGF3TRao5QFb3XMNecrYF9V0oS1MRELjmuqQSGrJJ4i1Zeqs4QDnBtkHmbA9j51Fb9Yzo21ID2Ix+VmBoFJA/kTu8FRlR5NhrBjNqisQy56tATTNKGd/JJd5Hx723SUqkyY4nMtAyvjaV7nPeXryZUrMkwWIXnx+NFZMzCodbCdejHfxLH0VYTUGuuWcYND5EDrt4br8d8lucv1PSCcAnt8N7NsumKBYeLJQUt1r3cxNr40SzVl0figHQmIrQ3LVDK/K+x83e/KFxeDoJnr8XGLux877aMsqi63/j+IL4qYdQjsZ3ulZZMH3ScBcxKq2wb5oLYfTPYAgCNcRBLCo2lmkdlMLc8qURu92SxZYCMcOm4biqeoqaR7nfqNm/N1Gy3Ol+RdSncL/AcL9hZqBmFuNcR7Ms/dX3uC7GtiBHj4iu6SVK/bmRtLweVeoC/X3VG5BXwNNjfN55Pwg8yRj7TWYjcubAa1aDWeiBPlL7syInPHiodCtuOd2DpJhg4NF/IJte/WAkxnhIG0CKUIVNzp6/01a+rXNVfhirqw1zia0Zf9Nh2qnuZMh75l9zZkjiwn6JLahWbZwdqRAi1FKIiMqEXAgN8g3C3C039rt1yrX2cGjckn8BTnOnSlZlU8xkjEEDpjWYQN0jaDxtUtlyBeBdfaypCPgjgbL6d8uEk8mg9T3XWUajFPdZ+zCY0RAFoSUmGD7vuSGnP7YzXJtNv+zRXUeepCEaOOOcUHk2v+BKv2NzmTd/I1dgL6YC+6VLjq+XLRrh0vaepvavxkVw9dLV0jLfWfynElJfhtmngP5RC71rMqid6EYJMMrTDdIDI9SCbWhRf1CBdrjB8agMwYu8K6Ju0i5+DWutROeqizWIMX9uidJs3ELq4CoL+by2F43NdtOOtOlqkb7uTXKDPLYgV1Ki2oUUTFmHdzoPUygkYtc+CZeaPgn6Elij41D8ywdy6loYF5uFvwVIVr0QrPg+0z0LtjuMmYHTD0dtk3kr3qvRi44cVS2iBrDBfyvFFEKVTCbv29l37Yv62N2H+UraR4L1vCt6vFhGbOuSXrAnqydkFZONbOtHZrsnpt03kGr3Ur+faJSVNdnS36buV7g+r5UuBYfR+u8SZmKpMVYryhXtsLyUYtuyybqOn15aEkMmfR8BTtGVmPu++6kQdWbQ/67W0yOywaWeE/vJbpb5VUla1EJcE7vdUE15xrTW0ZKNjP8Lu1fLCzJporCXskHFLC7E7Re7o9vfuKXIxDphRWcxJpEoaZ2Hg5vQkSkjO595i7AGf+v1Tex+Ui0nD4DZW1rE25z/M8sCjm52fOtVjSJwP94zEwEbHdS/be2fqJW1qtgJ+lvooDJzaX6Poz1GWsGjCfnwg+jUN8JXhj0OezcuvYL2yXQGXP/xywY4AbWvEeecz08H6om8g+PPc7Dhydg30JEeaWwi1zdggT3eWdzRidwt5FIwBBk8k/Rk7RwKomoE8NhiqKrOIs+kS+YHlE1fFSmWyklOb3VQm51igaq3jL6iQxy1eN83166icgsmA4iOhwh3ZR8R6H84JFnFRnudTwRrBLO17csTq7jaPudELkAI2Nt9JjJCEHxwcT+QZJQDHDwbmxbOJQ1Ohlqo78Z3sVr7Vp080pR9bQceCQbWMn8JwoAWbcCCOGOOiS4OM/gLrUe7sJNWTEIGnwF9Qfy6jWXWT4s0yApGHT0FWVOL7U93KCW1/2TgJ2GTXDhU3HJM7kseUckrezsNYMvSK26bF15f4VapEHBPYP3ZkKj0tGjvS/IVsqTR+v0Yl9aApbjtKGDK8Na12FS7+/2W/a/Ad88Ouq3sNTSVa8xYudVj0URRYENgfRkqLV89XlUcQECiMhnQT5QhC+A4D2Mw6/c/XsV58uuI8wIH0ftZIAbLMD7Vhbzmo5pasQfh3ptnDDWmh7V7hXEtmaixfM+YfLQZE2a1o/J9R//A9sgOs+qkF4Op/Xw6Jl49wuvcGxy7MqBtOdaubxa8Ml85sVoZlKH1E3OyJdQOoDIRDqz4e9WDcZkDiLucdcd0XpHTET62A3S/eYr72iZXzHdlLmP2pGCjgired1wJiPZyM2zF7S0wivRTVjwEFqQ+U8F2lo8aNxnPvBGtzegTNGPGSjJ3XNYKicZRFRbkEGvIYrfcAq/3hfCA3YmGvlaIuuepqM13Zn/6yb6ozsgT/LScQXk9fBLvWspImgNwcs0KxLukFgsCCULcLz4ilJiB4nNC2iAkC42FUJZg7XTbZKkhk5sKYkA/RTjB2NAruLFQRSBmyUc/WhLZIkUauPvwt+5aFBHfz817fXdBekJjxWN9V6Lq+IKIGp0jAm4SfZXBkfn59pY/dypkXhYTYd186mJakDwk5AVsBFquA77vCHiWtaB+L6peq7tZVu7IGshl+6Sl4im1cjss52EzSvk8HL8AbJeYF8llP/6LtE+etQdi/v4Hh5SysC4r7lynVAaO2NK0Z4FHbWrywryqM6ObtcagLc6PabpruNkVkWA2rDKYCxnD8VagQxI2Vo6LYpZ+F2kJ5jqJWyJKZ0o58LC0hZFwFOzKCavo6g7Ga+ymzUKPDFwnu9bsjkb36QF/s4LZjNn6DcG1kqwknC8195M++7Y7kWyYb1z3P064igISqnNkAEpqpCHeVv1qeiB5yYuAAAAAAAAAAA=="}};
+/* ---------- Desenho dos sólidos (SVG, fora de escala) ---------- */
+const SOLID = {
+  a: { f: '#D6F3EE', t: '#B4E9E0', s: '#0B7C70' },
+  b: { f: '#FFE3DE', t: '#FFC9BF', s: '#C2372A' },
+  c: { f: '#E3E4FC', t: '#C9CBF8', s: '#4338CA' },
+  d: { f: '#FFEFD2', t: '#FFE0A6', s: '#B86E00' },
+};
+const RED = '#E0322B';
+const BLUE = '#2563EB';
+const n1 = (v) => (Math.round(v * 10) / 10).toString();
+const pt = (p) => `${n1(p[0])},${n1(p[1])}`;
+function hull(points) {
+  const p = points.map((q) => [q[0], q[1]]).sort((a, b) => a[0] - b[0] || a[1] - b[1]);
+  const cr = (o, a, b) => (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]);
+  const lo = []; const up = [];
+  p.forEach((q) => { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], q) <= 0) lo.pop(); lo.push(q); });
+  p.slice().reverse().forEach((q) => { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], q) <= 0) up.pop(); up.push(q); });
+  return lo.slice(0, -1).concat(up.slice(0, -1));
+}
+const ROT = { 3: (3 * Math.PI) / 2, 4: Math.PI / 4 + 0.35, 5: (3 * Math.PI) / 2 + 0.2, 6: 0.26, 8: 0.2 };
+function basePts(n, cx, cy, R, k) {
+  const r0 = ROT[n];
+  return [...Array(n)].map((_, i) => { const t = r0 + (i * 2 * Math.PI) / n; return [cx + R * Math.cos(t), cy + k * R * Math.sin(t), t]; });
+}
+const backEdge = (P, i) => { const a = P[i][2]; const b = P[(i + 1) % P.length][2]; let m = (a + b) / 2; if (b < a) m += Math.PI; return Math.sin(m) < -0.02; };
+const line = (a, b, c, w, dash) => `<line x1="${n1(a[0])}" y1="${n1(a[1])}" x2="${n1(b[0])}" y2="${n1(b[1])}" stroke="${c}" stroke-width="${w}"${dash ? ' stroke-dasharray="5 4"' : ''} stroke-linecap="round"/>`;
+const label = (x, y, txt, anchor, color, size) => `<text x="${n1(x)}" y="${n1(y)}" text-anchor="${anchor || 'middle'}" font-size="${size || 13}" font-weight="700" stroke="#fff" stroke-width="4" stroke-linejoin="round" paint-order="stroke"${color ? ` style="fill:${color}"` : ''}>${txt}</text>`;
+const tagTxt = (W, txt, col) => (txt ? `<g><rect x="${W - 8 - txt.length * 6.6 - 16}" y="6" rx="10" width="${txt.length * 6.6 + 16}" height="20" fill="${col.t}"/><text x="${W - 16}" y="20.5" text-anchor="end" font-size="11" font-weight="700" style="fill:${col.s}">${txt}</text></g>` : '');
+const wrap = (W, H, body, aria) => `<svg class="solid" viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">${body}</svg>`;
+
+/* prisma reto de base regular */
+function prismBody(o) {
+  const { n, cx = 130, cy = 186, R = 66, k = 0.36, H = 110, col, edge, height, edgeColor } = o;
+  const B = basePts(n, cx, cy, R, k);
+  const T = B.map((p) => [p[0], p[1] - H, p[2]]);
+  let s = `<polygon points="${hull(B.concat(T)).map(pt).join(' ')}" fill="${col.f}" stroke="none"/>`;
+  s += `<polygon points="${T.map(pt).join(' ')}" fill="${col.t}" stroke="${col.s}" stroke-width="2" stroke-linejoin="round"/>`;
+  B.forEach((p, i) => { s += line(p, B[(i + 1) % n], col.s, 2, backEdge(B, i)); });
+  B.forEach((p, i) => { const hid = backEdge(B, i) && backEdge(B, (i - 1 + n) % n); s += line(p, T[i], col.s, 2, hid); });
+  let fi = 0; let best = -9;
+  B.forEach((p, i) => { const q = B[(i + 1) % n]; const my = (p[1] + q[1]) / 2; if (my > best) { best = my; fi = i; } });
+  const a = B[fi]; const b = B[(fi + 1) % n];
+  if (edge) s += label((a[0] + b[0]) / 2, Math.max(a[1], b[1]) + 19, edge, 'middle', edgeColor);
+  const right = B.reduce((m, p) => (p[0] > m[0] ? p : m), B[0]);
+  if (height) s += label(right[0] + 9, right[1] - H / 2 + 4, height, 'start');
+  return s;
+}
+function PRISM(n, edge, height, ph, tag, extra) {
+  const col = SOLID[ph];
+  const o = Object.assign({ n, edge, height, col }, extra || {});
+  return wrap(280, 240, prismBody(o) + tagTxt(280, tag, col), `Prisma reto de base ${n === 3 ? 'triangular' : n === 4 ? 'quadrada' : 'hexagonal'}: aresta da base ${edge}, altura ${height}`);
+}
+/* pirâmide reta de base regular */
+function pyrBody(o) {
+  const { n, cx = 130, cy = 190, R = 70, k = 0.36, H = 130, col, edge, height, apo, apoColor = BLUE } = o;
+  const B = basePts(n, cx, cy, R, k);
+  const A = [cx, cy - H];
+  let s = `<polygon points="${hull(B.concat([A])).map(pt).join(' ')}" fill="${col.f}" stroke="none"/>`;
+  B.forEach((p, i) => { s += line(p, B[(i + 1) % n], col.s, 2, backEdge(B, i)); });
+  B.forEach((p, i) => { const hid = backEdge(B, i) && backEdge(B, (i - 1 + n) % n); s += line(A, p, col.s, 2, hid); });
+  let fi = 0; let best = -9;
+  B.forEach((p, i) => { const q = B[(i + 1) % n]; const my = (p[1] + q[1]) / 2; if (my > best) { best = my; fi = i; } });
+  const a = B[fi]; const b = B[(fi + 1) % n];
+  const M = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+  if (height) { s += line(A, [cx, cy], RED, 2.2, true) + `<circle cx="${cx}" cy="${cy}" r="2.5" fill="${RED}"/>`; s += label(cx - 7, cy - H * 0.42, height, 'end', RED); }
+  if (apo) { s += line(A, M, apoColor, 2.4); s += label((A[0] + M[0]) / 2 + 9, (A[1] + M[1]) / 2 + 4, apo, 'start', apoColor); }
+  if (edge) s += label(M[0], Math.max(a[1], b[1]) + 19, edge);
+  return s;
+}
+function PYR(n, edge, opts, ph, tag) {
+  const col = SOLID[ph];
+  const o = Object.assign({ n, edge, col }, opts || {});
+  return wrap(280, 244, pyrBody(o) + tagTxt(280, tag, col), `Pirâmide reta de base ${n === 3 ? 'triangular' : n === 4 ? 'quadrada' : 'hexagonal'}`);
+}
+/* cilindro reto */
+function cylBody(o) {
+  const { cx = 130, cy = 186, rx = 62, ry = 19, H = 120, col, r, d, h, band } = o;
+  const top = cy - H;
+  let s = `<path d="M${cx - rx},${top} L${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy} L${cx + rx},${top} Z" fill="${col.f}"/>`;
+  if (band) s += `<path d="M${cx - rx},${top + H * 0.3} L${cx - rx},${top + H * 0.72} A${rx},${ry} 0 0 0 ${cx + rx},${top + H * 0.72} L${cx + rx},${top + H * 0.3} A${rx},${ry} 0 0 1 ${cx - rx},${top + H * 0.3} Z" fill="#F7A9A3"/><text x="${cx}" y="${top + H * 0.56}" text-anchor="middle" font-size="12" font-weight="800" style="fill:#fff" letter-spacing="1">${band}</text>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 1 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2"/>`;
+  s += line([cx - rx, top], [cx - rx, cy], col.s, 2) + line([cx + rx, top], [cx + rx, cy], col.s, 2);
+  s += `<ellipse cx="${cx}" cy="${top}" rx="${rx}" ry="${ry}" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  if (r) { s += line([cx, top], [cx + rx, top], RED, 2.4) + `<circle cx="${cx}" cy="${top}" r="2.6" fill="${RED}"/>`; s += label(cx + rx / 2, top - 7, r, 'middle', RED); }
+  if (d) { s += line([cx - rx, top], [cx + rx, top], RED, 2.4); s += label(cx, top - 8, d, 'middle', RED); }
+  if (h) s += label(cx - rx - 9, top + H / 2 + 4, h, 'end');
+  return s;
+}
+function CYL(opts, ph, tag) {
+  const col = SOLID[ph];
+  return wrap(280, 226, cylBody(Object.assign({ col }, opts)) + tagTxt(280, tag, col), 'Cilindro reto');
+}
+/* cone reto */
+function coneBody(o) {
+  const { cx = 130, cy = 190, rx = 66, ry = 19, H = 140, col, r, d, h, g } = o;
+  const A = [cx, cy - H];
+  let s = `<path d="M${cx - rx},${cy} L${A[0]},${A[1]} L${cx + rx},${cy} A${rx},${ry} 0 0 1 ${cx - rx},${cy} Z" fill="${col.f}"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 1 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2" stroke-dasharray="5 4"/>`;
+  s += `<path d="M${cx - rx},${cy} A${rx},${ry} 0 0 0 ${cx + rx},${cy}" fill="none" stroke="${col.s}" stroke-width="2"/>`;
+  s += line(A, [cx - rx, cy], col.s, 2) + line(A, [cx + rx, cy], g ? BLUE : col.s, g ? 2.6 : 2);
+  if (h) { s += line(A, [cx, cy], RED, 2.2, true); s += label(cx - 7, cy - H * 0.45, h, 'end', RED); }
+  if (r) { s += line([cx, cy], [cx + rx, cy], RED, 2.4) + `<circle cx="${cx}" cy="${cy}" r="2.6" fill="${RED}"/>`; s += label(cx + rx / 2, cy + 16, r, 'middle', RED); }
+  if (d) { s += line([cx - rx, cy], [cx + rx, cy], RED, 2.4); s += label(cx, cy + 17, d, 'middle', RED); }
+  if (g) s += label(cx + rx / 2 + 12, cy - H / 2 + 4, g, 'start', BLUE);
+  if (h || r) s += `<circle cx="${cx}" cy="${cy}" r="2.4" fill="${RED}"/>`;
+  return s;
+}
+function CONE(opts, ph, tag) {
+  const col = SOLID[ph];
+  return wrap(280, 228, coneBody(Object.assign({ col }, opts)) + tagTxt(280, tag, col), 'Cone reto');
+}
+/* planificação do cilindro */
+function NETCYL(ph) {
+  const col = SOLID[ph];
+  let s = `<circle cx="150" cy="44" r="24" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  s += line([150, 44], [174, 44], RED, 2.4) + label(162, 36, '2 cm', 'middle', RED, 12);
+  s += `<rect x="70" y="68" width="160" height="84" fill="${col.f}" stroke="${col.s}" stroke-width="2"/>`;
+  s += `<circle cx="150" cy="176" r="24" fill="${col.t}" stroke="${col.s}" stroke-width="2"/>`;
+  s += label(62, 114, '6 cm', 'end') + label(150, 116, '?', 'middle', col.s, 18);
+  s += `<path d="M70,212 H230" stroke="#1B1D2E" stroke-width="1.4"/><path d="M70,207 V217 M230,207 V217" stroke="#1B1D2E" stroke-width="1.4"/>`;
+  s += label(150, 230, 'comprimento = ?', 'middle', null, 12);
+  return wrap(300, 238, s + tagTxt(300, 'planificação', col), 'Planificação do cilindro: dois círculos de raio 2 cm e um retângulo de altura 6 cm');
+}
+/* comparação: prisma × pirâmide e cilindro × cone */
+function CMP_PP(ph) {
+  const col = SOLID[ph];
+  const s = prismBody({ n: 4, cx: 88, cy: 190, R: 52, H: 112, col, edge: '3 cm', height: '6 cm' }) + pyrBody({ n: 4, cx: 236, cy: 190, R: 52, H: 112, col: SOLID.b, edge: '3 cm', height: '6 cm' });
+  return wrap(320, 236, s + tagTxt(320, 'comparação', col), 'Prisma e pirâmide de mesma base quadrada de 3 cm e mesma altura de 6 cm');
+}
+function CMP_CC(ph) {
+  const s = cylBody({ cx: 104, cy: 192, rx: 50, ry: 15, H: 112, col: SOLID.c, r: '3 cm', h: '6 cm' }) + coneBody({ cx: 250, cy: 192, rx: 50, ry: 15, H: 112, col: SOLID.d, r: '3 cm', h: '6 cm' });
+  return wrap(330, 228, s + tagTxt(330, 'comparação', SOLID[ph]), 'Cilindro e cone de mesmo raio 3 cm e mesma altura 6 cm');
+}
+
+/* =========================================================
+   BANCO DO SHOW — Geometria Espacial · 9º ano
+   Questões inéditas geradas a partir de modelos: a cada partida
+   as medidas mudam. Alternativas erradas = erros típicos.
+   ========================================================= */
+const ri = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+const pick = (a) => a[Math.floor(Math.random() * a.length)];
+const shuffle = (a) => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+const nf = (v, d) => {
+  const dd = d == null ? 2 : d;
+  const r = Math.round(v * 10 ** dd) / 10 ** dd;
+  return r.toLocaleString('pt-BR', { minimumFractionDigits: 0, maximumFractionDigits: dd });
+};
+const piS = (k, d) => `${k === 1 ? '' : nf(k, d == null ? 1 : d)}π`;
+const fr = (a, b) => `<span class="frac"><span>${a}</span><span>${b}</span></span>`;
+const FIGW = (svg) => `<figure class="fig">${svg}</figure>`;
+
+/* monta a questão: correta + erradas (únicas), embaralhadas em 4 alternativas */
+function MQ(o) {
+  const seen = new Set([o.correct]);
+  const wrong = [];
+  (o.wrong || []).forEach((w) => { if (wrong.length < 3 && !seen.has(w)) { seen.add(w); wrong.push(w); } });
+  if (wrong.length < 3) return null;
+  const opts = shuffle([o.correct].concat(wrong));
+  return { lvl: o.lvl, topic: o.topic, body: o.body, fig: o.fig || '', ask: o.ask, opts, ans: opts.indexOf(o.correct), sol: o.sol, tip: o.tip || '' };
+}
+const steps = (arr) => `<ol class="steps">${arr.map((s) => `<li>${s}</li>`).join('')}</ol>`;
+const NOMES = { 3: 'triangular', 4: 'quadrangular', 5: 'pentagonal', 6: 'hexagonal', 8: 'octogonal' };
+const ELEM = { faces: 'faces', vertices: 'vértices', arestas: 'arestas' };
+const QT = (k) => (k === 'vertices' ? 'Quantos' : 'Quantas');
+
+/* ===================== NÍVEL 1 · R$ 1 mil a R$ 5 mil ===================== */
+const L1 = [
+  function prismElem() {
+    const n = pick([3, 4, 5, 6, 8]);
+    const k = pick(['faces', 'vertices', 'arestas']);
+    const val = { faces: n + 2, vertices: 2 * n, arestas: 3 * n }[k];
+    return MQ({
+      lvl: 1, topic: 'Prismas',
+      body: `<p>Um prisma tem base <b>${NOMES[n]}</b> (polígono de ${n} lados).</p>`,
+      fig: [3, 4, 6].includes(n) ? FIGW(PRISM(n, '', '', 'a', `prisma ${NOMES[n]}`, { R: 60, H: 96 })) : '',
+      ask: `${QT(k)} ${ELEM[k]} esse prisma tem?`,
+      correct: String(val), wrong: shuffle([n + 2, 2 * n, 3 * n, n, n + 1, 4 * n, 2 * n + 2].map(String)),
+      sol: steps([`O prisma tem 2 bases de ${n} lados e ${n} faces laterais retangulares.`, `Faces: ${n} + 2 = ${n + 2}. Vértices: 2 · ${n} = ${2 * n}. Arestas: 3 · ${n} = ${3 * n}.`, `Resposta: <b>${val} ${ELEM[k]}</b>.`]),
+      tip: 'Arestas do prisma: as da base de baixo, as da base de cima e as laterais (3n).',
+    });
+  },
+  function pyrElem() {
+    const n = pick([3, 4, 5, 6, 8]);
+    const k = pick(['faces', 'vertices', 'arestas']);
+    const val = { faces: n + 1, vertices: n + 1, arestas: 2 * n }[k];
+    return MQ({
+      lvl: 1, topic: 'Pirâmides',
+      body: `<p>Uma pirâmide tem base <b>${NOMES[n]}</b> (polígono de ${n} lados).</p>`,
+      fig: [3, 4, 6].includes(n) ? FIGW(PYR(n, '', { H: 120 }, 'b', `pirâmide ${NOMES[n]}`)) : '',
+      ask: `${QT(k)} ${ELEM[k]} essa pirâmide tem?`,
+      correct: String(val), wrong: shuffle([n + 1, n + 2, 2 * n, 3 * n, n, 2 * n + 1].map(String)),
+      sol: steps([`A pirâmide tem 1 base de ${n} lados e ${n} faces laterais triangulares, que se encontram no vértice de cima.`, `Faces: ${n} + 1 = ${n + 1}. Vértices: ${n} + 1 = ${n + 1}. Arestas: ${n} da base + ${n} laterais = ${2 * n}.`, `Resposta: <b>${val} ${ELEM[k]}</b>.`]),
+      tip: 'Diferente do prisma, a pirâmide tem uma base só.',
+    });
+  },
+  function identify() {
+    const it = pick([
+      ['duas bases circulares iguais e paralelas', 'Cilindro'],
+      ['uma base circular e um único vértice', 'Cone'],
+      ['uma base poligonal e faces laterais triangulares que se encontram em um ponto', 'Pirâmide'],
+      ['duas bases poligonais iguais e paralelas e faces laterais retangulares', 'Prisma'],
+    ]);
+    return MQ({
+      lvl: 1, topic: 'Reconhecimento',
+      body: `<p>Um sólido geométrico tem <b>${it[0]}</b>.</p>`,
+      ask: 'Que sólido é esse?',
+      correct: it[1], wrong: shuffle(['Cilindro', 'Cone', 'Pirâmide', 'Prisma', 'Esfera']),
+      sol: steps(['Prisma: duas bases poligonais e faces laterais retangulares.', 'Pirâmide: uma base poligonal e faces laterais triangulares.', 'Cilindro: duas bases circulares. Cone: uma base circular e um vértice.', `Resposta: <b>${it[1]}</b>.`]),
+    });
+  },
+  function net() {
+    const it = pick([
+      ['um cilindro', '2 círculos e 1 retângulo'],
+      ['um cone', '1 círculo e 1 setor circular'],
+      ['um cubo', '6 quadrados'],
+      ['uma pirâmide de base quadrada', '1 quadrado e 4 triângulos'],
+      ['um prisma de base triangular', '2 triângulos e 3 retângulos'],
+    ]);
+    const all = ['2 círculos e 1 retângulo', '1 círculo e 1 setor circular', '6 quadrados', '1 quadrado e 4 triângulos', '2 triângulos e 3 retângulos', '2 círculos e 1 triângulo', '1 quadrado e 4 retângulos'];
+    return MQ({
+      lvl: 1, topic: 'Planificação',
+      body: `<p>Imagine que você “abre” as faces de ${it[0].replace(/^(uma?) /, '$1 <b>')}</b> sobre a mesa, como uma embalagem desmontada.</p>`,
+      ask: 'A planificação desse sólido é formada por',
+      correct: it[1], wrong: shuffle(all),
+      sol: steps([`Desmontando ${it[0]}, obtemos: <b>${it[1]}</b>.`, 'No cilindro, a lateral aberta é um retângulo de comprimento 2πr. No cone, a lateral aberta é um setor circular.']),
+    });
+  },
+  function cube() {
+    const a = ri(2, 7);
+    const askV = Math.random() < 0.55;
+    return MQ({
+      lvl: 1, topic: 'Prismas',
+      body: `<p>Um cubo tem aresta de <b>${a} cm</b>.</p>`,
+      fig: FIGW(PRISM(4, `${a} cm`, `${a} cm`, 'a', 'cubo', { R: 54, H: 76 })),
+      ask: askV ? 'Qual é o volume desse cubo?' : 'Qual é a área total desse cubo (as 6 faces)?',
+      correct: askV ? `${nf(a ** 3)} cm³` : `${nf(6 * a * a)} cm²`,
+      wrong: askV ? shuffle([`${nf(a * a)} cm³`, `${nf(6 * a * a)} cm³`, `${nf(3 * a)} cm³`, `${nf(4 * a * a)} cm³`]) : shuffle([`${nf(a ** 3)} cm²`, `${nf(4 * a * a)} cm²`, `${nf(a * a)} cm²`, `${nf(12 * a)} cm²`]),
+      sol: askV ? steps([`Volume do cubo: aresta × aresta × aresta.`, `${a} · ${a} · ${a} = <b>${nf(a ** 3)} cm³</b>.`]) : steps([`Cada face é um quadrado de área ${a}² = ${a * a} cm².`, `O cubo tem 6 faces: 6 · ${a * a} = <b>${nf(6 * a * a)} cm²</b>.`]),
+      tip: askV ? 'Volume se mede em cm³; área, em cm².' : 'Área total é a soma das áreas de todas as faces.',
+    });
+  },
+  function box() {
+    const a = ri(2, 6); const b = ri(3, 8); const c = ri(4, 10);
+    return MQ({
+      lvl: 1, topic: 'Prismas',
+      body: `<p>Uma caixa tem a forma de um paralelepípedo com medidas <b>${a} cm</b>, <b>${b} cm</b> e <b>${c} cm</b>.</p>`,
+      ask: 'Qual é o volume da caixa?',
+      correct: `${nf(a * b * c)} cm³`,
+      wrong: shuffle([`${nf(a + b + c)} cm³`, `${nf(a * b + a * c + b * c)} cm³`, `${nf(2 * (a * b + a * c + b * c))} cm³`, `${nf(a * b)} cm³`]),
+      sol: steps(['Volume do paralelepípedo: comprimento × largura × altura.', `${a} · ${b} · ${c} = <b>${nf(a * b * c)} cm³</b>.`]),
+    });
+  },
+  function circleBase() {
+    const r = ri(2, 9);
+    return MQ({
+      lvl: 1, topic: 'Cilindros',
+      body: `<p>A base de um cilindro é um círculo de <b>raio ${r} cm</b>.</p>`,
+      fig: FIGW(CYL({ r: `${r} cm`, H: 100 }, 'c', 'área da base')),
+      ask: 'Qual é a área da base, em função de π?',
+      correct: `${piS(r * r, 0)} cm²`,
+      wrong: shuffle([`${piS(2 * r, 0)} cm²`, `${piS(r, 0)} cm²`, `${piS(4 * r * r, 0)} cm²`, `${piS(2 * r * r, 0)} cm²`]),
+      sol: steps([`Área do círculo: π · r².`, `π · ${r}² = <b>${piS(r * r, 0)} cm²</b>.`]),
+      tip: '2πr é o comprimento da circunferência, não a área.',
+    });
+  },
+  function ratio() {
+    const it = pick([['pirâmide', 'prisma'], ['cone', 'cilindro']]);
+    return MQ({
+      lvl: 1, topic: 'Comparação',
+      body: `<p>Um <b>${it[1]}</b> e ${it[0] === 'pirâmide' ? 'uma' : 'um'} <b>${it[0]}</b> têm a mesma base e a mesma altura.</p>`,
+      fig: FIGW(it[0] === 'cone' ? CMP_CC('d') : CMP_PP('b')),
+      ask: `O volume ${it[0] === 'pirâmide' ? 'da pirâmide' : 'do cone'} é ___ do volume do ${it[1]}.`,
+      correct: 'um terço', wrong: shuffle(['a metade', 'o dobro', 'o triplo', 'um quarto']),
+      sol: steps([`${it[0] === 'pirâmide' ? 'Pirâmide' : 'Cone'}: V = (A<sub>base</sub> · h) ÷ 3.`, `${it[1] === 'prisma' ? 'Prisma' : 'Cilindro'}: V = A<sub>base</sub> · h.`, 'Resposta: <b>um terço</b>. São necessários 3 deles para encher o outro.']),
+    });
+  },
+  function units() {
+    const it = pick([
+      ['1 litro equivale a quantos cm³?', '1 000 cm³', ['10 cm³', '100 cm³', '10 000 cm³', '1 000 000 cm³'], '1 L = 1 dm³ = 10 cm × 10 cm × 10 cm = 1 000 cm³.'],
+      ['1 m³ equivale a quantos litros?', '1 000 L', ['10 L', '100 L', '1 000 000 L', '10 000 L'], '1 m³ = 1 000 dm³, e cada dm³ é 1 litro: 1 000 L.'],
+      ['Uma caixa de 1 dm³ comporta quantos litros?', '1 L', ['10 L', '100 L', '0,1 L', '1 000 L'], '1 dm³ é exatamente 1 litro.'],
+    ]);
+    return MQ({ lvl: 1, topic: 'Unidades', body: '<p>Conversão de unidades de volume e capacidade.</p>', ask: it[0], correct: it[1], wrong: shuffle(it[2]), sol: steps([it[3]]) });
+  },
+];
+
+/* ===================== NÍVEL 2 · R$ 10 mil a R$ 50 mil ===================== */
+const L2 = [
+  function prismQV() {
+    const l = ri(3, 8); const h = ri(5, 12);
+    return MQ({
+      lvl: 2, topic: 'Prismas',
+      body: `<p>Um prisma de base quadrada tem aresta da base de <b>${l} cm</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(PRISM(4, `${l} cm`, `${h} cm`, 'a', 'base quadrada')),
+      ask: 'Qual é o volume do prisma?',
+      correct: `${nf(l * l * h)} cm³`,
+      wrong: shuffle([`${nf((l * l * h) / 3)} cm³`, `${nf(4 * l * h)} cm³`, `${nf(l * h)} cm³`, `${nf(2 * l * l + 4 * l * h)} cm³`]),
+      sol: steps([`Área da base: ${l}² = ${l * l} cm².`, `Volume: ${l * l} · ${h} = <b>${nf(l * l * h)} cm³</b>.`]),
+      tip: 'Dividir por 3 é só para pirâmide e cone.',
+    });
+  },
+  function prismTriV() {
+    const l = pick([2, 4, 6]); const h = pick([5, 10, 12]);
+    const ab = (l * l * 1.73) / 4; const v = ab * h;
+    return MQ({
+      lvl: 2, topic: 'Prismas',
+      body: `<p>Um prisma tem como base um <b>triângulo equilátero de lado ${l} cm</b> e altura de <b>${h} cm</b>. Use √3 ≈ 1,73.</p>`,
+      fig: FIGW(PRISM(3, `${l} cm`, `${h} cm`, 'a', 'base triangular')),
+      ask: 'Qual é, aproximadamente, o volume do prisma?',
+      correct: `${nf(v)} cm³`,
+      wrong: shuffle([`${nf(l * l * 1.73 * h)} cm³`, `${nf(v / 3)} cm³`, `${nf(l * l * h)} cm³`, `${nf((l * l * h) / 2)} cm³`]),
+      sol: steps([`Área do triângulo equilátero: ℓ²√3 ÷ 4 = ${l * l} · 1,73 ÷ 4 ≈ ${nf(ab)} cm².`, `Volume: ${nf(ab)} · ${h} ≈ <b>${nf(v)} cm³</b>.`]),
+      tip: 'Não esqueça o ÷ 4 da fórmula do triângulo equilátero.',
+    });
+  },
+  function pyrQV() {
+    let l; let h;
+    do { l = ri(3, 9); h = ri(4, 12); } while ((l * l * h) % 3 !== 0);
+    const v = (l * l * h) / 3;
+    return MQ({
+      lvl: 2, topic: 'Pirâmides',
+      body: `<p>Uma pirâmide de base quadrada tem aresta da base de <b>${l} cm</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(PYR(4, `${l} cm`, { height: `${h} cm` }, 'b', 'base quadrada')),
+      ask: 'Qual é o volume da pirâmide?',
+      correct: `${nf(v)} cm³`,
+      wrong: shuffle([`${nf(l * l * h)} cm³`, `${nf((l * l * h) / 2)} cm³`, `${nf(l * h)} cm³`, `${nf((l * h) / 3)} cm³`]),
+      sol: steps([`Área da base: ${l}² = ${l * l} cm².`, `Volume: (${l * l} · ${h}) ÷ 3 = <b>${nf(v)} cm³</b>.`]),
+      tip: 'Sem o ÷ 3, você calculou o volume do prisma.',
+    });
+  },
+  function cylV() {
+    const r = ri(2, 6); const h = ri(3, 12);
+    const diam = Math.random() < 0.4;
+    return MQ({
+      lvl: 2, topic: 'Cilindros',
+      body: `<p>Um cilindro tem <b>${diam ? `diâmetro de ${2 * r} cm` : `raio de ${r} cm`}</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(CYL(diam ? { d: `${2 * r} cm`, h: `${h} cm` } : { r: `${r} cm`, h: `${h} cm` }, 'c', diam ? 'atenção ao diâmetro' : 'volume')),
+      ask: 'Qual é o volume do cilindro, em função de π?',
+      correct: `${piS(r * r * h, 0)} cm³`,
+      wrong: shuffle([`${piS(4 * r * r * h, 0)} cm³`, `${piS(2 * r * h, 0)} cm³`, `${piS((r * r * h) / 3)} cm³`, `${piS(r * h, 0)} cm³`]),
+      sol: steps([diam ? `Diâmetro ${2 * r} ⇒ raio ${r} cm.` : `Raio: ${r} cm.`, `V = π · r² · h = π · ${r * r} · ${h} = <b>${piS(r * r * h, 0)} cm³</b>.`]),
+      tip: diam ? 'Usar o diâmetro no lugar do raio multiplica o volume por 4.' : 'Só o raio vai ao quadrado.',
+    });
+  },
+  function cylArea() {
+    const r = ri(2, 6); const h = ri(3, 10);
+    const lat = Math.random() < 0.5;
+    return MQ({
+      lvl: 2, topic: 'Cilindros',
+      body: `<p>Uma lata cilíndrica tem raio de <b>${r} cm</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(CYL({ r: `${r} cm`, h: `${h} cm`, band: lat ? 'RÓTULO' : '' }, 'c', lat ? 'rótulo' : 'área total')),
+      ask: lat ? 'Quantos cm² de papel cobrem toda a lateral da lata (o rótulo)?' : 'Qual é a área total da lata (lateral + 2 tampas)?',
+      correct: lat ? `${piS(2 * r * h, 0)} cm²` : `${piS(2 * r * r + 2 * r * h, 0)} cm²`,
+      wrong: lat ? shuffle([`${piS(r * h, 0)} cm²`, `${piS(r * r * h, 0)} cm²`, `${piS(2 * r * r + 2 * r * h, 0)} cm²`, `${piS(r * r + 2 * r * h, 0)} cm²`]).concat([`${piS(4 * r * h, 0)} cm²`])
+        : shuffle([`${piS(2 * r * h, 0)} cm²`, `${piS(r * r + 2 * r * h, 0)} cm²`, `${piS(r * r * h, 0)} cm²`, `${piS(2 * r * r + r * h, 0)} cm²`]).concat([`${piS(r * r + r * h, 0)} cm²`, `${piS(4 * r * r + 2 * r * h, 0)} cm²`]),
+      sol: lat ? steps([`A lateral aberta é um retângulo de comprimento 2πr e altura h.`, `2π · ${r} · ${h} = <b>${piS(2 * r * h, 0)} cm²</b>.`])
+        : steps([`Tampas: 2 · π · ${r}² = ${piS(2 * r * r, 0)}.`, `Lateral: 2π · ${r} · ${h} = ${piS(2 * r * h, 0)}.`, `Total: <b>${piS(2 * r * r + 2 * r * h, 0)} cm²</b>.`]),
+    });
+  },
+  function coneV() {
+    let r; let h;
+    do { r = ri(2, 6); h = ri(4, 12); } while ((r * r * h) % 3 !== 0);
+    return MQ({
+      lvl: 2, topic: 'Cones',
+      body: `<p>Um cone tem raio da base de <b>${r} cm</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(CONE({ r: `${r} cm`, h: `${h} cm` }, 'd', 'volume')),
+      ask: 'Qual é o volume do cone, em função de π?',
+      correct: `${piS((r * r * h) / 3, 0)} cm³`,
+      wrong: shuffle([`${piS(r * r * h, 0)} cm³`, `${piS((r * r * h) / 2)} cm³`, `${piS(r * h, 0)} cm³`, `${piS((r * h * h) / 3)} cm³`]).concat([`${piS((2 * r * r * h) / 3)} cm³`, `${piS((r * r * h) / 3 + r * r)} cm³`]),
+      sol: steps([`V = (π · r² · h) ÷ 3.`, `(π · ${r * r} · ${h}) ÷ 3 = <b>${piS((r * r * h) / 3, 0)} cm³</b>.`]),
+      tip: 'Cone: um terço do cilindro de mesma base e altura.',
+    });
+  },
+  function coneAl() {
+    const r = ri(2, 8); const g = r + ri(3, 9);
+    return MQ({
+      lvl: 2, topic: 'Cones',
+      body: `<p>Um chapéu de festa tem forma de cone, <b>sem a base</b>. O raio é <b>${r} cm</b> e a geratriz, <b>${g} cm</b>.</p>`,
+      fig: FIGW(CONE({ r: `${r} cm`, g: `${g} cm` }, 'd', 'chapéu de festa')),
+      ask: 'Quantos cm² de papel são usados?',
+      correct: `${piS(r * g, 0)} cm²`,
+      wrong: shuffle([`${piS(2 * r * g, 0)} cm²`, `${piS(r * r + r * g, 0)} cm²`, `${piS((r * g) / 2)} cm²`, `${piS((r * r * g) / 3)} cm²`]),
+      sol: steps(['Sem base: só a área lateral, π · r · g.', `π · ${r} · ${g} = <b>${piS(r * g, 0)} cm²</b>.`]),
+      tip: 'A lateral do cone é πrg, sem o 2 do cilindro.',
+    });
+  },
+  function prismQAt() {
+    const l = ri(2, 7); const h = ri(4, 12);
+    return MQ({
+      lvl: 2, topic: 'Prismas',
+      body: `<p>Uma embalagem tem forma de prisma de base quadrada, com aresta da base de <b>${l} cm</b> e altura de <b>${h} cm</b>.</p>`,
+      fig: FIGW(PRISM(4, `${l} cm`, `${h} cm`, 'a', 'embalagem')),
+      ask: 'Quantos cm² de papelão são necessários para fazer a embalagem fechada?',
+      correct: `${nf(2 * l * l + 4 * l * h)} cm²`,
+      wrong: shuffle([`${nf(4 * l * h)} cm²`, `${nf(l * l + 4 * l * h)} cm²`, `${nf(l * l * h)} cm²`, `${nf(2 * l * l + 2 * l * h)} cm²`]).concat([`${nf(l * l + 2 * l * h)} cm²`, `${nf(4 * l * l + 4 * l * h)} cm²`]),
+      sol: steps([`2 bases: 2 · ${l}² = ${2 * l * l} cm².`, `4 faces laterais: 4 · ${l} · ${h} = ${4 * l * h} cm².`, `Total: <b>${nf(2 * l * l + 4 * l * h)} cm²</b>.`]),
+    });
+  },
+  function liters() {
+    const a = pick([20, 30, 40, 50]); const b = pick([20, 30, 40]); const c = pick([10, 20, 30, 50]);
+    const L = (a * b * c) / 1000;
+    return MQ({
+      lvl: 2, topic: 'Unidades',
+      body: `<p>Um aquário tem a forma de paralelepípedo com medidas internas <b>${a} cm × ${b} cm × ${c} cm</b>. Lembre: 1 L = 1 000 cm³.</p>`,
+      ask: 'Quantos litros cabem no aquário?',
+      correct: `${nf(L)} L`,
+      wrong: shuffle([`${nf(L * 10)} L`, `${nf(L / 10)} L`, `${nf(a * b * c)} L`, `${nf(L * 100)} L`]),
+      sol: steps([`Volume: ${a} · ${b} · ${c} = ${nf(a * b * c)} cm³.`, `Em litros: ${nf(a * b * c)} ÷ 1 000 = <b>${nf(L)} L</b>.`]),
+    });
+  },
+];
+
+/* ===================== NÍVEL 3 · R$ 100 mil a R$ 500 mil ===================== */
+const TRI = [[3, 4, 5], [5, 12, 13], [6, 8, 10], [4, 3, 5], [8, 6, 10], [9, 12, 15]];
+const L3 = [
+  function pyrAt() {
+    const [a, h, g] = pick(TRI.filter((t) => t[0] <= 9));
+    const l = 2 * a;
+    return MQ({
+      lvl: 3, topic: 'Pirâmides',
+      body: `<p>Uma pirâmide de base quadrada tem aresta da base de <b>${l} cm</b> e <b>altura de ${h} cm</b>.</p>`,
+      fig: FIGW(PYR(4, `${l} cm`, { height: `${h} cm` }, 'b', 'use Pitágoras')),
+      ask: 'Qual é a área total da pirâmide?',
+      correct: `${nf(l * l + 2 * l * g)} cm²`,
+      wrong: shuffle([`${nf(l * l + 2 * l * h)} cm²`, `${nf(2 * l * g)} cm²`, `${nf(l * l + 4 * l * g)} cm²`, `${nf(2 * l * l + 2 * l * g)} cm²`]),
+      sol: steps([`O apótema g é a hipotenusa de um triângulo com catetos ${h} (altura) e ${a} (metade da aresta): g² = ${h}² + ${a}² ⇒ g = ${g} cm.`, `Base: ${l}² = ${l * l}. Lateral: 4 · (${l} · ${g}) ÷ 2 = ${2 * l * g}.`, `Total: <b>${nf(l * l + 2 * l * g)} cm²</b>.`]),
+      tip: 'A altura da pirâmide não é a altura da face. Use Pitágoras para achar o apótema.',
+    });
+  },
+  function coneAt() {
+    const [r, h, g] = pick(TRI);
+    return MQ({
+      lvl: 3, topic: 'Cones',
+      body: `<p>Um cone tem <b>raio ${r} cm</b> e <b>altura ${h} cm</b>.</p>`,
+      fig: FIGW(CONE({ r: `${r} cm`, h: `${h} cm` }, 'd', 'use Pitágoras')),
+      ask: 'Qual é a área total do cone, em função de π?',
+      correct: `${piS(r * r + r * g, 0)} cm²`,
+      wrong: shuffle([`${piS(r * r + r * h, 0)} cm²`, `${piS(r * g, 0)} cm²`, `${piS(r * r + 2 * r * g, 0)} cm²`, `${piS((r * r * h) / 3)} cm²`]),
+      sol: steps([`Geratriz: g² = ${h}² + ${r}² ⇒ g = ${g} cm.`, `Base: π · ${r}² = ${piS(r * r, 0)}. Lateral: π · ${r} · ${g} = ${piS(r * g, 0)}.`, `Total: <b>${piS(r * r + r * g, 0)} cm²</b>.`]),
+      tip: 'A área lateral usa a geratriz, não a altura.',
+    });
+  },
+  function coneVg() {
+    const [r, h, g] = pick(TRI);
+    return MQ({
+      lvl: 3, topic: 'Cones',
+      body: `<p>Um cone tem <b>raio ${r} cm</b> e <b>geratriz ${g} cm</b>.</p>`,
+      fig: FIGW(CONE({ r: `${r} cm`, g: `${g} cm` }, 'd', 'use Pitágoras')),
+      ask: 'Qual é o volume do cone, em função de π?',
+      correct: `${piS((r * r * h) / 3, 0)} cm³`,
+      wrong: shuffle([`${piS((r * r * g) / 3)} cm³`, `${piS(r * r * h, 0)} cm³`, `${piS(r * g, 0)} cm³`, `${piS(r * r * g, 0)} cm³`]),
+      sol: steps([`Altura: h² = ${g}² − ${r}² ⇒ h = ${h} cm.`, `V = (π · ${r * r} · ${h}) ÷ 3 = <b>${piS((r * r * h) / 3, 0)} cm³</b>.`]),
+      tip: 'O volume usa a altura h, não a geratriz.',
+    });
+  },
+  function scale() {
+    const it = pick([
+      ['Se dobrarmos o raio de um cilindro e mantivermos a altura, o volume fica multiplicado por', '4', ['2', '6', '8'], 'O raio aparece ao quadrado: 2² = 4.'],
+      ['Se dobrarmos a altura de um cilindro e mantivermos o raio, o volume fica multiplicado por', '2', ['4', '6', '8'], 'A altura aparece sem expoente: dobra junto.'],
+      ['Se dobrarmos a aresta de um cubo, o volume fica multiplicado por', '8', ['2', '4', '6'], 'As três medidas dobram: 2 · 2 · 2 = 8.'],
+      ['Se triplicarmos a aresta de um cubo, a área total fica multiplicada por', '9', ['3', '6', '27'], 'Área depende do quadrado das medidas: 3² = 9.'],
+      ['Se dobrarmos o raio e a altura de um cone, o volume fica multiplicado por', '8', ['4', '2', '6'], 'Raio ao quadrado (×4) e altura (×2): 4 · 2 = 8.'],
+    ]);
+    return MQ({ lvl: 3, topic: 'Ampliação', body: '<p>Ampliações mudam medidas, áreas e volumes de jeitos diferentes.</p>', ask: it[0], correct: it[1], wrong: shuffle(it[2].concat(['3', '12'])), sol: steps([it[3], `Resposta: <b>${it[1]}</b>.`]) });
+  },
+  function unknownH() {
+    const r = ri(2, 5); const h = ri(3, 12); const V = r * r * h;
+    return MQ({
+      lvl: 3, topic: 'Cilindros',
+      body: `<p>Um copo cilíndrico tem raio de <b>${r} cm</b> e volume de <b>${piS(V, 0)} cm³</b>.</p>`,
+      ask: 'Qual é a altura do copo?',
+      correct: `${nf(h)} cm`,
+      wrong: shuffle([`${nf(V / r)} cm`, `${nf(V / (2 * r))} cm`, `${nf(3 * h)} cm`, `${nf(V / 4)} cm`]).concat([`${nf(h + r)} cm`, `${nf(2 * h)} cm`]),
+      sol: steps([`V = π · r² · h ⇒ ${piS(V, 0)} = π · ${r * r} · h.`, `h = ${V} ÷ ${r * r} = <b>${h} cm</b>.`]),
+      tip: 'Divida pelo raio ao quadrado, não pelo raio.',
+    });
+  },
+  function glasses() {
+    const r = pick([2, 3, 4]); const hc = pick([8, 10, 12]); const m = pick([1, 2]);
+    const R = 2 * r; const H = hc * m; const n = 4 * m;
+    return MQ({
+      lvl: 3, topic: 'Cilindros',
+      body: `<p>Uma jarra cilíndrica tem raio de <b>${R} cm</b> e altura de <b>${H} cm</b>. Ela vai encher copos cilíndricos de raio <b>${r} cm</b> e altura <b>${hc} cm</b>.</p>`,
+      fig: FIGW(`<svg class="solid" viewBox="0 0 330 228">${cylBody({ cx: 110, cy: 196, rx: 70, ry: 20, H: 150, col: SOLID.c, r: `${R} cm`, h: `${H} cm` })}${cylBody({ cx: 270, cy: 196, rx: 35, ry: 11, H: 75, col: SOLID.a, r: `${r} cm` })}</svg>`),
+      ask: 'Quantos copos cheios a jarra enche?',
+      correct: String(n),
+      wrong: shuffle([String(2 * m), String(m), String(8 * m), String(n + 2)]),
+      sol: steps([`Jarra: π · ${R}² · ${H} = ${piS(R * R * H, 0)} cm³.`, `Copo: π · ${r}² · ${hc} = ${piS(r * r * hc, 0)} cm³.`, `${R * R * H} ÷ ${r * r * hc} = <b>${n} copos</b>.`]),
+      tip: 'O raio dobrado multiplica a área da base por 4, não por 2.',
+    });
+  },
+  function tank() {
+    const r = pick([1, 2]); const h = pick([1, 2, 3]);
+    const L = Math.round(3.14 * r * r * h * 1000);
+    return MQ({
+      lvl: 3, topic: 'Cilindros',
+      body: `<p>Uma caixa d’água cilíndrica tem <b>raio de ${r} m</b> e <b>altura de ${h} m</b>. Use π ≈ 3,14 e 1 m³ = 1 000 L.</p>`,
+      fig: FIGW(CYL({ r: `${r} m`, h: `${h} m`, rx: 70, H: 110 }, 'c', 'caixa d’água')),
+      ask: 'Quantos litros ela comporta?',
+      correct: `${nf(L)} L`,
+      wrong: shuffle([`${nf(L / 1000)} L`, `${nf(L * 4)} L`, `${nf(L / 10)} L`, `${nf(Math.round(2 * 3.14 * r * h * 1000))} L`]),
+      sol: steps([`V = 3,14 · ${r}² · ${h} = ${nf(L / 1000)} m³.`, `Em litros: × 1 000 = <b>${nf(L)} L</b>.`]),
+    });
+  },
+];
+
+/* ===================== PERGUNTA DO MILHÃO ===================== */
+const FINAL = [
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>Uma caixa d’água cúbica tem <b>60 cm</b> de aresta e está cheia. Ela será esvaziada com um balde cilíndrico de <b>raio 10 cm</b> e <b>altura 30 cm</b>. Use π ≈ 3,14.</p>',
+    ask: 'Quantas vezes, no mínimo, é preciso encher o balde para esvaziar a caixa?',
+    correct: '23', wrong: ['22', '69', '8'],
+    sol: steps(['Caixa: 60³ = 216 000 cm³.', 'Balde: 3,14 · 10² · 30 = 9 420 cm³.', '216 000 ÷ 9 420 ≈ 22,9: com 22 baldes ainda sobra água, então são <b>23</b>.']),
+  }),
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>Uma sorveteria serve sorvete em casquinhas cônicas de <b>raio 3 cm</b> e <b>altura 10 cm</b>, cheias até a boca. O sorvete vem em potes cilíndricos de <b>raio 6 cm</b> e <b>altura 10 cm</b>.</p>',
+    ask: 'Quantas casquinhas um pote cheio consegue encher?',
+    correct: '12', wrong: ['4', '3', '36'],
+    sol: steps(['Pote: π · 6² · 10 = 360π cm³.', 'Casquinha: (π · 3² · 10) ÷ 3 = 30π cm³.', '360π ÷ 30π = <b>12 casquinhas</b>.']),
+  }),
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>Uma barraca de acampamento tem a forma de pirâmide de base quadrada, com <b>4 m de lado</b> e <b>1,5 m de altura</b>. A lona cobre só as <b>4 faces laterais</b>.</p>',
+    ask: 'Quantos m² de lona são necessários?',
+    correct: '20 m²', wrong: ['12 m²', '40 m²', '36 m²'],
+    sol: steps(['Apótema: g² = 1,5² + 2² = 2,25 + 4 = 6,25 ⇒ g = 2,5 m.', 'Cada face: (4 · 2,5) ÷ 2 = 5 m².', '4 faces: <b>20 m²</b>.']),
+  }),
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>Uma lanchonete vende refrigerante em dois copos com a <b>mesma boca, de raio 4 cm</b>: um copo cônico de <b>12 cm de altura</b> e um copo cilíndrico de <b>4 cm de altura</b>.</p>',
+    ask: 'Qual copo leva mais refrigerante?',
+    correct: 'Os dois levam a mesma quantidade.', wrong: ['O cônico, pois é 3 vezes mais alto.', 'O cilíndrico, pois tem fundo largo.', 'O cônico leva o dobro do cilíndrico.'],
+    sol: steps(['Cone: (π · 4² · 12) ÷ 3 = 64π cm³.', 'Cilindro: π · 4² · 4 = 64π cm³.', '<b>Os dois levam a mesma quantidade</b>: a altura 3 vezes maior compensa o ÷ 3 do cone.']),
+  }),
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>A lata A é um cilindro de <b>raio 4 cm</b> e <b>altura 10 cm</b>. A lata B é um cilindro de <b>raio 8 cm</b> e <b>altura 5 cm</b>.</p>',
+    ask: 'Comparando os volumes, a lata B tem',
+    correct: 'o dobro do volume de A.', wrong: ['o mesmo volume de A.', 'a metade do volume de A.', 'o quádruplo do volume de A.'],
+    sol: steps(['A: π · 4² · 10 = 160π cm³.', 'B: π · 8² · 5 = 320π cm³.', 'B tem <b>o dobro</b>: o raio dobrado quadruplica a base, e a altura pela metade divide por 2.']),
+  }),
+  () => MQ({
+    lvl: 4, topic: 'Desafio final',
+    body: '<p>Um aquário tem a forma de prisma de base quadrada, com <b>40 cm de lado</b>, e está com água até <b>25 cm</b> de altura. Uma pedra decorativa é colocada dentro e fica totalmente submersa; a água sobe para <b>27 cm</b>.</p>',
+    ask: 'Qual é o volume da pedra?',
+    correct: '3 200 cm³', wrong: ['43 200 cm³', '1 600 cm³', '80 cm³'],
+    sol: steps(['A pedra ocupa o volume da água que subiu.', 'Volume subido: 40 · 40 · 2 = <b>3 200 cm³</b> (3,2 litros).']),
+  }),
+];
+
+const LADDER = [1000, 2000, 3000, 4000, 5000, 10000, 20000, 30000, 40000, 50000, 100000, 200000, 300000, 400000, 500000, 1000000];
+const LEVEL_OF = (i) => (i < 5 ? 1 : i < 10 ? 2 : i < 15 ? 3 : 4);
+const POOL = { 1: L1, 2: L2, 3: L3, 4: FINAL };
+/* sorteia uma questão do nível, evitando repetir o mesmo modelo na partida */
+function drawQuestion(lvl, used) {
+  const pool = POOL[lvl];
+  const free = pool.filter((f) => !used.has(f));
+  for (let t = 0; t < 30; t++) {
+    const f = pick(free.length ? free : pool);
+    const q = f();
+    if (q) { used.add(f); return q; }
+  }
+  return null;
+}
+
+(function () {
+  'use strict';
+  const KEY = 'show-geo-9ano-v1';
+  const TURMAS = ['F91', 'F92'];
+  const PIN_HASH = 2392177968;
+  const $app = document.getElementById('app');
+  const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+  function fnv(str) { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); } return h >>> 0; }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const money = (v) => (v >= 1000000 ? 'R$ 1 MILHÃO' : 'R$ ' + v.toLocaleString('pt-BR'));
+  const moneyS = (v) => (v >= 1000000 ? '1 milhão' : v >= 1000 ? `${v / 1000} mil` : String(v));
+  const L = 'ABCD';
+
+  /* ---------- armazenamento ---------- */
+  const store = {
+    get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } },
+    set(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { /* sem armazenamento */ } },
+  };
+  let S = Object.assign({ hall: [], last: null }, store.get());
+  const save = () => store.set(S);
+
+  /* ---------- estado da partida ---------- */
+  let G = null;
+  let screen = 'home';
+  let modal = null;
+  let projection = false;
+
+  function newGame(name, turma) {
+    G = { name, turma, i: 0, used: new Set(), q: null, pulos: 3, cartas: false, univ: false, placas: false, removed: new Set(), sel: null, phase: 'ask', hint: null, hits: 0, start: Date.now() };
+    G.q = drawQuestion(LEVEL_OF(0), G.used);
+  }
+  const vals = () => {
+    const acertar = LADDER[G.i];
+    const parar = G.i > 0 ? LADDER[G.i - 1] : 0;
+    const errar = G.i === 15 ? 0 : Math.floor(parar / 2);
+    return { acertar, parar, errar };
+  };
+
+  /* ---------- telas ---------- */
+  const logo = () => (typeof IMG !== 'undefined' && IMG.logo ? `<img class="logo" src="${IMG.logo.uri}" alt="Curso G9">` : '');
+  function homeView() {
+    const lastName = (S.last && S.last.name) || '';
+    const lastT = (S.last && S.last.turma) || '';
+    return `<main class="home">
+      <div class="spot" aria-hidden="true"></div>
+      <header class="home-top">${logo()}<button class="ghost sm" data-act="teacher">Área do professor</button></header>
+      <section class="hero">
+        <p class="kicker">Geometria Espacial · 9º ano</p>
+        <h1><span>Show do</span> <em>Milhão</em></h1>
+        <p class="lead">16 perguntas inéditas sobre prismas, pirâmides, cilindros e cones. Acerte todas e chegue ao <b>R$ 1 milhão</b> (de mentirinha!).</p>
+        <form class="enter" data-form="start" autocomplete="off">
+          <label>Seu nome<input name="nome" maxlength="40" required value="${esc(lastName)}" placeholder="Nome e sobrenome"></label>
+          <fieldset><legend>Turma</legend><div class="seg">${TURMAS.map((t) => `<label><input type="radio" name="turma" value="${t}" ${t === lastT ? 'checked' : ''} required><span>${t}</span></label>`).join('')}</div></fieldset>
+          <button class="gold big" type="submit">Começar o jogo</button>
+        </form>
+      </section>
+      <section class="rules">
+        <h2>Como funciona</h2>
+        <ul>
+          <li><b>Errar</b> faz você sair com metade do que já garantiu. Na pergunta do milhão, errar zera tudo.</li>
+          <li><b>Parar</b> garante o prêmio acumulado até ali.</li>
+          <li><b>Ajudas</b>: 3 pulos, cartas, universitários e placas, uma vez cada.</li>
+          <li>As medidas mudam a cada partida: dá para jogar de novo e treinar.</li>
+        </ul>
+        <button class="ghost" data-act="hall">Hall da fama</button>
+      </section>
+    </main>`;
+  }
+
+  function ladderView() {
+    return `<ol class="ladder" aria-label="Escada de prêmios">${LADDER.map((v, k) => {
+      const cls = k === G.i ? 'now' : k < G.i ? 'done' : '';
+      const mark = k === 4 || k === 9 || k === 14 ? ' mark' : '';
+      return `<li class="${cls}${mark}${k === 15 ? ' top' : ''}"><span class="n">${k + 1}</span><span class="v">${moneyS(v)}</span></li>`;
+    }).reverse().join('')}</ol>`;
+  }
+
+  function helpsView() {
+    const ph = G.phase !== 'ask';
+    const fin = G.i === 15;
+    const b = (act, label, ico, off, extra) => `<button class="help" data-act="${act}" ${off ? 'disabled' : ''}><span class="ico" aria-hidden="true">${ico}</span><span>${label}${extra || ''}</span></button>`;
+    return `<div class="helps" role="group" aria-label="Ajudas">
+      ${b('pular', 'Pular', '⤼', ph || fin || G.pulos === 0, ` <small>${G.pulos}×</small>`)}
+      ${b('cartas', 'Cartas', '♠', ph || G.cartas)}
+      ${b('univ', 'Universitários', '🎓', ph || G.univ)}
+      ${b('placas', 'Placas', '▮▮', ph || G.placas)}
+    </div>`;
+  }
+
+  function gameView() {
+    const q = G.q;
+    const v = vals();
+    const lvlName = ['', 'Fácil', 'Médio', 'Difícil', 'Pergunta do milhão'][q.lvl];
+    const opts = q.opts.map((o, k) => {
+      let cls = 'opt';
+      if (G.removed.has(k)) cls += ' gone';
+      if (G.sel === k) cls += ' sel';
+      if (G.phase === 'reveal') { if (k === q.ans) cls += ' right'; else if (k === G.sel) cls += ' wrong'; }
+      const dis = G.phase !== 'ask' || G.removed.has(k);
+      return `<button class="${cls}" data-act="pick" data-k="${k}" ${dis ? 'disabled' : ''}><span class="let">${L[k]}</span><span class="txt">${o}</span></button>`;
+    }).join('');
+    let after = '';
+    if (G.phase === 'reveal') {
+      const ok = G.sel === q.ans;
+      after = `<section class="verdict ${ok ? 'ok' : 'no'}" aria-live="polite">
+        <h3>${ok ? (G.i === 15 ? 'Você ganhou o milhão!' : `Certa resposta! ${money(v.acertar)}`) : `Que pena! A resposta certa era ${L[q.ans]}.`}</h3>
+        <details ${ok ? '' : 'open'}><summary>Ver a resolução</summary>${q.sol}</details>
+        <button class="gold" data-act="${ok ? (G.i === 15 ? 'finishWin' : 'next') : 'finishLose'}">${ok ? (G.i === 15 ? 'Ver resultado' : 'Próxima pergunta') : 'Ver resultado'}</button>
+      </section>`;
+    }
+    return `<main class="game ${q.lvl === 4 ? 'final' : ''}">
+      <header class="bar">
+        <div class="who"><b>${esc(G.name)}</b> <span>${esc(G.turma)}</span></div>
+        <div class="qn">Pergunta <b>${G.i + 1}</b> de 16 · ${lvlName}</div>
+        <button class="ghost sm" data-act="quit">Sair</button>
+      </header>
+      <div class="stage">
+        <section class="qbox">
+          <p class="topic">${esc(q.topic)}</p>
+          <div class="qcard">${q.body}${q.fig}<p class="ask">${q.ask}</p></div>
+          ${G.hint ? `<div class="hintbox" aria-live="polite">${G.hint}</div>` : ''}
+          <div class="opts">${opts}</div>
+          ${after}
+        </section>
+        <aside class="side">
+          <div class="money" aria-label="Valores">
+            <div class="m err"><span>Errar</span><b>${moneyS(v.errar)}</b></div>
+            <div class="m stop"><span>Parar</span><b>${moneyS(v.parar)}</b></div>
+            <div class="m hit"><span>Acertar</span><b>${moneyS(v.acertar)}</b></div>
+          </div>
+          ${helpsView()}
+          <button class="ghost stopbtn" data-act="stop" ${G.phase !== 'ask' ? 'disabled' : ''}>Parar e levar ${moneyS(v.parar)}</button>
+          ${ladderView()}
+        </aside>
+      </div>
+    </main>`;
+  }
+
+  function endView() {
+    const r = G.result;
+    const msg = r.prize >= 1000000 ? 'Milionário da Geometria Espacial!' : r.prize >= 100000 ? 'Que jogo! Você foi longe.' : r.prize >= 10000 ? 'Bom jogo! Revise as resoluções e tente de novo.' : 'Jogo de aquecimento. As medidas mudam: tente de novo!';
+    return `<main class="end">
+      <div class="spot" aria-hidden="true"></div>
+      <p class="kicker">${esc(G.name)} · ${esc(G.turma)}</p>
+      <h1 class="prize">${money(r.prize)}</h1>
+      <p class="lead">${msg}</p>
+      <dl class="stats"><div><dt>Acertos</dt><dd>${r.hits}</dd></div><div><dt>Chegou até</dt><dd>Pergunta ${r.reached}</dd></div><div><dt>Como terminou</dt><dd>${r.how}</dd></div></dl>
+      <div class="row">
+        <button class="gold" data-act="again">Jogar de novo</button>
+        <button class="ghost" data-act="copy">Copiar resultado</button>
+        <button class="ghost" data-act="hall">Hall da fama</button>
+      </div>
+    </main>`;
+  }
+
+  function hallList(rows) {
+    if (!rows.length) return '<p class="empty">Ninguém jogou neste computador ainda.</p>';
+    return `<ol class="hall">${rows.map((h, k) => `<li><span class="pos">${k + 1}º</span><span class="nm">${esc(h.name)} <small>${esc(h.turma)}</small></span><span class="pz">${moneyS(h.prize)}</span><span class="dt">${esc(h.date)}</span></li>`).join('')}</ol>`;
+  }
+  const sortedHall = () => S.hall.slice().sort((a, b) => b.prize - a.prize || b.hits - a.hits || a.t - b.t);
+  function hallView() {
+    return `<main class="page">
+      <header class="bar"><h2>Hall da fama</h2><button class="ghost sm" data-act="home">Voltar</button></header>
+      <p class="note">Melhores resultados jogados neste computador.</p>
+      ${hallList(sortedHall().slice(0, 20))}
+    </main>`;
+  }
+  function teacherView() {
+    const by = (t) => sortedHall().filter((h) => h.turma === t);
+    return `<main class="page">
+      <header class="bar"><h2>Área do professor</h2><button class="ghost sm" data-act="home">Voltar</button></header>
+      <div class="tcards">
+        <section><h3>Modo projeção</h3><p>Aumenta letras e figuras para jogar com a turma no projetor. A turma vota e você clica na alternativa.</p>
+          <button class="gold" data-act="proj">${projection ? 'Desligar' : 'Ligar'} modo projeção</button></section>
+        <section><h3>Partida da turma</h3><p>Começa um jogo com o nome “Turma” para fazer coletivamente.</p>
+          <div class="row">${TURMAS.map((t) => `<button class="ghost" data-act="classgame" data-t="${t}">Jogar com a ${t}</button>`).join('')}</div></section>
+      </div>
+      ${TURMAS.map((t) => `<h3 class="th">${t}</h3>${hallList(by(t))}`).join('')}
+      <button class="ghost danger" data-act="clear">Apagar o hall da fama deste computador</button>
+    </main>`;
+  }
+
+  function modalView() {
+    if (!modal) return '';
+    const m = modal;
+    let inner = '';
+    if (m.type === 'confirm') inner = `<h3>Está certo disso?</h3><p>Você escolheu <b>${L[G.sel]}</b>.</p><div class="row"><button class="gold" data-act="yes">Sim, estou certo</button><button class="ghost" data-act="no">Não, quero pensar</button></div>`;
+    if (m.type === 'stop') inner = `<h3>Quer mesmo parar?</h3><p>Você leva <b>${money(vals().parar)}</b> para casa.</p><div class="row"><button class="gold" data-act="stopYes">Sim, parar</button><button class="ghost" data-act="close">Continuar jogando</button></div>`;
+    if (m.type === 'quit') inner = `<h3>Sair da partida?</h3><p>O jogo atual não será salvo.</p><div class="row"><button class="gold" data-act="quitYes">Sair</button><button class="ghost" data-act="close">Voltar ao jogo</button></div>`;
+    if (m.type === 'cards') {
+      inner = `<h3>Escolha uma carta</h3><p>Rei elimina nenhuma, Ás elimina 1, 2 elimina 2 e 3 elimina 3 alternativas erradas.</p>
+      <div class="cards">${m.deck.map((c, k) => `<button class="card ${m.open === k ? 'open' : ''} ${m.open != null && m.open !== k ? 'dim' : ''}" data-act="card" data-k="${k}" ${m.open != null ? 'disabled' : ''} aria-label="Carta ${k + 1}"><span class="back">G9</span><span class="face">${c.s}<small>${c.n === 0 ? 'nenhuma' : c.n === 1 ? 'elimina 1' : `elimina ${c.n}`}</small></span></button>`).join('')}</div>
+      ${m.open != null ? '<div class="row"><button class="gold" data-act="close">Voltar à pergunta</button></div>' : ''}`;
+    }
+    if (m.type === 'pin') inner = `<h3>Área do professor</h3><form data-form="pin" autocomplete="off"><label>Senha<input name="pin" type="password" required autofocus></label>${m.err ? '<p class="err">Senha incorreta.</p>' : ''}<div class="row"><button class="gold" type="submit">Entrar</button><button class="ghost" type="button" data-act="close">Cancelar</button></div></form>`;
+    return `<div class="veil" data-act="${m.type === 'cards' && m.open == null ? '' : 'veil'}"><div class="modal" role="dialog" aria-modal="true">${inner}</div></div>`;
+  }
+
+  function render() {
+    document.body.classList.toggle('proj', projection);
+    let html = '';
+    if (screen === 'home') html = homeView();
+    else if (screen === 'game') html = gameView();
+    else if (screen === 'end') html = endView();
+    else if (screen === 'hall') html = hallView();
+    else if (screen === 'teacher') html = teacherView();
+    $app.innerHTML = html + modalView();
+    const f = $app.querySelector('.modal input');
+    if (f) f.focus();
+  }
+  const go = (s) => { screen = s; modal = null; render(); window.scrollTo(0, 0); };
+
+  /* ---------- ajudas ---------- */
+  const wrongIdx = () => [0, 1, 2, 3].filter((k) => k !== G.q.ans && !G.removed.has(k));
+  function useUniv() {
+    const acc = [0, 0.9, 0.75, 0.6, 0.5][G.q.lvl];
+    const live = [0, 1, 2, 3].filter((k) => !G.removed.has(k));
+    const names = ['Ana (Engenharia)', 'Caio (Arquitetura)', 'Bia (Matemática)'];
+    const ops = names.map((n) => {
+      const k = Math.random() < acc ? G.q.ans : pick(live.filter((x) => x !== G.q.ans).concat(G.q.ans));
+      return `<li><b>${n}</b>: “Acho que é a <b>${L[k]}</b>.”</li>`;
+    });
+    G.univ = true;
+    G.hint = `<p class="hk">Universitários</p><ul class="univ">${ops.join('')}</ul>`;
+  }
+  function usePlacas() {
+    const acc = [0, 0.7, 0.55, 0.42, 0.35][G.q.lvl];
+    const live = [0, 1, 2, 3].filter((k) => !G.removed.has(k));
+    const w = {};
+    let rest = 1 - acc;
+    live.forEach((k) => { w[k] = k === G.q.ans ? acc : 0; });
+    const others = live.filter((k) => k !== G.q.ans);
+    others.forEach((k, j) => { const share = j === others.length - 1 ? rest : rest * (0.25 + Math.random() * 0.5); w[k] += share; rest -= share; });
+    if (!others.length) w[G.q.ans] = 1;
+    // ruído: às vezes a plateia se engana
+    const pc = {};
+    let tot = 0;
+    live.forEach((k) => { pc[k] = Math.max(1, Math.round((w[k] + (Math.random() - 0.5) * 0.12) * 100)); tot += pc[k]; });
+    live.forEach((k) => { pc[k] = Math.round((pc[k] * 100) / tot); });
+    G.placas = true;
+    G.hint = `<p class="hk">Placas da plateia</p><div class="bars">${[0, 1, 2, 3].map((k) => `<div class="barc"><div class="bv" style="--p:${pc[k] || 0}%"><span>${pc[k] || 0}%</span></div><b>${L[k]}</b></div>`).join('')}</div>`;
+  }
+  function openCards() {
+    const deck = [{ s: 'K', n: 0 }, { s: 'A', n: 1 }, { s: '2', n: 2 }, { s: '3', n: 3 }].sort(() => Math.random() - 0.5);
+    modal = { type: 'cards', deck, open: null };
+    G.cartas = true;
+  }
+  function flipCard(k) {
+    const c = modal.deck[k];
+    modal.open = k;
+    const w = wrongIdx().sort(() => Math.random() - 0.5).slice(0, c.n);
+    w.forEach((x) => G.removed.add(x));
+  }
+
+  /* ---------- fluxo ---------- */
+  function finish(prize, how) {
+    G.result = { prize, how, hits: G.hits, reached: G.i + 1 };
+    const d = new Date();
+    S.hall.push({ name: G.name, turma: G.turma, prize, hits: G.hits, t: d.getTime(), date: d.toLocaleDateString('pt-BR') });
+    if (S.hall.length > 300) S.hall = sortedHall().slice(0, 300);
+    save();
+    go('end');
+  }
+  function reveal() {
+    G.phase = 'suspense';
+    modal = null;
+    render();
+    setTimeout(() => {
+      G.phase = 'reveal';
+      if (G.sel === G.q.ans) G.hits++;
+      render();
+      const v = $app.querySelector('.verdict');
+      if (v && v.scrollIntoView) v.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 1400);
+  }
+  function nextQ() {
+    G.i++;
+    G.q = drawQuestion(LEVEL_OF(G.i), G.used);
+    G.removed = new Set(); G.sel = null; G.phase = 'ask'; G.hint = null;
+    render();
+    window.scrollTo(0, 0);
+  }
+
+  function copyText() {
+    const r = G.result;
+    const t = `Show do Milhão · Geometria Espacial\n${G.name} (${G.turma})\nPrêmio: ${money(r.prize)}\nAcertos: ${r.hits} · chegou até a pergunta ${r.reached}\n${new Date().toLocaleString('pt-BR')}`;
+    const done = () => { const b = $app.querySelector('[data-act="copy"]'); if (b) b.textContent = 'Copiado!'; };
+    if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, () => window.prompt('Copie o resultado:', t));
+    else window.prompt('Copie o resultado:', t);
+  }
+
+  $app.addEventListener('click', (e) => {
+    const el = e.target.closest('[data-act]');
+    if (!el) return;
+    const a = el.dataset.act;
+    if (a === 'veil') { if (e.target === el && modal && modal.type !== 'cards') { modal = null; render(); } else if (e.target === el && modal && modal.type === 'cards' && modal.open != null) { modal = null; render(); } return; }
+    if (!a) return;
+    switch (a) {
+      case 'teacher': modal = { type: 'pin' }; render(); break;
+      case 'hall': go('hall'); break;
+      case 'home': go('home'); break;
+      case 'close': modal = null; render(); break;
+      case 'pick': if (G.phase !== 'ask') return; G.sel = +el.dataset.k; modal = { type: 'confirm' }; render(); break;
+      case 'yes': reveal(); break;
+      case 'no': G.sel = null; modal = null; render(); break;
+      case 'next': nextQ(); break;
+      case 'finishWin': finish(1000000, 'Acertou tudo!'); break;
+      case 'finishLose': finish(vals().errar, 'Errou'); break;
+      case 'stop': modal = { type: 'stop' }; render(); break;
+      case 'stopYes': finish(vals().parar, 'Parou'); break;
+      case 'quit': modal = { type: 'quit' }; render(); break;
+      case 'quitYes': G = null; go('home'); break;
+      case 'pular': if (G.pulos > 0 && G.i < 15) { G.pulos--; G.q = drawQuestion(LEVEL_OF(G.i), G.used); G.removed = new Set(); G.hint = null; render(); } break;
+      case 'cartas': openCards(); render(); break;
+      case 'card': flipCard(+el.dataset.k); render(); break;
+      case 'univ': useUniv(); render(); break;
+      case 'placas': usePlacas(); render(); break;
+      case 'again': newGame(G.name, G.turma); go('game'); break;
+      case 'copy': copyText(); break;
+      case 'proj': projection = !projection; render(); break;
+      case 'classgame': newGame('Turma', el.dataset.t); projection = true; go('game'); break;
+      case 'clear': if (window.confirm('Apagar todos os resultados deste computador?')) { S.hall = []; save(); render(); } break;
+      default: break;
+    }
+  });
+  $app.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const f = e.target;
+    if (f.dataset.form === 'start') {
+      const name = f.nome.value.trim().replace(/\s+/g, ' ');
+      const tr = f.querySelector('input[name="turma"]:checked');
+      if (!name || !tr) return;
+      S.last = { name, turma: tr.value }; save();
+      newGame(name, tr.value);
+      go('game');
+    }
+    if (f.dataset.form === 'pin') {
+      if (fnv('missao:' + norm(f.pin.value)) === PIN_HASH) go('teacher');
+      else { modal = { type: 'pin', err: true }; render(); }
+    }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal && !(modal.type === 'cards' && modal.open == null)) { modal = null; render(); return; }
+    if (screen === 'game' && !modal && G && G.phase === 'ask') {
+      const k = 'abcd'.indexOf(e.key.toLowerCase());
+      if (k >= 0 && !G.removed.has(k) && !(e.target && e.target.tagName === 'INPUT')) { G.sel = k; modal = { type: 'confirm' }; render(); }
+    }
+  });
+  render();
+}());
+
+</script>
+</body>
+</html>
