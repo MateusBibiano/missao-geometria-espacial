@@ -24,3 +24,9 @@ Jogo com cara de aeroporto: check-in com cartão de embarque, painel de partidas
 **Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/volta/
 
 Mapa do Brasil: [SVG Maps](https://github.com/VictorCazanave/svg-maps) (CC BY 4.0). 3D: [three.js](https://threejs.org) (MIT).
+
+## O Caso da Pirâmide Dourada (detetive)
+
+O troféu da Feira de Matemática sumiu da biblioteca. O aluno vasculha a cena escura com uma lanterna, encontra 5 provas, analisa cada uma num laboratório 3D (volume da pirâmide, teste de encaixe, deslocamento de água, volume do cone, planificação), monta o quadro de cortiça com barbante e faz a acusação. Personagens fictícios.
+
+**Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/detetive/

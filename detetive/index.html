@@ -1,0 +1,1329 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>O Caso da Pirâmide Dourada · Geometria Espacial</title>
+<meta name="description" content="Jogo de detetive: vasculhe a cena com a lanterna, analise as provas em laboratórios 3D de geometria espacial e descubra quem levou o troféu. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta name="theme-color" content="#1E1A17">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="O Caso da Pirâmide Dourada · Geometria Espacial">
+<meta property="og:description" content="Jogo de detetive: vasculhe a cena com a lanterna, analise as provas em laboratórios 3D de geometria espacial e descubra quem levou o troféu. Turmas F91 e F92 · Prof. Mateus Bibiano.">
+<meta property="og:url" content="https://mateusbibiano.github.io/missao-geometria-espacial/detetive/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%231E1A17'/%3E%3Ccircle cx='27' cy='27' r='14' fill='none' stroke='%23E3C98F' stroke-width='6'/%3E%3Cpath d='M37 37l14 14' stroke='%23C8102E' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Bitter:ital,wght@0,400;0,700;1,400&family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap">
+<style>
+:root {
+  --desk: #1E1A17; --desk2: #2A231E; --paper: #F3EAD3; --manila: #E3C98F; --manila2: #D4B573; --ink: #1F1B16; --mute: #6F6455;
+  --red: #C8102E; --red2: #A00C24; --cork: #B98A5A; --blue: #2457F5; --ok: #2E7D4F;
+  --ft: 'Special Elite', 'Courier New', monospace; --fc: 'Courier Prime', 'Courier New', monospace; --fb: 'Bitter', Georgia, serif; --fn: 'Abril Fatface', Georgia, serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+html { background: #120F0D; }
+body { background: radial-gradient(1100px 700px at 50% 0%, #3A302A 0%, var(--desk) 60%, #120F0D 100%) fixed, var(--desk); color: var(--paper); font-family: var(--fb); font-size: 16px; line-height: 1.55; min-height: 100vh; }
+body::before { content: ''; position: fixed; inset: 0; pointer-events: none; background: repeating-linear-gradient(90deg, rgba(255,255,255,.012) 0 2px, transparent 2px 9px); z-index: 0; }
+#app { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 0 16px 48px; }
+button { font: inherit; cursor: pointer; color: inherit; }
+button:disabled { cursor: default; }
+:focus-visible { outline: 3px solid #FFD36B; outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--ft); font-weight: 400; line-height: 1.15; margin: 0 0 .5em; }
+.muted { color: var(--mute); }
+.center { text-align: center; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.row.center { justify-content: center; }
+.kick { margin: 0; font-family: var(--fc); font-size: 12px; letter-spacing: .14em; color: var(--mute); text-transform: uppercase; }
+
+.btn { border: 0; border-radius: 3px; padding: 11px 18px; font-family: var(--ft); font-size: 16px; letter-spacing: .02em; transition: transform .08s, background .15s; }
+.btn.red { background: var(--red); color: #fff; box-shadow: 0 3px 0 var(--red2); }
+.btn.red:hover:not(:disabled) { background: #DC1A3A; }
+.btn.red:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 1px 0 var(--red2); }
+.btn.ghost { background: transparent; border: 2px solid currentColor; }
+.btn.ghost:hover:not(:disabled) { background: rgba(243,234,211,.1); }
+.btn.big { font-size: 20px; padding: 14px 26px; }
+.btn.sm { padding: 6px 12px; font-size: 14px; }
+.btn:disabled { opacity: .4; }
+.btn small { font-family: var(--fc); opacity: .75; }
+.btn.danger { color: #FF8A8A; }
+.lnk { background: none; border: 0; color: var(--manila); font-family: var(--fc); text-decoration: underline; text-underline-offset: 3px; }
+.lnk2 { background: none; border: 0; color: var(--red); font-weight: 700; text-decoration: underline; padding: 0; }
+
+/* barra */
+.top { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-bottom: 1px dashed rgba(243,234,211,.25); margin-bottom: 18px; flex-wrap: wrap; }
+.top .logo { height: 30px; width: auto; filter: brightness(0) invert(.92) sepia(.3); }
+.case-no { font-family: var(--ft); letter-spacing: .1em; color: var(--manila); margin-right: auto; }
+.tabs-top { display: flex; gap: 4px; margin-right: auto; }
+.tabb { background: none; border: 0; padding: 6px 12px; font-family: var(--ft); color: #CDBFA6; border-bottom: 3px solid transparent; }
+.tabb.on { color: #fff; border-color: var(--red); }
+.tabb:hover { color: #fff; }
+.who { font-family: var(--fc); font-size: 14px; color: #CDBFA6; }
+.who b { color: #FFD36B; }
+
+/* capa */
+.folder { position: relative; background: linear-gradient(170deg, var(--manila) 0%, var(--manila2) 100%); color: var(--ink); border-radius: 4px 10px 10px 10px; padding: 46px clamp(18px, 5vw, 60px) 36px; margin: 34px 0 24px; box-shadow: 0 30px 60px rgba(0,0,0,.5), inset 0 0 80px rgba(120,80,20,.25); animation: drop .7s cubic-bezier(.2,.8,.3,1); }
+@keyframes drop { from { transform: translateY(-30px) rotate(-2deg); opacity: 0; } }
+.tabtag { position: absolute; top: -26px; left: 0; background: var(--manila); padding: 4px 20px 8px; border-radius: 8px 8px 0 0; font-family: var(--ft); letter-spacing: .2em; font-size: 13px; color: var(--red2); }
+.stamp-top { position: absolute; right: 28px; top: 24px; border: 3px solid var(--red); color: var(--red); font-family: var(--ft); padding: 4px 12px; transform: rotate(8deg); letter-spacing: .14em; opacity: .85; }
+.folder h1 { font-size: clamp(30px, 5.5vw, 58px); margin-bottom: 14px; }
+.folder h1 span { font-family: var(--fn); font-size: 1.15em; color: var(--red2); letter-spacing: .01em; }
+.type { font-family: var(--fc); font-size: 18px; max-width: 60ch; }
+.sheet { margin-top: 22px; background: var(--paper); border-radius: 2px; padding: 18px; width: min(460px, 100%); display: grid; gap: 12px; box-shadow: 0 8px 20px rgba(0,0,0,.18); transform: rotate(-1deg); background-image: repeating-linear-gradient(0deg, transparent 0 27px, rgba(36,87,245,.12) 27px 28px); }
+.sheet-h { margin: 0; font-family: var(--ft); letter-spacing: .14em; color: var(--red2); }
+.sheet label { display: grid; gap: 4px; font-family: var(--fc); font-weight: 700; }
+input:not([type=radio]):not([type=range]) { font-family: var(--ft); font-size: 20px; padding: 8px 4px; border: 0; border-bottom: 2px solid var(--ink); background: transparent; color: var(--ink); border-radius: 0; }
+input:focus { outline: none; border-color: var(--red); }
+fieldset { border: 0; padding: 0; margin: 0; }
+legend { font-family: var(--fc); font-weight: 700; margin-bottom: 4px; }
+.seg { display: flex; gap: 8px; }
+.seg label { flex: 1; }
+.seg input { position: absolute; opacity: 0; }
+.seg span { display: block; text-align: center; padding: 8px; border: 2px solid var(--ink); font-family: var(--ft); color: var(--ink); }
+.seg input:checked + span { background: var(--ink); color: var(--paper); }
+.seg input:focus-visible + span { outline: 3px solid var(--red); }
+.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; padding: 0; list-style: none; counter-reset: h; }
+.how li { counter-increment: h; background: rgba(243,234,211,.06); border: 1px dashed rgba(243,234,211,.25); padding: 12px 14px 12px 50px; position: relative; color: #E3D7BE; }
+.how li::before { content: counter(h); position: absolute; left: 12px; top: 10px; font-family: var(--fn); font-size: 28px; color: var(--red); }
+.how b { color: #fff; }
+
+/* memorando */
+.memo { background: var(--paper); color: var(--ink); padding: clamp(18px, 4vw, 40px); border-radius: 2px; box-shadow: 0 30px 60px rgba(0,0,0,.5); transform: rotate(.4deg); position: relative; }
+.memo::before { content: ''; position: absolute; top: -14px; left: 50%; width: 120px; height: 30px; background: rgba(240,230,190,.7); transform: translateX(-50%) rotate(-3deg); box-shadow: 0 2px 4px rgba(0,0,0,.1); }
+.memo-h { font-family: var(--ft); color: var(--red2); letter-spacing: .16em; margin: 0 0 10px; }
+.memo-t { font-family: var(--fc); font-size: 19px; min-height: 8em; }
+.typing::after { content: '▌'; animation: blink .8s steps(2) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+.suspects-row { display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; margin: 14px 0 22px; }
+.suspects-row figure { margin: 0; background: #fff; padding: 6px 6px 10px; box-shadow: 0 6px 14px rgba(0,0,0,.2); text-align: center; width: 112px; transform: rotate(var(--r, -2deg)); }
+.suspects-row figure:nth-child(even) { --r: 2deg; }
+.suspects-row figcaption { font-family: var(--ft); font-size: 13px; line-height: 1.2; margin-top: 4px; }
+.suspects-row small { display: block; font-family: var(--fb); font-size: 10px; color: var(--mute); }
+.avatar { display: block; }
+
+/* cena */
+.scene-grid { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 16px; align-items: start; }
+.scene-box { position: relative; border: 10px solid #0E0C0A; border-radius: 6px; box-shadow: 0 20px 50px rgba(0,0,0,.6); background: #000; }
+svg.scene { width: 100%; height: auto; display: block; cursor: crosshair; touch-action: manipulation; }
+.scene .hot { cursor: crosshair; }
+.scene .hc { fill: transparent; }
+.scene .hot.got .hc { stroke: #FFD36B; stroke-width: 2; stroke-dasharray: 4 5; }
+.scene .decoy { fill: transparent; cursor: crosshair; }
+.scene-tip { position: absolute; left: 10px; bottom: 8px; margin: 0; font-family: var(--fc); font-size: 13px; color: #CDBFA6; background: rgba(0,0,0,.55); padding: 3px 8px; pointer-events: none; }
+.toast { position: absolute; left: 50%; top: 12px; transform: translate(-50%, -8px); background: var(--paper); color: var(--ink); font-family: var(--fc); padding: 8px 14px; box-shadow: 0 8px 20px rgba(0,0,0,.4); opacity: 0; transition: .25s; pointer-events: none; max-width: 90%; }
+.toast.on { opacity: 1; transform: translate(-50%, 0); }
+.checklist { background: var(--paper); color: var(--ink); padding: 16px; box-shadow: 0 16px 30px rgba(0,0,0,.4); transform: rotate(1deg); background-image: repeating-linear-gradient(0deg, transparent 0 25px, rgba(36,87,245,.14) 25px 26px); }
+.cl-h { font-family: var(--ft); color: var(--red2); margin: 0 0 8px; letter-spacing: .08em; }
+.checklist ol { list-style: none; padding: 0; margin: 0 0 12px; font-family: var(--fc); }
+.checklist li { padding: 2px 0; }
+.checklist li span { color: #A99C85; letter-spacing: .2em; }
+.checklist li.ok { text-decoration: none; }
+.cl-tip { font-size: 13px; color: var(--mute); font-style: italic; }
+
+/* quadro */
+.board-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; color: #CDBFA6; }
+.board-head p { margin: 0; max-width: 70ch; font-size: 14px; }
+.miss { font-family: var(--fc); color: #FFD36B; margin: 0 0 8px; }
+.cork { position: relative; height: 680px; border: 14px solid #5A3B22; border-radius: 6px; background-color: var(--cork); background-image: radial-gradient(rgba(80,50,20,.35) 1px, transparent 1.5px), radial-gradient(rgba(255,230,190,.25) 1px, transparent 1.5px); background-size: 7px 7px, 11px 11px; background-position: 0 0, 3px 5px; box-shadow: inset 0 0 60px rgba(60,30,10,.6), 0 20px 50px rgba(0,0,0,.5); overflow: hidden; }
+.yarn { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.yarn path { fill: none; stroke-width: 2.6; stroke-linecap: round; filter: drop-shadow(0 2px 1px rgba(0,0,0,.35)); }
+.yarn-in { stroke: var(--red); }
+.yarn-out { stroke: #F3EAD3; stroke-dasharray: 6 6; opacity: .8; }
+.yarn-note { stroke: #2C5BB8; stroke-dasharray: 2 5; }
+.pin-card { position: absolute; width: 15.5%; min-width: 128px; transform: rotate(var(--rot)); transition: transform .12s, box-shadow .12s; cursor: grab; user-select: none; touch-action: none; z-index: 2; color: var(--ink); }
+.pin-card:hover { transform: rotate(0) scale(1.03); z-index: 4; }
+.pin-card.drag { cursor: grabbing; transform: rotate(0) scale(1.06); z-index: 5; box-shadow: 0 18px 30px rgba(0,0,0,.45) !important; }
+.pushpin { position: absolute; top: -8px; left: 50%; width: 18px; height: 18px; border-radius: 50%; transform: translateX(-50%); background: radial-gradient(circle at 35% 35%, #FF6B6B, #A00C24 70%); box-shadow: 0 3px 3px rgba(0,0,0,.4); z-index: 2; }
+.polaroid { background: #FBF8F1; padding: 8px 8px 10px; box-shadow: 0 8px 16px rgba(0,0,0,.35); text-align: center; }
+.polaroid .avatar { width: 100%; height: auto; }
+.polaroid b { display: block; font-family: var(--ft); font-weight: 400; font-size: 15px; margin-top: 6px; line-height: 1.15; }
+.polaroid small { display: block; font-size: 11px; color: var(--mute); line-height: 1.25; }
+.st { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%) rotate(-14deg); font-family: var(--ft); font-size: 15px; letter-spacing: .1em; padding: 3px 8px; border: 3px solid; background: rgba(255,255,255,.75); animation: stamp .35s cubic-bezier(.2,1.6,.4,1); }
+@keyframes stamp { from { transform: translate(-50%, -50%) rotate(-14deg) scale(2.2); opacity: 0; } }
+.st.out { color: #555; border-color: #555; }
+.st.hot { color: var(--red); border-color: var(--red); }
+.polaroid.out .avatar { filter: grayscale(1) contrast(.8); opacity: .7; }
+.index { background: #FFFDF6; padding: 12px 10px 10px; box-shadow: 0 8px 16px rgba(0,0,0,.35); background-image: linear-gradient(180deg, transparent 26px, rgba(200,16,46,.5) 26px, rgba(200,16,46,.5) 27.5px, transparent 27.5px), repeating-linear-gradient(0deg, transparent 0 17px, rgba(36,87,245,.15) 17px 18px); }
+.index .num { font-family: var(--fc); font-size: 11px; letter-spacing: .12em; color: var(--red2); }
+.index b { display: block; font-family: var(--ft); font-weight: 400; font-size: 16px; margin-top: 6px; line-height: 1.15; }
+.index small { display: block; font-size: 12px; color: var(--mute); }
+.lst { display: inline-block; margin-top: 6px; font-family: var(--fc); font-size: 12px; background: var(--ink); color: #FFD36B; padding: 1px 6px; }
+.lst.ok { background: var(--ok); color: #fff; } .lst.no { background: #7A6A55; color: #fff; }
+
+/* caderno */
+.notebook { background: var(--paper); color: var(--ink); padding: clamp(18px, 4vw, 40px) clamp(18px, 4vw, 40px) clamp(18px, 4vw, 40px) 70px; box-shadow: 0 30px 60px rgba(0,0,0,.5); position: relative; background-image: linear-gradient(90deg, transparent 52px, rgba(200,16,46,.45) 52px, rgba(200,16,46,.45) 54px, transparent 54px), repeating-linear-gradient(0deg, transparent 0 27px, rgba(36,87,245,.14) 27px 28px); font-family: var(--fc); }
+.notebook h2 { font-size: 30px; }
+.notebook h3 { color: var(--red2); margin-top: 18px; }
+.notebook li { margin: 6px 0; }
+.notebook em { font-style: normal; font-weight: 700; } .notebook em.out { color: #555; } .notebook em.hot { color: var(--red); }
+
+/* laboratório */
+.lab-h { display: flex; gap: 14px; align-items: center; }
+.lab-h h2 { margin: 0; font-size: clamp(22px, 3vw, 30px); }
+.evid { font-family: var(--fc); color: #E3D7BE; background: rgba(243,234,211,.06); border-left: 4px solid var(--manila); padding: 8px 12px; margin: 12px 0; }
+.lab { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(320px, 1fr); gap: 16px; align-items: start; }
+.stage { position: relative; height: min(64vh, 560px); min-height: 330px; border-radius: 4px; overflow: hidden; border: 1px solid #000; background: radial-gradient(circle at 50% 35%, #F2EEE4, #CFC7B4 80%); box-shadow: 0 20px 40px rgba(0,0,0,.45); }
+.stage::after { content: 'LAB. PERÍCIA G9'; position: absolute; right: 10px; top: 8px; font-family: var(--fc); font-size: 11px; letter-spacing: .14em; color: rgba(31,27,22,.4); pointer-events: none; }
+.stage.shake { animation: shake .35s; }
+@keyframes shake { 20%, 60% { transform: translateX(-6px); } 40%, 80% { transform: translateX(6px); } }
+.v3d canvas { width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+.v3d-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.lbl { position: absolute; left: 0; top: 0; background: var(--ink); color: #fff; font-family: var(--fc); font-size: 13px; font-weight: 700; padding: 2px 7px; border-radius: 2px; white-space: nowrap; }
+.lbl.r { background: var(--red); } .lbl.b { background: var(--blue); }
+.lbl.fade { opacity: 0; transition: opacity .3s; } .lbl.fade.on { opacity: 1; }
+.v3d-tip { position: absolute; left: 10px; bottom: 8px; font-family: var(--fc); font-size: 12px; color: var(--mute); pointer-events: none; transition: opacity .4s; }
+.v3d-tip.gone { opacity: 0; }
+.panel { background: var(--paper); color: var(--ink); padding: 16px; display: grid; gap: 12px; box-shadow: 0 20px 40px rgba(0,0,0,.45); }
+.prompt { font-size: 16.5px; }
+.hintbox { background: #FFF3C4; border-left: 4px solid #E0A21B; padding: 8px 12px; }
+.fb:empty { display: none; }
+.fb { padding: 12px 14px; border: 2px solid; }
+.fb.warn { border-color: #CDBFA6; }
+.fb.no { border-color: var(--red); background: #FCE9EA; }
+.fb.ok { border-color: var(--ok); background: #E7F4EC; }
+.fb small { display: block; color: var(--mute); margin-top: 4px; }
+.fb-h b { font-family: var(--ft); font-weight: 400; font-size: 18px; }
+.fb.ok .fb-h b { color: var(--ok); }
+.steps { margin: 8px 0; padding-left: 22px; }
+.concl { margin: 8px 0 0; font-family: var(--fc); font-weight: 700; }
+.gact { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.gact .btn.red { margin-left: auto; }
+.gact .btn.ghost { color: var(--ink); }
+
+/* teclado */
+.kp { display: grid; gap: 8px; }
+.kp-screen { background: #121010; color: #fff; padding: 8px 14px; border-radius: 3px; }
+.kp-l { font-family: var(--fc); font-size: 11px; letter-spacing: .12em; color: #9A8E7A; text-transform: uppercase; }
+.kp-v { display: flex; align-items: baseline; gap: 4px; font-family: var(--fc); min-height: 44px; }
+.kp-num { font-size: 32px; color: #FFD36B; font-weight: 700; }
+.kp-num.empty { width: 18px; border-bottom: 3px solid #FFD36B; animation: blink 1s steps(2) infinite; }
+.kp-pi { font-size: 28px; color: #FFD36B; font-style: normal; }
+.kp-u { color: #CDBFA6; font-size: 18px; margin-left: 6px; }
+.kp-keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+.kp-keys button { padding: 9px 0; font-family: var(--fc); font-size: 21px; font-weight: 700; border: 2px solid var(--ink); background: #FFFDF6; color: var(--ink); border-radius: 3px; box-shadow: 0 3px 0 var(--ink); }
+.kp-keys button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.locked .kp-keys button, .locked button { pointer-events: none; opacity: .5; }
+
+/* encaixe */
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+.tab { position: relative; display: grid; justify-items: center; gap: 4px; padding: 6px 2px; border: 2px solid #CDBFA6; background: #FFFDF6; font-size: 11px; line-height: 1.15; text-align: center; color: var(--ink); }
+.tab.on { border-color: var(--ink); background: #FFF3C4; }
+.tab .avatar { border-radius: 50%; }
+.mk { position: absolute; top: -8px; right: -6px; width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-style: normal; font-weight: 700; color: #fff; font-size: 13px; }
+.mk.y { background: var(--ok); } .mk.n { background: var(--red); }
+.viewbtns { display: flex; gap: 6px; }
+.vb { flex: 1; padding: 8px; border: 2px solid var(--ink); background: #fff; font-family: var(--fc); font-weight: 700; color: var(--ink); }
+.vb.on { background: var(--ink); color: #FFD36B; }
+.boxtxt { margin: 0; font-size: 15px; }
+.fitq { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; font-weight: 700; }
+.fit { padding: 10px 16px; border: 2px solid var(--ink); background: #fff; font-family: var(--ft); color: var(--ink); }
+.fit.on { background: var(--ink); color: #FFD36B; }
+.btn.play { background: var(--ink); color: #FFD36B; width: 100%; }
+.range { display: grid; gap: 4px; font-weight: 700; }
+.range input { width: 100%; accent-color: var(--red); height: 30px; }
+
+/* acusação */
+.court { background: var(--paper); color: var(--ink); padding: clamp(18px, 4vw, 36px); box-shadow: 0 30px 60px rgba(0,0,0,.5); }
+.court h2 { font-size: clamp(24px, 3.4vw, 36px); }
+.acc-sus { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 18px; }
+.acc-p { background: #fff; border: 3px solid transparent; padding: 6px; display: grid; justify-items: center; gap: 4px; box-shadow: 0 6px 12px rgba(0,0,0,.15); font-family: var(--ft); color: var(--ink); }
+.acc-p .avatar { width: 100%; height: auto; }
+.acc-p.out { opacity: .55; }
+.acc-p.on { border-color: var(--red); transform: translateY(-4px); opacity: 1; }
+.acc-ev { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 14px; }
+.acc-e { text-align: left; background: #FFFDF6; border: 2px dashed #A99C85; padding: 10px; font-family: var(--ft); color: var(--ink); line-height: 1.2; }
+.acc-e span { display: block; font-family: var(--fc); font-size: 11px; color: var(--red2); letter-spacing: .1em; }
+.acc-e.on { border: 2px solid var(--red); background: #FCE9EA; }
+
+/* jornal */
+.paper { background: #F1ECDF; color: #161412; padding: clamp(16px, 4vw, 40px); box-shadow: 0 30px 60px rgba(0,0,0,.55); transform: rotate(-.6deg); animation: spinin .9s cubic-bezier(.2,.9,.3,1); background-image: radial-gradient(rgba(0,0,0,.04) 1px, transparent 1px); background-size: 4px 4px; }
+@keyframes spinin { from { transform: rotate(-200deg) scale(.2); opacity: 0; } }
+.mast { text-align: center; border-bottom: 4px double #161412; margin-bottom: 12px; }
+.mast p { margin: 0; font-family: var(--fc); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; border-bottom: 1px solid #161412; padding-bottom: 6px; }
+.mast h1 { font-family: var(--fn); font-size: clamp(44px, 9vw, 92px); margin: 6px 0 4px; letter-spacing: .01em; }
+.headline { font-family: var(--fn); font-size: clamp(26px, 4.6vw, 46px); line-height: 1.05; margin: 8px 0; }
+.deck { font-style: italic; font-size: 18px; border-bottom: 1px solid #161412; padding-bottom: 10px; }
+.cols { display: grid; grid-template-columns: 1.6fr 1fr; gap: 24px; }
+.col { column-count: 2; column-gap: 22px; text-align: justify; hyphens: auto; }
+.drop::first-letter { font-family: var(--fn); float: left; font-size: 58px; line-height: .9; margin: 4px 8px 0 0; }
+.box { border: 2px solid #161412; padding: 12px; }
+.trophy { width: 90px; display: block; margin: 0 auto 8px; }
+.box dl { margin: 0; display: grid; gap: 6px; }
+.box dl div { display: flex; justify-content: space-between; border-bottom: 1px dotted #161412; gap: 8px; }
+.box dt { font-family: var(--fc); font-size: 13px; } .box dd { margin: 0; font-weight: 700; text-align: right; }
+.code { font-family: var(--fc); text-align: center; margin: 10px 0 0; }
+.closedscr > .row { margin-top: 26px; }
+
+/* páginas */
+.page h2 { font-size: 30px; }
+.hall { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 6px; }
+.hall li { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 12px; align-items: center; padding: 8px 12px; background: var(--paper); color: var(--ink); font-family: var(--fc); }
+.hall .pos { color: var(--red); font-weight: 700; } .hall small { color: var(--mute); } .hall .dt { font-size: 12px; color: var(--mute); }
+.tcards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 18px; }
+.tcards section { background: rgba(243,234,211,.06); border: 1px dashed rgba(243,234,211,.3); padding: 16px; }
+.tcards p { color: #CDBFA6; margin-top: 0; }
+.gab { background: var(--paper); color: var(--ink); padding: 12px 16px; margin: 18px 0; }
+.gab summary { font-family: var(--ft); cursor: pointer; }
+
+/* modal */
+.veil { position: fixed; inset: 0; background: rgba(8,6,5,.7); display: grid; place-items: center; padding: 16px; z-index: 30; animation: fade .15s; }
+@keyframes fade { from { opacity: 0; } }
+.modal { width: min(520px, 100%); background: var(--paper); color: var(--ink); padding: 22px; box-shadow: 0 30px 80px rgba(0,0,0,.6); max-height: 90vh; overflow: auto; animation: drop .3s; }
+.modal h3 { font-size: 26px; margin: 2px 0 6px; }
+.modal form { display: grid; gap: 12px; }
+.modal label { display: grid; gap: 4px; font-family: var(--fc); font-weight: 700; }
+.modal .btn.ghost { color: var(--ink); }
+.evid-big { font-family: var(--fc); font-size: 17px; background: #FFFDF6; border: 1px dashed #A99C85; padding: 10px 12px; }
+.dep { display: flex; gap: 14px; align-items: center; }
+.dep .avatar { border: 6px solid #fff; box-shadow: 0 4px 10px rgba(0,0,0,.2); transform: rotate(-3deg); }
+.quote { font-family: var(--fc); font-size: 17px; min-height: 5.5em; }
+.carry { background: #FFFDF6; border-left: 4px solid var(--manila2); padding: 8px 10px; }
+.st-line { font-family: var(--ft); } .st-line.out { color: #555; } .st-line.hot { color: var(--red); }
+.err { color: var(--red); margin: 0; }
+
+body.proj #app { max-width: 1560px; }
+body.proj .prompt { font-size: 21px; }
+body.proj .stage { height: 70vh; }
+
+@media (max-width: 980px) {
+  .scene-grid, .lab { grid-template-columns: 1fr; }
+  .checklist { transform: none; }
+  .cols { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .cork { height: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 22px 14px; padding: 22px 12px; }
+  .pin-card { position: relative !important; left: auto !important; top: auto !important; width: auto; min-width: 0; cursor: pointer; }
+  .yarn { display: none; }
+  .tabs-top { order: 3; width: 100%; }
+  .who { margin-left: auto; }
+  .acc-sus { grid-template-columns: repeat(3, 1fr); }
+  .acc-ev { grid-template-columns: 1fr 1fr; }
+  .tabs { grid-template-columns: repeat(5, 1fr); }
+  .tab span { display: none; }
+  .col { column-count: 1; }
+  .tcards { grid-template-columns: 1fr; }
+  .stage { height: 46vh; min-height: 280px; }
+  .stamp-top { top: 10px; right: 10px; font-size: 12px; }
+  .folder { padding-top: 54px; }
+  .hall li { grid-template-columns: 34px 1fr auto; } .hall .dt { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+
+[hidden]{display:none!important}
+</style>
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
+</head>
+<body>
+<div id="app"></div>
+<noscript><p style="padding:20px">Este jogo precisa de JavaScript.</p></noscript>
+<script type="module">
+import * as THREE from 'three';
+const IMG = {"logo": {"uri": "data:image/webp;base64,UklGRt5KAABXRUJQVlA4WAoAAAAQAAAAAwEAuQAAQUxQSMQcAAAB/yckSPD/eGtEpO4TENs2kiRZ5b7f+Sfc1V0zuAQi+j8BmrKv+wFpeMzmuPSk9xP1gF/za+4B1npF+zdQI7fqC/jT8GdSBRMPbI/i5VzYZlQVV1VJSmL2WZokMW1d1bYkULICEui22gWE3d6ASXG0NZ64IYmkRIk+73zQ9ee6UZNSm052F9TnqAsD6MVl/Xfgw7ZtndNo1/P8ZqI4IXjwFnenLrvVLdt136Vd98q6u7X7yXr71V223u1Wv60XaCnQYsUheAKEhCST+b33H5lMJpOZ8G9ETAA9QQOMQPZmCMSJsRlItLcBoweqJLJ0Gwe3HqW9WzjxMSMAlJSMmjpxpI2e1hd3Qio+snZ761srtrTG4HYiY4YEjBs+eVZN5ZgR5HDX1v0vvbyOGLcTFE/EgjEzByw8t19fAAksG4EZcOjFL8xGshMPcwOYu/Cksyc6QAxu5FABN5Z+8dOLEXZCYZEDyXN/OHPJYEDCMHIvJMZ/aOkUZCcO5sCAd/32keOCIDfy0ImpPm9eUicI5kH0m7R0dgoIMidvA67rq04IzGMYs+ArSSBgEfkt+ZRhqIdnbqLk9PMuHQ2xWUT+KzBsPGY9uchg9MJPnFOCZAm67cAI1GMzYPoPPzke0pHRjY2mhp6aReBL/rxPELvRvUV6P9YTM4NFNzVIaTcK4Z6dPTB3OO3WBikdiwL59n5Cz8oIzPzY0t4EdwqlN9+O96TMAqM+/IFexGYUzmBvlJv3mCwKDProh/oT3CikIrWMHpNByeL3jiY2o8DKV/bCekTmcOoX5hHMKLwWPo33hBx6/6oBzCnEQU8kzXo85kQfXSPFRmGWGubiPR2HKdfHCoGCHcKPMOvhULLoIkdGAbMzy0VPNgqMXjqYYBRyo6YK68EI5k5CZhS4EVPouZoYfcYYglHgLS5ZgHoqJsafYRiF31hQKeuh0GfhcGKnKNSAeiImei+poGgO7IX1RGDacIIXjX4jeyImWzgejKLpZfQ8jfLqUoqql/Y4DMZNcFkRMaykxyEmjEcUVy/FehZiYDVYkbEK1JMwlQyvoAgn6UkaA8ajYtTD7DUMvBi19CBE/ypEMQ7NPQgGDKIoC7X2FAxaQUUJlOohyBiSxCjSId0zMNHmFO+4oWcA/ZKoeB2rQ8VPRlkFRvFWOcXfBG0U9YOpngBRhBUx8dIuU9HjON1ZoCwMrBvA+mAU+cDhFOomIeBOZ0Na+SZvW0eRF4wCoxuK4AbEjfXvrK1PmGhLV8+YUlXiCeUbdTuLnXFYiLwPcgN2rFu/a+eOA/VNdNivetzEh1J4UD5B3eFix9E0ea+gBDSvf3Tlpi1p2ptlkoD//v3fj+P5JDbUo+K2vQHlmTCo2/LIk1vqgMgkJDo0MyO8dM+DMcofZ13aKOqNx+hChVzEwTj+xOrH324GMyRyGLvx4vMHUb7I2tZgKmb1dXSl03lZxJ7fnhoB7kYXurF4necN+5dTxOVHt5J7CbbGnYhxVvzjNsAjo4stYkFseYLe3E0oXrRtxpQrOSu+9J2QVTBj+a1/Wosbeem8jvLEXg9O0Tb2x0aO1ULLyuX/eJrQkXDevO6OOiLy1XxNQ6ksH7z5BYp3xP5WlKtStj1xeFwVRmYFZ+X//bMODyFvcNZVez4E3n4NFStn80EzcquI119n8ggCmRVR+/gD9UQS+WyHK/rKug7WNFKszSpWEchtoHVNba/F1XQYRONj99USSeS3UT6Xrgt+5A5cxcr/l1wbTZsZOZXgHUSsvWstHgJ5r901idBlULeGYu1hG5abdJpN25g4DpFRcPBHgzGnWzbuQl1mvFKBFSmeP2QhNyne3Mr4fphlkLP6HHCjmxpdb9yOU5QDO98xchqVpA82lI+vxOiw+bXlREY3NRq6TrZ5A1acoqN7yHFp2yHGjUWivYyNrzTgdFc5DagzCspghhkQoie2G8VYtD4Cyk35cWomE5z2MtatwUX3FeVYZ7JXMPzwo3hRCqyvNZFDC63ViZo+ZJnaugsT3deCVdFJ0fhyY0RIVPbt1atv7wjY9mJxMtu8x4xceulP/vLuXlgmsXuVTHTvZF8su+DXfCcNUNK7esiQkSP6Lup7c5NRhC2qf4ZAbpOfXQpGexlNW7BAN5fIXlZ/7huJGBCZJ1esozjrzVZTjkCBzEZtMxjdvXIwlh2PrfWYbEWx1tEtLnJtbh1QuxdENzfOGt3kWZF+vA0pGwwVJT9+EqLrw/5mjAK4pK/INvYVjyN6gBYnpnvXmTXHBLq/mJioyEbO4w3eI+DYZBddHdIpUQgjzZjV7MqG7bdh9ASPjh0sutqTEV4QElzc0EDWdvsOj3sABtOwzqkTikEqBGbl8144mk3wLbdLFH+32skJ0bWmqBSMQui8r/LIiGzgz+u9BxBoujsWOWxVNoFBCQqkWeO4N8j6g/1lFH+zB3ZHnRP3XVaPOnCGlsoKg/PR3s+mTB24Zi+RUfyNza8gOj/grstSZDmkDwXSvGp5+XNkqZILS+kJOjcfz8WI6o0Npo769qJQRvzinuuPoA6M80YG7wG4/WetBzobakauX04go2nERMwKgzP7/yf93gIdhpoFGD1A4/600Umnz0SeDWQ29Z4KoiCaRU9+ZeieSJnM/Nwo9ATMBta6OiM7h1daImXC5pUGozA6V92TvAGRWSysET1B5ycEOmlh/qh1qxEdLpggozA6s5aPuyTuyMKIiVhPwOOTFnvcCWnMmUfeJNBh22kUSvF263nPbXCR0ag8y3sG4gqMTgbOt382RcoUEv8sLxQWpTaefuwtOhaz+oqeoIUJ06ROBJbUrNhjIqP8yPXBC0TEpjOGPQfKZAyulvUM9E1E9orj847eDFn8HawwJFg+8KyG42TZuw9GTzBqmzhVdDK2N6M79prIqGjnk2YUxIiT9wytk3dgDBqH6BEGvkqc6IT8/O2PGFn+A6MgOtVrR6zZQuggJMci6xF4OGkiRvaBx5M3t7gyhejtlQXCrOKR+suPYGQ0T1YmjB6ilhES2SnE5170IoHMskfxdCEw+I6OLsbIrLS5eRRFkbt7O6lYWej3IdHJkHiIpa0ok6J9t5rRzQ3Mgr4yMPRDZI6jJ84nh4bJQKBiAp8YjWenRPo6XxYFOuDF9YRuZJgpBonLJiGMDmXv3NLcizgEDqfKW9Oh5dDWXYEszYVUHEz9PmeBTthLqQvN6dDCs8HVLQwDBSQ8QZ/J765ETpc2r97V1NSQSjZsWHWwVQIwc7fC51w0MXgn4M98idBBsDeeJJD3Fpm1ScCgin4T5k5L4imQk72yM7I9tvdAS/Ora3enj+yiSH4sgWUXEut2zOqrDlys3ILyy8wjkBgzpXXS/PED6DB2p6sDApk57ePjYctzm85/V3+swDkLTsfphD/NN0iTOTK24eSvRxEZ5580eNYwSjny5qoDR3qdPVDmCfJXksyN9jr8p1IK3ufLA9kr0fJo70WKOjBPbSRvLXKAaPIVf3kpDbz8z/17drQCw3+UoDsKEG16awBe0JzhZ6LO+JstnyZ0YIED6/MH6D/pMze9mtKRzQ88vXlXL4BE395zz0HeHTKnw0t9sIIW8YmRijphuo93kaXYfwDlh2nIvPPmgF68e8WqFtr3Hzlu2tghySYwOpQEWDsDywfMREE3/IEo0BleGTkd6wjSIj8t+Pfmq/buf68qAUhUnzSupv+gBO2D07GTfchkYF0AVticOU2KOsOBPe9TduVJLD/Uf/7arxwCKBtQM2dhWUMz7RXMIjoMhDXHEyLZpwz1row8U/sgMLPcFHjnyxKdDP4S55NOZBMH8rVX0++B4dMmDB/atxUgYJg5WR+94ZGWpKmkulKWLE8M6Ntr2MjWlkljoxIyps3MiotR8Xygs7JNPp3s0wHlS3yMRe+rMjp2Ot+wZjudH9icGjas18QxyTEjqwYnACTMsnEvaM7kBlnndg9M4lkY/SqxvDCp1/tGTSXj8bVrd7VdcEonZGw/RhSyMUAiy6rJJ42omLqkD4ACbplKygqbfT0EOmvsOa0By2rEbPLVWy9aAvtTW+47nGiBsV9Flo2MzQdAdN6QGcKDAAZOHzH7XQMSVUDAMCPhhczp/ZrS1glF4dDZhCibuHw+ypNQkn6pfvWrzf0Byj9zCc0VZBmsbetBRBeazIRJwND+g981tWzGICDEkhUyqBqB0elUsgpZFoTosd+Y8sGo+u5HekUAyTbO/Cap+qFkKWq/j0WxdyR1qmMzAkCi9NQza+aMSUibx+KF7KxhIQf0NrKXp+9q8nzo0COl22Z9aRyhpA9ZijW/AQWyNwOpc4AZEu2HnTvv2fp1YwpZ4FzIQbJvCssKsfoJlB/mFlmakV+aSyBB9vZNykcNKa1ICpzW4w21u0XXWgZB2aVLSyjcxsCFGJ21kBxxiM5vOU6+OEx973mQLqHTa0+hvI+D0V5tGzYcPtR04PndzTnLbBR6Z1FNDpBNOYJ1xtidxrvMIgem3ToWRJIcziWnux7/AdYlYGZWyGCKic47p+cAVOpEXWIYMOD8Rw+L2J1cShiWjSRCsvn7f6K4B59HyIExjBzKrE81uFsuDDMFqJr9vfWS0p4gx0bng++74k6sqLlq5mE5AFkOILDuU0nAzSwbA5OAiilzV9RJcRxE/gY/9LkHjOJuTBmm3Bg5NTNevOPBuhRglkmifWXF1DPOSQABJ7/dMRU5GJYIucl5MGP9thteSzUfo8Oob2nl8PNmJ1IAASfPExVgFHkxHJHfwYz00eZdqzfVNsSVlX1HTp1WGZUDxG7ku1E5gkCRNDPPVUjOx/IMgiI6r4AnyHvREkdGtu5m7oWqC41BM/G8AwHKwgB3umWpBbI2MlpBcub/+r+vHozlApL9KNrGcZG1QdUpV31ldn+wAmR2l3R0Op4LY2iZrEiJeL9nZbBsVV1I71v+HjAVGqNiVYgfr8JyASONou0hRlmV/T0o49GfV7SzdmpnCAwQGKAODKwjMzMwA8wMzMw6MLOIwZsUrsTA2mcnplCkRYjAyNL5vIJqH/73Tump0Zgb7a0dYLQ3jPbWzslo7cwA3OjQnI7NAWxurXQBbkZ7syxMfc9GxYk4kL1TtTKE1Uui0qn/umeImUHljPljIwArKTHoPX1OJY6NWVBNe4PBc2YPpb1D/zkTE1BaApRWJKF0+vwRmYjGL6jmyrT2jSSC8pPnTexNtka/kRRlQ5F36ox66RNE0LsXGAO/++LOvVsfmoclvvjsM+/p+5NXd+z///Esumfj/rXfLjdzpl+3Zueu9df2NjP6f3/51m2PnvOZ55/7CNOfXPmP5AXP7jqw4eeOw7sf2bLvjctvlZ4rM3p/+YVte7Yu/xpmHYhWFSVx5CCddRYflB6YABGYMek5ZXxlENWrpBdfVvunf1IrSakLSbJsuzL+F868F9S+7ph0uX1danusSZLaLsCiP9RLUltzrH8mqLkrVvu272OWCZraipERHwlSp4a8Hdq0dVkSN2P8K9LaH/zueNDXGbM/Tknrt4SQlprW1odY34SPt+n4Y998KI53zmXCcoXwyiMHpHjbKK4NKWnf28fUph/DdyQd+ufytGL93KoeUGh+5o7DQQ0X0YHRr7wIBewITqeNL0kpHb9vJkbp7dIDI+GKlnAjSxoVDn+i74g3FOulRb0+1ar0V5m6SQ1fSDL4ETV/iL8qnfpp/+T5h4L+Qb9nFDf/fVyfLzaG8BPm1sVavSiquiHo4Cx+o7j1m2V8qDHW/+KZoFdJ8THKq8ilWeIXrYqlA1e7XZoKW4bjVGwLN/LJlNIfAW6WNo6CafVKfYS/BT0CST4qXTS+IdYNQOVy6XPM3ifd5jCzVm3f4DaFY4uJ+Li0sW9VbdBtGAPWKTw5kI7dio2c+lawHGBwwYtSSuFi/qaw99uf/9V3rj2i6/lhrNc9supV0u8psQ8HHZs44B3ptc9+61ffeizE7/+cQuNplNrsOsWf45wmtSylxD55THsXDtwUdBeR+zXSmj6fkRpPIWnVa6TnarKz4gL79iKRQ3M3+l9dp5RuGfm04oiMLetKZ8FqjCnN8LqlooWwVfOV5ZYP/p/0QiUJ+7x0UNQE6g5amtmw9dApdQqXW0TVLNhUsQg2pwhERri1TxaiuMrYcQwnlwaYw1mHYj2wZJXY8GCyt7VU7hlYXY12ACMbqdsLJaPgLR8fFP/rZ3+64bo/33zprOelaywyrpFWNDAIdotQOhZ2MaZF+6dawk4ug5f6D4K9fTBmHJG+gHcUB1RMaD4aELk0el04Ek9GfW9XuHnRavH5f7gpJBIsbuBYHWKO2CaoHAC1VEt7x5JMOKWctFv6ESWUPyj9iaHD4S08VFcTdtrEoNqRluS8RtJPlQ2BtkQU6zzS9TOxjoIooqJ+7TFELo3qv7Y8NBqYt076Vcl94q9fjQHM5sKhPahiMmzCNLYONrOpVk3vIaON2SHdn4DPH431eUaOg414GBNIbcFa1foeqHpB7INVizRt/z6dPSCUXGeWxZGW4iFnz9Y0OTZ+IGn5b770y+VS69l8WSF13Q2NC8+65i2GiN2Npn4lsgOYZjbp6HqW/1Nx7WcmTv/Zr6sY8Z84brj+U/+9X+H4ZZREsloCE6TW7exqCFp91ZeeV+Cd4U0vLWLcV++dOgM2TMTJLBoaioaMjduw3E15WJJiSfphwqpXzRR7U9UVz33XR8NeEvHsRqU2IxbDNnH0vc1Sy87d0o9J/kBtsYIUwt6LGZXSsTpCxVw4tIcnN6hVQRJWO5BnUxfGl16Wgrd/h5FlZbJocGxTE65cYfT52V6137jMcCZftxhg/3U+qYbWzYixbdRvgNIhxDsrMC4/IEltWy+B4S9Iavru+Rv1xnBbmOadVuhzEmET0eavHZP02ln/9dWwBT/27UvPoYrGp+/B6NjgeHEQbFlxjC51mPyZ/77m2k+PBcOoOn2RH9+0ejW7vpxWNTH3Xl9SlkTp777NeEMw/Sv/8/vvXzAKYNiy//rxKTD74mnY/z5eNgA4fMXBeBzBSk/5+X8vG0n/V2wQwbZeWTbP618vw8i67kmsCMjCuu2y0CWYkdkBTOStgdHejC50MhuZjaxdyyn8gsNv7COiy6PI3CMno5vACFiUiAywKBG1ixIJzxBF5h45gLt5BFEiAk8konZRIuGARW6RY4mEAVjk5pGRvfFWk6nAyXln3RFidV3xNvbVUtgFqTc2YnRjc8sDM7NuBMfXEApZMLat2oGpGxlFMIoflxUuycPLr8bks7m7ZzIQwMD3LwHDzLqibMKUautG8PJBD4Uqjti4dhuufOq8MfJp7f24mdGVVnL16nX/VYZ1m8D210Vhllw3XdOERD6f8sXPfnFpbwxs4IDDB032A7Xo6RKsevzgnDk166Tb3em+xifOxwtQiKVXPlyOk8/GjKv+8o+/3Dgec0Y9uPZvfTC7uEHh086Ux966tjRH5sw6FOsJIoFZFmb5FGp+TAGOg3ZfWwOu/ApLAaWOQxR9QnqsMuH4WVdeGkXlf5DuLk+YJxIJA6JEwttZZJTa0rTYi8yJLfIMUWTmUd4Ay0YEKzCSpx84HSIjrz2evUBH6qxiMLRxR4h/SpZla0Pz+8ihkfHH0tvDsBBob4CR565xnxUFNeAs/3IlZuS3SZehv/4P5eMpPf0bu4Ie+filw8vf+6kPTCi/4AdH46affPh9vca+72OX9ofE4o9+YFEZTtUHf/Y/n63+vbRVli5dMnnIzy8bgxnM+8LPf/6Nc8DyBFg6DBUOhYhtN98GTt5r8QBturMOksy/WwpBceqymfVKfem8eimoLX2g7w+CDs2GURuk+/sZix9ok3TLQyEshwlXDAPpP+NxLtsjSY1/GIHlianXhwmFIuAcuuWW1bjRDd4H964dRDSBSYMVS9L2Mz51NKydfUVriCXpef5X4ZH+sGS/9Cm46KCklKS0DjH5e5De3iTdVsYlaWn7601qmJE3mM6cEakgKETU3XPfsxjd0OMFw0PbM1YCw3ni+3uk9cuuurD0t+nw78rJP2mRVnznG2eMWRHC78356JFwdBxTNiqu+90lvzoQdCDd79fw5J+OLzscNg2KnlR4aHzVxfddgpE3+LxUIZCcg/ff+yxO6Aam6Aq4wUnCgOT2616VfgBEj0q3wKT9ij8HzNmulvfjXCutGR39VXHqK8DfpFfbriY8eitwn9YPLXs16PtAhJG3zo+G7SJ0MwU3ap+8Dszplha/27X7XnhndEllaJndCls9kR7dC3Zgs8SxzZ5Ij2zg0F6wGthfOXq8ovsPuqcb+rB5zhtB3+g1ceyM/wubxiVfUFvd18aCk7fpwOQVabq35LD7n7cvx5xuqpJPwc7zh2zbIgu9mqqgrhExRRzZRrIG9uyxNBfBPhEmtsE+LmhD9xC11fSBbQtj6eDKrZsPpLV+MJc2KcSrPpokPy0Sdv7n35/w7iSZW8v6J29fixndNUp/oDlwypUVAxphUEntKDiYRoyApr30mQMbDJXVwIESbPhReJlzUO1Bk42pgtSHJB1rampurm++xY0P7ZKk30RmeRAB0y//KAp0X4WEsf/lRx/bj4G6i/uA9yGDRF+Ce2PJBFhb4unyQXCknv7VsD6ZphrCyhKPk705vJ7h2MYB5mEYtBy4MmjT+xYsOe3MU84fTQQzbj+i0HIa3lXmBmd8+2IjdrqpkLm3bXzpQQAPdF/nI0HxvcsTyePnXkyfKDUW9pNQ1SzYBL1bYTtRGBYTr4KSD8I+8whKyo6mORPWHV0mrayg437AhbXSr7AuioAz7/twkhDRPSUc2PbmC28YGIjua1Z9Pjx1L+k2jl5dPqjXriRM33mIgf3gdShtdkYePsbQmOisrfZN4mhPFTtGxwuGvVb+0bY4Olp/8pE4/n4fmDoR73f5o9Oh5LWQ/ireRSTP+meziN3ojhIObYdW/GenABPd2/l23BbdRUnsYZ/3T5Q0uOuUz2x+cEeLWrdCU2Wwr5188Of1lQn/8vmlQKjtxcp5ofL7J/cjpPU60YNqix/8zm+2r6zhCmn7j5fd2axNQ7ts/t+ONynt5L8kc+DY/nV3vrELMFOgezuL9uGbtlobMO4onPzas+8zXzr3nR2Q3Ilt1kn0vWTUC79lATYh9buLp/K68+8RM+k9kwemn8wqOL1WmZcxbaUyNn4Sp2sHHdhx7k9Dmq6VdUYSbgC1T//lfePLATej+xsfe/7Jpz6OgTHt9n+/sIxht+xtaXzju9/81zM398Y561+HWhpXnM05y5uPPfU+PvHigyfjnPty3cFXv9L7S/9+bAbO/Dt2HG/e+/Bn+0H1z16tP779jvdj1jWWvKf+mrcUukIYQpaFyQCaD23bvvaxJIC7UUiN7E+aNWsAHRqJKXNm9sLpP2dmCY4BGL1nTKukQ4NRM+eOA3ComDa7BowuNqo2SFIXxBHpI1V0sumdbfX7al9dlxJgbhRWI2sjSwOMzAZgdGgAZpYBJ6MbmNHe6OoQMedAOuROWOv1d6enDK1KlpWGdEuq9cjextKjb++IyWgUfnO3DJnNzQBzI1szM7I1c6NDcyMfnZ8qzpVkPP+HR2hviSRKx4EODRPiRNGs4kWF3ARnx5/+1mgmQyKjWTshTjCd2YdD6JxCRPNT928jisloGcSJasTV6pwM/vPgNlziBNmSz9BJIb19UQKME2dn8YLYspCcrVcMAjdOpI2zKr0jOfWPjQXnBNu8/CxkgIJz7KHrtuLOCbeHsbPaBYeVt63HnBPz9/aLJfSf/321DQuckDtli0n4y3e8cBwXJ+oK48atWtb/EC5x4m4MHQJunNgbuHFCDlZQOCD0LQAAUI4AnQEqBAG6AD4xFolDIiEhFMuNkCADBKbvx8ewAZkW4MM8sfqH5CezvUv5b9yP65/0f790GlM/2b7Vfg18U/Mf89/Zf3g/vX0M9E/5u/yXuBfw/+Jf2H+gf33/s/2//////6oP1V94H9I9AX8p/qv/b/x37//MV/nf9V7LvQA/qn+M/6/ta/9D2F/2k9gD9jvVd/1X/k/1/7//Qz+yn/v/0P7//QN/LP6//3Pz//830AegB/2fY0/gH74dyB/SPwy/Ub5aeAn0v8R/53/0/Xf8O+W/rX90/Xz+zf9n/X/B7+1+Ynzj9r/xX5k+pf7B/cf7b+1/97/bj5U/3P9p8g/w39k/3vqBfhn8d/sv9x/a//A/t17gP7t39ecf4//hf332C/Vn5f/ef73+3f97/cT2Gf5H+fewP1Y/w35hf4/7Af5L/Ov7x/cP2u/tf/59zn/M/2LyWu9/8z/mPgB/i/81/v39z/xX+8/v3//+0/+O/2H+S/0H/U/xP//98X5H/a/9Z/k/3C/w3///+/6B/xL+Uf3b+yf43/gf3z//f+PyL/q77Dv6X/ed+///ea788iUB49J4HIbBaNyxBn//FxTRndwZcHKQQnbqBgoiIicNcIOxZu3s+GiH8K48B06BEnzy//m+dJiX3x6MyeeWQTthLO3CjVIBvdVd8Y7QxnFhJpHq/PJN+vETp/+ylHKAaH+Yuu/3JLMeGnrV7///jezbc/Fb5rcKIU4ilqlfURQ1B8IsxR42OuDqR40fEIg3jPXMM3vVSdDz3canP/35wrMSlC8K5h+RJNhf/mOoEqpI7Gfo15JS5Wo13Xo2yhZWQrjwHnH+EqaFNX+kY2dl6sFaCIlJ9pOHDvq/vsxx+SEfCSRqKUDCpBixEUDx7S2djyvldex3oh/CWA4q0MSyeGvMlwKgz9CwykSPJFVKs86NJcZ7Q0e5+M2sDXuY2A+KIfwraiYHae0c/9mTyS8w8MCG6MTDQZt73GnIxNkuf468mSNEfDsWSqF3mBYmFMycQBJ4pYLbxgjhDmR5agJe8Q/eCKhq2fvAUPMKIko2LnMJ4JknE73GGUQrXog4IWL7UklxBpoLFF6CxDFeIF/Ty1rwgHHv7V4j3L1LPU/0CidN722TFCELJUGx/TUCUbyIb1fV/G8wndxvmu4PgpOQPaZ64AjgTDJ15xaYL9Z8Mj8gcYeiflHdpEXGHgIf89xNVjUAIu12b2zmxANmrX8ocBAAEO+uB7XboFfj40gWN3iiN2Vgv/cRSzTNV1+KYPeiQWqBDv2B9ulIneccmbjTOX9v//5YbSfixYYBNDC1is2nT40FMldXPoeFm8AHjRCPs1yDm1wCSWbG94tryWAaJ2g8Oy+9s4BWTDavEmXaFLv9nigRd9EYKkE/QTSf8IB0iQCai0XW6Dkm/1908AAjV4Xt5X2vNYMs2YyHza6l/gPf0MxjVqxU8beucTe8K0QyEeu0RX7Gfh/HJRIkqBj3r31KTOdbV145f/W0zBUO+ZmSh+6CEAxzj+iLAAD+9pGhyF0bvdK/iGpvBsi99F3fSHLnybsTdOuIArBTtxdK1Nr2uCP2zyTBOrfxgk9ic7kqy895K/Ci498re6NxJCkbDuYJSmrEJlnkvnxfiuO/8f5hj1380voYZFc4E3vbq5e7jj9X1vS14t+JbJJjj5UB+vQyQdVbY2EXJ72V8YxNyNLOJJZpaJWcYcY/TG+S5qgm9fMTDG5NoWSAbrjaBFqahl1fhEebop82cAnpFe4mqE8ocQRO2SktEtpIhpU/2RZQZoygUrKIadiaS6OaE82YoY7UubDjZcpUR0nYyvQI5uLWUDrTZBcInqCvBE20kd3OJGcSEophTlJVbVIXAHVHm6XTQk+jyIuJl+O0mGc8JRaSUF2p8Xn3b9/r4RJdEugAJGMGrnAVbTNHx9gs310OaQIds3QhSIg2ABEo7dkUjQPWzQnv/ehiE8UkPf4XUBex28+dmAqJlt8K5kyn+ErqZUTBwjbdHfrYGJBgvBPJ9FbykaWAfYQn/LQvxLs17ZJncJThif43WP+XOigUAuFWgzH7j5SlUACLebpdJ7N7D5K5WQyqLLTn0dMKHh7DjfNmcuZQSHd/M41zlHdKuZ+0UtEBDFHy8/kUtx/5Gj/jovh61qgCr8cdAPQQJbHbiCxm+tRNQctV4kTcBKMvDZsw+rEt2y8fSnZMLOkXboqhK5edXhBwGNeIS7LqiweOPx/6peT6dEMN76osJ22P8Tec7yw5DyTwg2MSVnv8iDKRSA/6RsckpocVwhoNEj/El5Ydf4N1z1JH0VfnrVGvFRIm+oIBjKQtruTnFH6JO+5K7n0zyPamJoLEd3YrqXZ4AFxmTJc6y9iECMQj6TGzalyRf7Nz9pESaU7qivCl2TFCY+Q3+Zj1QzV+J14xYBwMkV9EwS1MuoxpmwoPKlEKA3sJv0XchDAjGj/GZGusm3BQWQGWWEt2R9tnFpaHokevGdMw58dx25he6pDDS95SGmwZP3vex9U0fMgDo++xSuE84n0lJFs0NVqXumOxms1OBlCH/Oiwvl6P8E6UBK5GPNcYB8IFB5alYwslbs5h+jeTE13rZS+wvkeGVWf8+1lVpQW5Gb7ypkbafHZ9gk7raBk54rvYbzTmWk7OlQzHLiRbw3Novv7FJEyxMbe8EzMWkPIRQFaTWM8UYYDFsySJ4QOnqyeNnOUPVzaHEwv73ORvQLE7cyI5EHA+OpqP+4r5+yPXMgEb/3OtRXycOpnKz/9WfuWF6Oqa9jyr4dUjImktCx9IZyGDgp2YGt5cbsGuu+I8Bq5KxrXpVYUQ5T9rfM0soSsYOj0aVNYHnl2Ntdzhj+cGpQtm8mqDby8KHp5DxGEQTAOb5/1MVP4lLVjuVvpcpM00ZA5UgGhZOgpRGM2ZpnWloKDJT07IUG4hMmVuRStgZU11g49IACmfIC+9lX6ueG+ulshmrLkTL46Zfk4lQiobBjiUgjeHdrGec/Kf7uJNqtjHN0EPR9ApZqjxvSZGhw+ow/vbBIajpyOuqOydAgMEJ6flHaGM88eWaxd6XQMJnjDFKiP3sG5pMnECWG/ZDXcEyQSsiK3Y4dihDLvli0wa//tRWrJsFXKw/C//fFIOJJLzD6AJAIrrTnox2USbMOGdTlgcOs4BEkQlHQsQ8n+CYi5uYO8v20qqH/tLTWhIC6X6VFrjK9B57VPnZUhoOf/7yJd9fYMcSEIE1pgIMbkZoPPdAI+nFEg8Rd1Ie1TuQgdr2CUW+UOADYdRumzrNsTenQjoBfqkJYs9wjLuLnvuI+/jPCp9cDbJXMiD908oA6JV8XbmFCCB1gGhEwUtQJ52LLWQRfk9t0sTmEp2pIIZuWVJJMrD+gA0PCIpdm5vRB5Xz37/8T/yUwx9NGS8E6FhS0oe07PZTppSw/ax7S9OvwNlBM3DetDufZARcjFMOY0yCQF6cmNaYvPW9qskfb6Vof1vEiC2+Fih1PrWTk98v5PeQdLQOiR37fhLBya5UQsaBcbdN5pjFRL3ZZ8YLpg/LP2i6+BfiryCKeDqMDc9DjDR5uOqgXJKgnzEwEsBuuw68Xw4s82JweA5xxi/U/Mr0lFhZPzlGnuqtyIEM0y+mjgcmrE8Cb2UkhJQqMNEc0gHWLJbsUs+hecMm18V5PaqKunpQ+2QHE1FvlLVdMZyA4OJkjx0K0vjSx2gyh5mn76/AhOHXpD2Apai6lfQVFAhECA0k+OyZaCMTq+mjJgPZuvOchU28Ieayx8X1LfLxsmvxPz4Xb7GHmYHyGs04QX8/JsjtRmOKq7Gx7yBkgCHQ8MVfVGlxn85PnkNp91eZ4URTSxFkwTfzONsmM+BpxhNpBMKyfBVLHWwnREpUSTDdbWemFuHFBw35ghtw7jVQnqIRugrT9jCxNQmGkWt/zAWB9tnW9xDqUqW3cwlLS1/P9PK95aQoHjEBXFgciidJ5//Z2zV2dgrm7TlAhoRpfG+ZieKSxP1F03Hd5eVCtyxdI26MpoiqDOdxyvvOM7o29UfCJNaNrl0VPhOY3GJXQUW3CzUOfyVxLcwdbOE9xgWj4XMwTlnzTEsa5S5J1B5qcza2sN8dwMgo8zFeQyeBgOEl4Ew2yns05z3uL61sU5vncFEEnT7ATyu3dM9HSj0zLXeqkYKoqdaIhrXxlCfoeW8UooOrxF+Azq7a7p2D1ZxLXhYrPCdnGxI+EAvEeJy1Np95X/l4hHznVXugbuV2j0ggjsWNjJW4mTcdg/hHjKbSH8dl5q2zs8LLcRzn6MXiLgr2wqPZjjqk29rg5s3EQp9cVukW5TpLFAapm+1fsWUZVHJEgCctlYkg1jqR0YFwYrfsfLaRgsO4Q5Bt59difIQTGaTVvyyUD7ukeBbAOAAf5vgQ14c5qEsfGr2/jEU3mXjC9OExMviopMQPL8yZILrsD6k+z/4aQ/SB26lxH30hgkf5yCdM94XMODKA5N4axFNKdehY+gA1LVOTFXwBfAOtIoiyGF69MrKWD4wxKuRJTDo8gguHgYE+HHcBAS2n/Pp6i+Xkfvkpe9rG34VGys/BdfTxG6u0CmRrTjPsXsIiMb3/ClT6W72Cq8w8s0Kk26ZjHKsEFpDSlLRR+IG1TqEDd31nbZfh1yDQWE0zdhgnbSTAHxVAXWwZjVKS0xBErr9C3ziDFJ2Ny03w33FlvYe5FI3OtrUD4d4gpUKgFpICr2zF4TjiVBUun9mZwNhF/0/oJleUGlvp2uDvsiajNud8bfRUXdLQ5eOzFn6D5YCNZSg09EvHg8NYKLd+cRc3/f5Jb78GedJvjMWQlFg5t8UzRHE66Nhr0pkmQIw9OcG5XSUWvwRvmD6bUvwCmd7w3YfdTI8r5pODn0q0lIhRBvxzku8vRrznzW+Owv+xKeHCHhLk12A9PwedzYVhYmHUEiYN6bZxOsr6/tbjucUYyjhbg/7y8IiL6vKUyinDBqV7hQWdJB18J076A/F0lvo6+mvbhl/2U6mNCQYK1iz39k1ktwpZGOWRJOWHi8mscCjeIUcGbYGFpVMm2iRSF4ugdtYCeVfdCIA4YsAYEYAlZUNXc+kIvdRqoyOq+79OBU7a54ERumr2UwLmmGc47L+A+qdiXcd++x+g/xllqfuRmEHK1Bd/01QTko6d0qmRBrIKcvURE6cVRfqjx5t6efqKX/DKbd15mgU/IpNiPjTPhkD8B7hKN2HuASed4wzYY+W/fv2Teu38Sddpfibe6vQmOzRgr8s54IwC8aJuQWWWbSTQmOMGiZLXpY3L5+lKR4wVB3VAn/LHUaVKaar18JkAMyPDx97giGBtYv045a3xdJcYS/BLm9fL3vPeIeh1y3K0Nbcb1429Di5EeNChgHqiEfw1NMUvWhO1rVdT4f+5ktPBqvhAMxAB43+DvxnA4w/Nicvbv+tSs9cRKfmVP0Wi3UXLr9PZaF9Uvd+9mV4LkVFudzdvr3KrtADL7yDcRkl2DX/jXZbb8kiPbXIdCkv18yAmRV/UGJ8SSdkBPJwH3WkJ4oVpXUrBGUrUUvnHD3xBzhyfpPo3iaH3JjdT5PDLlFSFN3JLTo3qFBRfxwrELMQQZZk1S7/cT8oDuyl1M7wDZge1sbf572cKl05mfHNDwVtlzTYEpfleR/EiFCGlY0xdfnzO1sczKHY8j8bvnG2pcb35ZenJ49jRfL5nBsAZaD10eIrsWPG5DZXXTz9U+CnQfAC2t2D9TVNgUNhfVjWJsJCdIg0aodk1NpIcwEoCJaSBIr2t1rXpuT8XQU3w+mECJY+N3rSYWESx9SXvu3PsAOaFsUoUpBmUSX6lBV0z6zN/GKERKTibr10ehnbJVg3gXAwiJWQndRIr7SHlY0AiZPpLBMLZkPzf84xbrg3NdQoUYHlPcp8IGp0SwteJ25HovjTBbu4kdD9rDp4BXPOvndhNKaNUxcI/WjYcQXOUwS3IAWiLgto8gepgTHGIna9fKu5I2seuKPXQSoLNdWx5bqu1JX6HPKpnKdWWedhik1bvfD7cI9AMSU/mLEYbT8Kzlys9SAMWwkHttm2ABFigALv430eWk/D1OXeib8xYfy2hWRyNnkmx23yP3I8B//F+mt3M5i7Qgif9GgewnuVm+cRSLt/E6nSu1QEO4kpTaEeYuWsJemsNOBi1wWVXYfufU7chs/uzFBp06EN7zaLh1T/hKQ67dmOTp4NzqGfpNNql/ikljPXdXe6WTrJzLJmumXgyGn9wZtjb4l7bBnBMyoRKve9/oL0MtHAdNiOX6SeyNwRrcAvnytSJ04CCDGv+gPgQ0OJA1NrccOoL/li6xx69FhhkNB1uaIkptjvgwzSfOIsByemcz6TSv106a6gh+4f1MG0QCJ4hGPY32CpFTytmxcWI6n/UJ7OvlSiTZkEPfXYYbBJJhS13w52OetLEyrUVLNgsHDD8yLajNQFxD22kyS4rg0OaYcQ+T9v8omKQFR4mzuBhgY5VSIPHiPM8yFChTmZFF9zY9Tzxp8UNFUc2rlTXSx44CgopssmzisKuyo8DnprmcDax6ZYoOPacwxgojfx2uOioxKWRlYaWqepzdElLpBBpqISTspkNO+IWunnGruUgHiao68vEJam/fS2Jy5n9VVzoSytZzElKJ/7XzDdEyY0ngFdtsLNUq7l9SIvjcElKfkp8w7UnOtxmEV1f+7xkEcbsiCraE86UoM2r/2cazuT3kDMKOj2Wrgwb+7UNjp/xToqhK5S4A6aYHTNb+dkiytcm+nzBzfViXY+tIcB9wix6mDUOPcE0gGUCkj8hNYOaIbwAZc6yQV+KztM0PvMOjyXfj/ywCAOpOyME9OH/PlSB4wtpVAyin843auCgWsM+ACEFJGV6cSFvdk8EyFX61ZftQOQSLrBrofv+9McsiYAkKi3tuMg+19US21XASfqzcJYQJN+vhpvojhJJoe9l4eYGmfeWPrkfl+4UEFItcrTIr62tTl+PJu8Fjqyy3ojS9midARlpfT71xbHG59Zck+NgHFS628M1bMLXrm+DeH1jNEBjKDeAyHZ4ufeF/oXVWiaKVRi9wnkt9zDwRJwsq+dxphgC4veurlI2cyhnE/QRUwZQ9kFLlNydCeGanGVd+fkjtYWySj7k0ab1y6RQxDzSJOuRTeIC21fYaeN8fhLggjyEQyGdWw5vXvDVKktCj9EV1H24b/IlUVlBUnOo/k0SRGYYjnB9QJy2AoOww9CVTF5Li46LDHSS76s2u46MTm0elBvh3MPkGQdPKRFKy/dxg4Zof0RescLTHG19KX1nrH1yPBqoQ2Bn6QwSrk1p7pCDJOmS47DgrflArV2rLo/gE7P6OW/efWJHIPSLsd5S6MiOWYqzcNR0G3TxC1ioo5yi7CgMLJ4dMnJ8SjfEXhMaqsxcRiGbUXyAm4M/1TbAM77s2mhFytjz915e4NKYWbd8LMKbSPrwTZyR8mXMgP/m4Y1nv+9G5Q9Qlkm4OQazHlv5If7KeqDhLHq7lLxX5dAjuQur8Jw7AI3iI7PRWwhbbQdNdSjavp/iPpLTUs5u7Y+0ekKzNhw3bNj+b2fa6UZ64zQr0lpPfEfStfUb9dsktdVCAmzeNEP/zmA3Z5zGBu1XtZ5oLK1IBJYL9TxfpTkU4LECBcPDXc+z7ygY/ktbSEOND3Nlc7AUa/zGTNzGcKJhqYBqph/0fPVoSL27AjquiWcA24rOnpc04LYna1zrLF/EH5b34ScViWXv7r7RDzUZ6xRD9MUguklDzcgf4/Rl+m8rpyFB2s9SZC4StP5FI9UwfQEdWatoVwezINIXKiW3NheqQrTIHl8+mRJ+nR3/xrhHAT0eu86v6DRcNjb+tAQ1ZWibJEzXVeaVjp3xJwNyjKPT16xfTlqsayGjPfggCJ6JzvbD3wgbhUIj1TrcvQ7aS1PUJ+6fJ7N+h/MkizumZw4810KiD+A76gD8NVr4mTxLpzkEmLkCq/TFeYQtE0Hmy8ZLg8yHioKpwimDgswtshc4buL9NwoF3NLcqT1LeyKXIhdAZlYQzNs/hCR/RldEJ+yqfFEeBaTQLiBM+COR0/QWBSjuz6eYvRIfOkC7CgZkYwEH+Ey/O47uJU50ch5YBQgvALh7GmZpiFaLDkAuaLOsl0tiPnlMuJtRHT6tMenpXXwwLoyH7IdTjAHkeL9DqPW5Ua7oD8TI7fzUbSQEJ9wrZFBPJu1NFy2cFk+VPSpW5/wqtFaGxYU22QRiCBObEhabhnOb3qbuOLALUfse6EA+XlUq57817ni0ayGowfxHhgwbCAVF6XywZs0Yvwq+xmfBVvS6BnNbMlgBfImh8WgZDlI0yO0Sx2MFw0eDU1ki5q4bkyL659OLJu4XztbOHZoYgOIPZJB+Ame3HSkVfJYkkQnlfuhdPuo+bmpIid2Y4rOI5kejOgPzgEIueE1FikqlsB1sTKjL2in/WY+eoNdo8Xp3f2XCUK3DMb8ifIV9UNkOBq9VvnHN1JzLF/R2TlICV+foD40VoYyI0XN7vHPCUpRWf51FvujXExoi6GrkDg1uNHjBkp/vQ/dYTSEf2GNO987XBcHTvvLHvnWSW2BLF0wu4zfPxpZN+ImWe5fSrnPcMBIiRLXHmJQ6qpSNUWcZ1kiLRNnKIEz9iNNzlxrZxzuYSe4XW/p++mHrxgXjLJmrP6UyPc3ISahYovdieacnhS7uSdVJQo+W9GCaJFDOpkwqISHVJJbDWcgRqhBAYuuqIMQb6ZEGoZVKrWZbz1HnTO7IFtoNaML2BCWTAIloINv2BKuRDZPmqP058mo///r7rER/NYNrj9Px7V4gow0evLkG8k5yMohvA+z2IGmpQf65k6OvH710OHYFKFzkxnBZjkCvByCjMDgyCQ1pgqBYryGXsqy+7PVmUmj78ID2IpFu8sVYdAhkkda5w5sCv2RhzEB1mMDxGb5ErChr0BlDEWM3AroEVzu5u7bN6TmmuDJWlTvyyYhX/V6rT6cKlT4RMM6H9m0i6hQuKcFBDtL6TMBrItvQ10ZCshiX90JCo12+1/FlYrt0icfRh48FYW15P6o038LaJdjIXkc1eq9g2fOO5NxWdDAF6OGUUodSzTU3h0kNFlBAjfr7Zadj7HgdHIwo0GYLnzocCq+NyxOJnn+yTY+a5kjF8uO2zTRZmKOXX9Msz/+fBCcLOw1aHpNGGe8dlUqu4F5HOp1/CaAZDARXelcsI8nxaATDH4MHK/U2E16BHHdaFzbfHVk1NjULiWUGAXwcbFEt5FTzmZLg9b8Vxx0RE2nc7bssPh2LqFfft0INHtzu35GU7Nt/DTQKuw+pLmDV8cdkl9NRKxtFoZZJsbinZMrvavxQazAq5DXiQWyAiJOj7Q+ROgX6wxBnOLCJBetVgEkP6UUsM5Qv1jo9kx1dUxbe+R1BnK0D0zqV9X1n9lULPSysHpFdnQuGKO2Mc6air+s7lTdF5IXOwufRu1H3d2LmaqHpCbMM5pcrH84T+nxDggPoF/JpFy8UmWLMMuXL178UhasXkRXMDcvs2HAsK1WBEX1ofrxnLIgT4oHQiwZ7gcEspS4bgJf5l8guLdLb0wX3+STwBymMe+AX1BRKalSWuvDAK2YhJ5+n3EVtxqIX//Q/+igwdQSAWDEFUL1j/KaFVL7Ul165jtd750UwASsaLcK8diCLgDhQge0IuBjLG8zgkBPBpc5FDwfN7AnhOWSJVCK7dtlyritxQ8HVyXjf0L4u/Tr2nSECXDT2QQ1aef2+Ihz/DgdL8e6FXbfb7mMtm+dbInonDjfu5/ZtSC6Dwo5K9422xancCgcjjURgnhNGKL2yYiheFiD3n/wfGKj0aErYlrwwM+Evf4LFBE0mXMmHGGDpXJsD3nLyfH88g2o2n7DqYAmfdo0Rm9uJpxLLdTAhE+Kzigiy4TTGFAxs/1nytbssmVbgkexa+aqJalyMkcwsiveKrumsJBwFwolSz749RAOtB4QQI7aERnEKYdgvcre2NFgJjpFiu9kYRKSsB7z9QjDIlRfpZ7ayuYDvTwdLpNJJwbNykYrnvG3l9D/VN78wJ8gNjgK8djkuD/kudNwDkefQdNwHXdK7E1/LtVukxpZefWuqmKSoPFrZegYB2AZT234vV2jQ0of11drvWMcC959vS+aq4RhTf+HkeemWO0zcIGBRmotvBlKi4OqsMeahnSyU73HAfNwV8AA2DOoPZI9UdxrqNIeEIMyLEQDwlz0vzirWjAblRiIuY5X3aipeb5De59SgOGTv53QINLVWN7eN6Fy4u3FI56O3YMxifvihTxpD/SfD85PnbnuXiB/lPhmDQOb57lu5w0YPM3WN/iUUWyXmVUBmtDl72KyytZ8MxekL9aW/72mrzmhC6tZ07hiX6A0dszINDSs5IfN2Iq0KOXim9MFuNDKV8yGaA15BZiS//VY676UdJ64DiazXDxg4OKw3N/MLO41o3RfOCg1NONX/F8+H3mssUM6tzSRWsh6g6WoucqYx4AFcLQGKHpjAXpw59GyGP0ZTVVIOlwCAjHK3skLllkCur1hzC91DXpbAmWPLPS4EgELSRA1f3c4t5McswF09nn4+F0xNTKuBFQljQdyoLyB+vzUvPt+zbIN0eC78CyO34kbuRbStv19+dDRPdCJjcKWb/ZDe/DuM/Po4V3wt+mGBU2f39A+XI9v7tihOX9vdgW70ZRzPO13ecYMso/XmHbgXWwF0vddd7xeGgg1vOd+I38RawCZ79t+ZG59Ffs/iv61kR0WFdCqnG7YitHuqe0hw5pjWYYNmL9Zk5ZiYlKtvLw/mzSy6po7pLClslT6Eshvo6DXSsmz35MKsTA3HqBdWb66jNSA4BeOI4hv1WIxCNHA0/A9IMNysI9LuUtMt3ZGU8g+t4E2WOnHsB1tabaRVLBZSH9/QQ6QyczxRtEaQQqzW+9aAHlpQczrXBNlSFf2yeNdcvrro7Yqs5FDaZX7MMQeZu5D3wGVVPK04SU3LKt6ZxqOkYb2Jm1EsDtxYSnEk6RA6K/a5TfP8wNOl8zph/dIaZKWoRaxITGmAoBH7v74f63s2JlOoa7OlvSdtW7Vvn1UBk7l/NrEyve5jeX0knfQUCr/5kNHjq/BqZJZaNXxF4bSeul2qkC9GrCDgNxpgCK376HbL+kDmEtfNHo5LBxAyGWzWiVGnAi+dn83+KPITYomea84mkGX5P4KiijjofhiIF4y3JRWsjcBpBgQ0gYqd/xwjr2K5c6daNLrTaiesr3Zba/UoHu61uMGCe+VwWTijxmgvAa5SaDlNQzt/pHudBb/vCKFQEuRgaKLDpIp0slGz9F61UkVzEGDXomaH5EW/qXQQWL9gFIlUwBfNASfZQUuerrtV0E62EVNNKWqAv7ABv5HTe/UIka3DdmmrJfbojuneFWJC/rlNcF7UGLVnfhnpbwQyAytBZEaQFOS/FKH1t7OfSMklLLblZ+i9A7tIoT+9jqR74fgoMLsYQzKv1wYFk2lxcvLkEcI/CI5GSSx/i6gQ1+m6+nOXRbNgrSd5Ez5YbopqugZJT9Tnn2HnIcNMzomrTJn77/av6YgrRErGkouWQnAd8yDmXbDvNWXJfo7MmJqLrZI6pVLntcjdbvSUiwEf3oUBqOTHMmFrtZPh+FaX1mjNBfVwouFWup1DcMGhTHIphZhxORkMuyooXU3yHt/oZT7Mbj6RFJdaotTEcB14TluuG3rU9OMZgHEQI+mWXtNFXcswZgFABv6V9QCT9u3tSxLvG14LG9zQzl1kLUaJXZNxr2IPqEJxBkJ7qjgtW3jozR95Ws9oqk7mORau9mT8l4xAvgjm8arqYU7+PY8hqaadoPjezvm6cozRUcuS09vGYuk1tePAnZUCYD9ANKwLAFXMrfQRpVGPdGF0+NUjP9dq9TwN0hTvm9t7K60JE7tlONp2MoVnPFbHCdsp8rPUB02c6r6yHCFVAn+7GwtQ39gpbwrAcivMrP/94uE4leECSisdGBGlkrXYMmyuG7r+hjm2co027xkmXQ4J7MwURuebli0eNOAABnLhl7X6xka0iGi689z9m7uyIXJ/PT7hkNYnjM5KpogDfeeG0cyx53dSkJCvshv2yWtcb1pOx4kv+C+b0pG8aAbtbXYc9PZrDalWQQDr9ERf8wTtclR6gpEscu1gppj/nb+H1G27xnidkRbwHlYApx7O+/yYGL1jrhC1A5DnSayD1Ul1RrYFSpGsYcic6SgNOpF9hk8zeR5Fh139l0bJgZ2bULwdcHAmLDToYWrw+sqfRYDUB33Kq7VuM4meGl1A5D4KJapfQuV0xaw+psgIrwiVHc0P9lO5JmHVc1dVKX/9S5/t20onUAJs6JZgOdMbgOw0jS+2rTC+DHL9keoI0IbRmN2MICW7GJHxda2r1qfxRquBOGSnCtUgL3HtfrIGA6VICQCCUoEpsLIM1iENRG4/ITZ4aZIedHfMQSBTIVTsmrr9RSoTiG506sm+rMld7MXGd1G/uTINvYq+nMCGGHbU4K7uYpc1trW5U/GHf6RrvvVrss6Q2QPydsfyPQAAQXUa0QvrfaB1lRBccSE8dKQZzGc69tRPnIInAwxmAeH0fW8XpXIeFQ2mBTAN9BNKMMlOMYUHsVVlzPM/FSI/3Cw5qi73VMEAUxPmufS4Lzf0+9eXql6+2GAs9i/dqf/iTGjnluWTTlf7DNt5HMSigEXW75bTVUbB8FY5VAAjAp+113iAr8T8P9eee305qvkk/uLuExwNZPQzALh7/lnXu2u+2gMEuL3un1WSD272cE/maagwxVHw8SoFWGaBaW6HU2vjfcjpOFVE0cswXzJWN9ZTJyaY25b9MG4bE/OjMbr4/fb5ITjkIA/29qgYt+jEOUfXdCJCQuWVLV1pHVCUT4ASbamXoPCM8uNXMH2EeFzKN/lKQnN/xn2Ac1OnS1ADme6xOFWyde631jDObyvSm+fndWSSdDtLfmoP+XmR5DO5mgNuCX8UYwrw0FV6uiyj89SMfKLGfYbKGioVZFTXhkSGF3TRao5QFb3XMNecrYF9V0oS1MRELjmuqQSGrJJ4i1Zeqs4QDnBtkHmbA9j51Fb9Yzo21ID2Ix+VmBoFJA/kTu8FRlR5NhrBjNqisQy56tATTNKGd/JJd5Hx723SUqkyY4nMtAyvjaV7nPeXryZUrMkwWIXnx+NFZMzCodbCdejHfxLH0VYTUGuuWcYND5EDrt4br8d8lucv1PSCcAnt8N7NsumKBYeLJQUt1r3cxNr40SzVl0figHQmIrQ3LVDK/K+x83e/KFxeDoJnr8XGLux877aMsqi63/j+IL4qYdQjsZ3ulZZMH3ScBcxKq2wb5oLYfTPYAgCNcRBLCo2lmkdlMLc8qURu92SxZYCMcOm4biqeoqaR7nfqNm/N1Gy3Ol+RdSncL/AcL9hZqBmFuNcR7Ms/dX3uC7GtiBHj4iu6SVK/bmRtLweVeoC/X3VG5BXwNNjfN55Pwg8yRj7TWYjcubAa1aDWeiBPlL7syInPHiodCtuOd2DpJhg4NF/IJte/WAkxnhIG0CKUIVNzp6/01a+rXNVfhirqw1zia0Zf9Nh2qnuZMh75l9zZkjiwn6JLahWbZwdqRAi1FKIiMqEXAgN8g3C3C039rt1yrX2cGjckn8BTnOnSlZlU8xkjEEDpjWYQN0jaDxtUtlyBeBdfaypCPgjgbL6d8uEk8mg9T3XWUajFPdZ+zCY0RAFoSUmGD7vuSGnP7YzXJtNv+zRXUeepCEaOOOcUHk2v+BKv2NzmTd/I1dgL6YC+6VLjq+XLRrh0vaepvavxkVw9dLV0jLfWfynElJfhtmngP5RC71rMqid6EYJMMrTDdIDI9SCbWhRf1CBdrjB8agMwYu8K6Ju0i5+DWutROeqizWIMX9uidJs3ELq4CoL+by2F43NdtOOtOlqkb7uTXKDPLYgV1Ki2oUUTFmHdzoPUygkYtc+CZeaPgn6Elij41D8ywdy6loYF5uFvwVIVr0QrPg+0z0LtjuMmYHTD0dtk3kr3qvRi44cVS2iBrDBfyvFFEKVTCbv29l37Yv62N2H+UraR4L1vCt6vFhGbOuSXrAnqydkFZONbOtHZrsnpt03kGr3Ur+faJSVNdnS36buV7g+r5UuBYfR+u8SZmKpMVYryhXtsLyUYtuyybqOn15aEkMmfR8BTtGVmPu++6kQdWbQ/67W0yOywaWeE/vJbpb5VUla1EJcE7vdUE15xrTW0ZKNjP8Lu1fLCzJporCXskHFLC7E7Re7o9vfuKXIxDphRWcxJpEoaZ2Hg5vQkSkjO595i7AGf+v1Tex+Ui0nD4DZW1rE25z/M8sCjm52fOtVjSJwP94zEwEbHdS/be2fqJW1qtgJ+lvooDJzaX6Poz1GWsGjCfnwg+jUN8JXhj0OezcuvYL2yXQGXP/xywY4AbWvEeecz08H6om8g+PPc7Dhydg30JEeaWwi1zdggT3eWdzRidwt5FIwBBk8k/Rk7RwKomoE8NhiqKrOIs+kS+YHlE1fFSmWyklOb3VQm51igaq3jL6iQxy1eN83166icgsmA4iOhwh3ZR8R6H84JFnFRnudTwRrBLO17csTq7jaPudELkAI2Nt9JjJCEHxwcT+QZJQDHDwbmxbOJQ1Ohlqo78Z3sVr7Vp080pR9bQceCQbWMn8JwoAWbcCCOGOOiS4OM/gLrUe7sJNWTEIGnwF9Qfy6jWXWT4s0yApGHT0FWVOL7U93KCW1/2TgJ2GTXDhU3HJM7kseUckrezsNYMvSK26bF15f4VapEHBPYP3ZkKj0tGjvS/IVsqTR+v0Yl9aApbjtKGDK8Na12FS7+/2W/a/Ad88Ouq3sNTSVa8xYudVj0URRYENgfRkqLV89XlUcQECiMhnQT5QhC+A4D2Mw6/c/XsV58uuI8wIH0ftZIAbLMD7Vhbzmo5pasQfh3ptnDDWmh7V7hXEtmaixfM+YfLQZE2a1o/J9R//A9sgOs+qkF4Op/Xw6Jl49wuvcGxy7MqBtOdaubxa8Ml85sVoZlKH1E3OyJdQOoDIRDqz4e9WDcZkDiLucdcd0XpHTET62A3S/eYr72iZXzHdlLmP2pGCjgired1wJiPZyM2zF7S0wivRTVjwEFqQ+U8F2lo8aNxnPvBGtzegTNGPGSjJ3XNYKicZRFRbkEGvIYrfcAq/3hfCA3YmGvlaIuuepqM13Zn/6yb6ozsgT/LScQXk9fBLvWspImgNwcs0KxLukFgsCCULcLz4ilJiB4nNC2iAkC42FUJZg7XTbZKkhk5sKYkA/RTjB2NAruLFQRSBmyUc/WhLZIkUauPvwt+5aFBHfz817fXdBekJjxWN9V6Lq+IKIGp0jAm4SfZXBkfn59pY/dypkXhYTYd186mJakDwk5AVsBFquA77vCHiWtaB+L6peq7tZVu7IGshl+6Sl4im1cjss52EzSvk8HL8AbJeYF8llP/6LtE+etQdi/v4Hh5SysC4r7lynVAaO2NK0Z4FHbWrywryqM6ObtcagLc6PabpruNkVkWA2rDKYCxnD8VagQxI2Vo6LYpZ+F2kJ5jqJWyJKZ0o58LC0hZFwFOzKCavo6g7Ga+ymzUKPDFwnu9bsjkb36QF/s4LZjNn6DcG1kqwknC8195M++7Y7kWyYb1z3P064igISqnNkAEpqpCHeVv1qeiB5yYuAAAAAAAAAAA=="}};
+/* =========================================================
+   MOTOR 3D — sólidos giráveis, clicáveis e com cotas
+   ========================================================= */
+const C3 = {
+  ink: 0x15161A, yellow: 0xFFD21F, red: 0xE5322D, blue: 0x2457F5, green: 0x18A058,
+  face: 0xF2EEE3, faceB: 0xDDE6F5, faceC: 0xFBE3C8, faceD: 0xD9F0E3, water: 0x4FA3E8,
+};
+function M(color, opacity, extra) {
+  return new THREE.MeshStandardMaterial(Object.assign({
+    color, roughness: 0.6, metalness: 0.02, transparent: opacity < 1, opacity: opacity == null ? 1 : opacity,
+    side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: 1, polygonOffsetUnits: 1,
+  }, extra || {}));
+}
+const V3 = (x, y, z) => new THREE.Vector3(x, y, z);
+
+class Viewer {
+  constructor(host, opts) {
+    const o = Object.assign({ yaw: 0.65, tilt: 0.42, auto: true, fit: 1.0 }, opts || {});
+    this.o = o; this.host = host;
+    host.classList.add('v3d');
+    host.innerHTML = '';
+    this.canvas = document.createElement('canvas');
+    this.labels = document.createElement('div'); this.labels.className = 'v3d-labels';
+    this.tip = document.createElement('div'); this.tip.className = 'v3d-tip'; this.tip.textContent = '↔ arraste para girar';
+    host.append(this.canvas, this.labels, this.tip);
+    let ok = true;
+    try { this.renderer = new THREE.WebGLRenderer({ canvas: this.canvas, antialias: true, alpha: true }); } catch (e) { ok = false; }
+    if (!ok) { host.classList.add('nogl'); host.insertAdjacentHTML('beforeend', '<p class="nogl-msg">Seu navegador não conseguiu abrir o modo 3D.</p>'); this.dead = true; return; }
+    this.renderer.setPixelRatio(Math.min(2, window.devicePixelRatio || 1));
+    this.scene = new THREE.Scene();
+    this.camera = new THREE.PerspectiveCamera(32, 1, 0.05, 500);
+    this.pivot = new THREE.Group(); this.scene.add(this.pivot);
+    this.pivot.rotation.set(o.tilt, o.yaw, 0);
+    this.target = null;
+    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x8a8f9c, 1.6));
+    const d = new THREE.DirectionalLight(0xffffff, 1.5); d.position.set(3, 6, 5); this.scene.add(d);
+    const d2 = new THREE.DirectionalLight(0xffffff, 0.5); d2.position.set(-4, -2, -3); this.scene.add(d2);
+    this.lab = []; this.picks = []; this.frame = []; this.auto = o.auto;
+    this.onPick = null;
+    this._bind();
+    this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(host);
+    this.resize();
+    const loop = () => { if (this.dead) return; this.raf = requestAnimationFrame(loop); this.tick(); };
+    loop();
+    Viewer.all.add(this);
+  }
+  _bind() {
+    let down = null; let moved = 0;
+    this.canvas.addEventListener('pointerdown', (e) => { down = { x: e.clientX, y: e.clientY }; moved = 0; this.auto = false; this.target = null; this.tip.classList.add('gone'); try { this.canvas.setPointerCapture(e.pointerId); } catch (_) { /* */ } });
+    this.canvas.addEventListener('pointermove', (e) => {
+      if (!down) { this.hover(e); return; }
+      const dx = e.clientX - down.x; const dy = e.clientY - down.y; moved += Math.abs(dx) + Math.abs(dy);
+      this.pivot.rotation.y += dx * 0.011;
+      this.pivot.rotation.x = Math.max(-1.3, Math.min(1.3, this.pivot.rotation.x + dy * 0.009));
+      down = { x: e.clientX, y: e.clientY };
+    });
+    const up = (e) => { if (down && moved < 6) this.pick(e); down = null; };
+    this.canvas.addEventListener('pointerup', up);
+    this.canvas.addEventListener('pointercancel', () => { down = null; });
+    this.canvas.addEventListener('pointerleave', () => { this.canvas.style.cursor = ''; });
+  }
+  ray(e) {
+    const r = this.canvas.getBoundingClientRect();
+    const m = new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
+    const rc = new THREE.Raycaster(); rc.setFromCamera(m, this.camera);
+    const hit = rc.intersectObjects(this.picks, false)[0];
+    return hit ? hit.object : null;
+  }
+  hover(e) { if (!this.picks.length) return; this.canvas.style.cursor = this.ray(e) ? 'pointer' : 'grab'; }
+  pick(e) { if (!this.onPick || !this.picks.length) return; const o = this.ray(e); if (o) this.onPick(o.userData.pick, o); }
+  set(obj) {
+    // limpa
+    while (this.pivot.children.length) { const c = this.pivot.children.pop(); disposeDeep(c); }
+    this.labels.innerHTML = ''; this.lab = []; this.picks = [];
+    this.pivot.add(obj.group);
+    (obj.picks || []).forEach((p) => this.picks.push(p));
+    (obj.labels || []).forEach((l) => this.label(l.text, l.pos, l.cls));
+    this.fitTo(obj.group);
+    return this;
+  }
+  fitTo(g) {
+    const box = new THREE.Box3().setFromObject(g); const s = box.getBoundingSphere(new THREE.Sphere());
+    this.radius = s.radius > 0 ? s.radius : 1;
+    this.place();
+  }
+  place() {
+    const fov = (this.camera.fov * Math.PI) / 180;
+    const aspect = Math.max(0.6, this.w / this.h || 1);
+    const dist = (this.radius / Math.sin(fov / 2)) * this.o.fit / Math.min(1, aspect);
+    this.camera.position.set(0, 0, dist); this.camera.lookAt(0, 0, 0);
+    this.camera.near = dist / 50; this.camera.far = dist * 10; this.camera.updateProjectionMatrix();
+  }
+  label(text, pos, cls) {
+    const el = document.createElement('span'); el.className = 'lbl ' + (cls || ''); el.innerHTML = text;
+    this.labels.appendChild(el); const L = { el, pos: pos.clone() }; this.lab.push(L); return L;
+  }
+  face(yaw, tilt) { this.target = { y: yaw, x: tilt }; this.auto = false; }
+  resize() {
+    const r = this.host.getBoundingClientRect(); this.w = Math.max(10, r.width); this.h = Math.max(10, r.height);
+    if (this.dead) return;
+    this.renderer.setSize(this.w, this.h, false); this.camera.aspect = this.w / this.h; this.camera.updateProjectionMatrix();
+    if (this.radius) this.place();
+  }
+  tick() {
+    if (this.auto) this.pivot.rotation.y += 0.004;
+    if (this.target) {
+      this.pivot.rotation.y += (this.target.y - this.pivot.rotation.y) * 0.08;
+      this.pivot.rotation.x += (this.target.x - this.pivot.rotation.x) * 0.08;
+    }
+    this.frame.forEach((f) => f());
+    this.renderer.render(this.scene, this.camera);
+    this.pivot.updateMatrixWorld();
+    const v = new THREE.Vector3();
+    this.lab.forEach((L) => {
+      v.copy(L.pos).applyMatrix4(this.pivot.matrixWorld).project(this.camera);
+      const x = ((v.x + 1) / 2) * this.w; const y = ((1 - v.y) / 2) * this.h;
+      L.el.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -50%)`;
+    });
+  }
+  dispose() {
+    this.dead = true; cancelAnimationFrame(this.raf);
+    try { this.ro.disconnect(); } catch (e) { /* */ }
+    if (this.pivot) while (this.pivot.children.length) disposeDeep(this.pivot.children.pop());
+    if (this.renderer) { this.renderer.dispose(); this.renderer.forceContextLoss && this.renderer.forceContextLoss(); }
+    Viewer.all.delete(this);
+  }
+}
+Viewer.all = new Set();
+function disposeDeep(o) { o.traverse((c) => { if (c.geometry) c.geometry.dispose(); if (c.material) (Array.isArray(c.material) ? c.material : [c.material]).forEach((m) => m.dispose()); }); }
+
+/* ---------- peças ---------- */
+function rod(a, b, r, mat) {
+  const d = b.clone().sub(a); const len = d.length();
+  const m = new THREE.Mesh(new THREE.CylinderGeometry(r, r, len, 10, 1), mat);
+  m.position.copy(a).add(b).multiplyScalar(0.5);
+  m.quaternion.setFromUnitVectors(V3(0, 1, 0), d.normalize());
+  return m;
+}
+function ball(p, r, mat) { const m = new THREE.Mesh(new THREE.SphereGeometry(r, 16, 12), mat); m.position.copy(p); return m; }
+function ring(r, y, tube, mat, horiz) {
+  const m = new THREE.Mesh(new THREE.TorusGeometry(r, tube, 8, 72), mat);
+  if (!horiz) { m.rotation.x = Math.PI / 2; m.position.y = y; } else { m.rotation.y = Math.PI / 2; m.position.x = y; }
+  return m;
+}
+/* cota: linha com pontas, rótulo no meio deslocado */
+function dim(g, labels, a, b, text, color, off, dashed) {
+  const s = a.distanceTo(b);
+  const mat = new THREE.MeshBasicMaterial({ color });
+  const r = Math.max(0.008, s * 0.012);
+  if (dashed) {
+    const n = Math.max(4, Math.round(s / (r * 9)));
+    for (let i = 0; i < n; i += 2) { const p = a.clone().lerp(b, i / n); const q = a.clone().lerp(b, Math.min(1, (i + 1) / n)); g.add(rod(p, q, r, mat)); }
+  } else g.add(rod(a, b, r, mat));
+  g.add(ball(a, r * 2.2, mat)); g.add(ball(b, r * 2.2, mat));
+  if (text) labels.push({ text, pos: a.clone().add(b).multiplyScalar(0.5).add(off || V3(0, 0, 0)), cls: color === C3.blue ? 'b' : color === C3.red ? 'r' : '' });
+  return mat;
+}
+
+/* poliedro genérico: vértices + faces (listas de índices) */
+function poly(verts, faces, o) {
+  const opt = Object.assign({ color: C3.face, opacity: 0.9, edge: C3.ink, size: 1 }, o || {});
+  const g = new THREE.Group(); const picks = []; const faceMeshes = []; const edgeMeshes = [];
+  faces.forEach((f, i) => {
+    const pos = [];
+    for (let k = 1; k < f.length - 1; k++) [f[0], f[k], f[k + 1]].forEach((j) => pos.push(verts[j].x, verts[j].y, verts[j].z));
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3)); geo.computeVertexNormals();
+    const m = new THREE.Mesh(geo, M(opt.faceColors ? opt.faceColors[i] : opt.color, opt.opacity));
+    m.userData.pick = 'f' + i; m.userData.face = i; g.add(m); faceMeshes.push(m);
+  });
+  const seen = new Set(); const edges = [];
+  faces.forEach((f) => f.forEach((a, k) => { const b = f[(k + 1) % f.length]; const key = a < b ? a + '-' + b : b + '-' + a; if (!seen.has(key)) { seen.add(key); edges.push([a, b]); } }));
+  const er = opt.size * 0.014;
+  edges.forEach(([a, b], i) => {
+    const m = rod(verts[a], verts[b], er, new THREE.MeshStandardMaterial({ color: opt.edge, roughness: 0.4 }));
+    m.userData.pick = 'e' + i; m.userData.edge = i; g.add(m); edgeMeshes.push(m);
+    // alvo de clique mais gordo e invisível
+    const hit = rod(verts[a], verts[b], er * 4, new THREE.MeshBasicMaterial({ visible: false }));
+    hit.userData.pick = 'e' + i; hit.userData.edge = i; g.add(hit);
+  });
+  verts.forEach((v) => g.add(ball(v, er * 1.6, new THREE.MeshStandardMaterial({ color: opt.edge }))));
+  return { group: g, faceMeshes, edgeMeshes, edges, verts, picks };
+}
+function ringPts(n, R, y, rot) { return [...Array(n)].map((_, i) => { const t = rot + (i * 2 * Math.PI) / n; return V3(R * Math.cos(t), y, R * Math.sin(t)); }); }
+
+/* ---------- construtores a partir de uma especificação ---------- */
+function buildSolid(sp) {
+  const labels = []; let res; const S = sp; const col = S.color || C3.face;
+  if (S.k === 'box') {
+    const a = S.a / 2; const b = S.b / 2; const c = S.c / 2;
+    const v = [V3(-a, -c, -b), V3(a, -c, -b), V3(a, -c, b), V3(-a, -c, b), V3(-a, c, -b), V3(a, c, -b), V3(a, c, b), V3(-a, c, b)];
+    const f = [[0, 1, 2, 3], [4, 5, 6, 7], [0, 1, 5, 4], [1, 2, 6, 5], [2, 3, 7, 6], [3, 0, 4, 7]];
+    const size = Math.max(S.a, S.b, S.c);
+    res = poly(v, f, { color: col, size, opacity: S.opacity });
+    const o = size * 0.07;
+    if (S.la) dim(res.group, labels, V3(-a, -c - o, b + o), V3(a, -c - o, b + o), S.la, C3.red, V3(0, -o * 1.6, 0));
+    if (S.lb) dim(res.group, labels, V3(a + o, -c - o, -b), V3(a + o, -c - o, b), S.lb, C3.red, V3(o * 2.5, 0, 0));
+    if (S.lc) dim(res.group, labels, V3(-a - o, -c, b + o), V3(-a - o, c, b + o), S.lc, C3.red, V3(-o * 2.6, 0, 0));
+  } else if (S.k === 'prism' || S.k === 'pyr') {
+    const n = S.n; const R = S.R; const H = S.H; const rot = S.rot == null ? Math.PI / n / 2 + Math.PI / 2 : S.rot;
+    const bot = ringPts(n, R, -H / 2, rot);
+    let v; let f;
+    if (S.k === 'prism') {
+      const top = ringPts(n, R, H / 2, rot); v = bot.concat(top);
+      f = [[...Array(n).keys()], [...Array(n).keys()].map((i) => i + n)];
+      for (let i = 0; i < n; i++) f.push([i, (i + 1) % n, ((i + 1) % n) + n, i + n]);
+    } else {
+      v = bot.concat([V3(0, H / 2, 0)]);
+      f = [[...Array(n).keys()]];
+      for (let i = 0; i < n; i++) f.push([i, (i + 1) % n, n]);
+    }
+    const size = Math.max(2 * R, H);
+    res = poly(v, f, { color: col, size, opacity: S.opacity, faceColors: S.faceColors });
+    // aresta da frente (maior z médio)
+    let fi = 0; let best = -1e9;
+    for (let i = 0; i < n; i++) { const z = (bot[i].z + bot[(i + 1) % n].z) / 2; if (z > best) { best = z; fi = i; } }
+    const A = bot[fi]; const B = bot[(fi + 1) % n]; const mid = A.clone().add(B).multiplyScalar(0.5);
+    const out = V3(mid.x, 0, mid.z).normalize().multiplyScalar(size * 0.08);
+    if (S.ledge) dim(res.group, labels, A.clone().add(out).setY(-H / 2 - size * 0.02), B.clone().add(out).setY(-H / 2 - size * 0.02), S.ledge, C3.red, out.clone().multiplyScalar(1.6).add(V3(0, -size * 0.06, 0)));
+    if (S.k === 'prism' && S.lh) { const p = bot.reduce((m, q) => (q.x > m.x ? q : m), bot[0]); const o = V3(size * 0.08, 0, 0); dim(res.group, labels, p.clone().add(o), p.clone().add(o).setY(H / 2), S.lh, C3.red, V3(size * 0.1, 0, 0)); }
+    if (S.k === 'pyr' && S.lh) dim(res.group, labels, V3(0, -H / 2, 0), V3(0, H / 2, 0), S.lh, C3.red, V3(-size * 0.09, -H * 0.1, 0), true);
+    if (S.k === 'pyr' && S.lapo) {
+      const mat = dim(res.group, labels, V3(0, H / 2, 0), mid, S.lapo, C3.blue, out.clone().multiplyScalar(1.2));
+      res.apoMat = mat;
+      dim(res.group, labels, V3(0, -H / 2, 0), mid, '', C3.blue, null, true);
+    }
+    res.fi = fi;
+  } else if (S.k === 'cyl') {
+    res = cylinder(S, labels);
+  } else if (S.k === 'cone') {
+    res = cone(S, labels);
+  } else if (S.k === 'silo') {
+    const g = new THREE.Group();
+    const c1 = cylinder({ r: S.r, h: S.h, color: C3.faceC, lh: S.lh }, labels); c1.group.position.y = -S.hc / 2;
+    const c2 = cone({ r: S.r, h: S.hc, color: 0xF6C9C0, lr: S.lr, lh: S.lhc }, labels); c2.group.position.y = S.h / 2;
+    labels.forEach((l) => { l.pos.y += l.text === S.lh ? -S.hc / 2 : S.h / 2; });
+    g.add(c1.group, c2.group); res = { group: g, picks: [] };
+  }
+  if (S.horiz) res.group.rotation.z = Math.PI / 2;
+  if (S.horiz) labels.forEach((l) => { const y = l.pos.y; l.pos.y = l.pos.x; l.pos.x = -y; });
+  res.labels = labels; res.picks = res.picks || [];
+  return res;
+}
+function cylinder(S, labels) {
+  const g = new THREE.Group(); const r = S.r; const h = S.h; const size = Math.max(2 * r, h);
+  const mat = M(S.color || C3.faceB, S.opacity == null ? 0.92 : S.opacity);
+  g.add(new THREE.Mesh(new THREE.CylinderGeometry(r, r, h, 72, 1, true), mat));
+  const capM = M(S.capColor || S.color || C3.faceB, 0.96);
+  const t = new THREE.Mesh(new THREE.CircleGeometry(r, 72), capM); t.rotation.x = -Math.PI / 2; t.position.y = h / 2; g.add(t);
+  const b = new THREE.Mesh(new THREE.CircleGeometry(r, 72), capM); b.rotation.x = Math.PI / 2; b.position.y = -h / 2; g.add(b);
+  const em = new THREE.MeshStandardMaterial({ color: C3.ink });
+  const tube = size * 0.012;
+  g.add(ring(r, h / 2, tube, em)); g.add(ring(r, -h / 2, tube, em));
+  const o = size * 0.06;
+  if (S.lr) dim(g, labels, V3(0, h / 2 + 0.001, 0), V3(r, h / 2 + 0.001, 0), S.lr, C3.red, V3(0, size * 0.07, 0));
+  if (S.ld) dim(g, labels, V3(-r, h / 2 + 0.001, 0), V3(r, h / 2 + 0.001, 0), S.ld, C3.red, V3(0, size * 0.07, 0));
+  if (S.lh) dim(g, labels, V3(-r - o, -h / 2, 0), V3(-r - o, h / 2, 0), S.lh, C3.red, V3(-size * 0.1, 0, 0));
+  return { group: g, picks: [], body: mat };
+}
+function cone(S, labels) {
+  const g = new THREE.Group(); const r = S.r; const h = S.h; const size = Math.max(2 * r, h);
+  g.add(new THREE.Mesh(new THREE.ConeGeometry(r, h, 72, 1, true), M(S.color || C3.faceC, 0.9)));
+  const b = new THREE.Mesh(new THREE.CircleGeometry(r, 72), M(S.color || C3.faceC, 0.95)); b.rotation.x = Math.PI / 2; b.position.y = -h / 2; g.add(b);
+  const em = new THREE.MeshStandardMaterial({ color: C3.ink });
+  g.add(ring(r, -h / 2, size * 0.012, em)); g.add(ball(V3(0, h / 2, 0), size * 0.02, em));
+  if (S.lr) dim(g, labels, V3(0, -h / 2 + 0.001, 0), V3(r, -h / 2 + 0.001, 0), S.lr, C3.red, V3(0, -size * 0.07, size * 0.05));
+  if (S.lh) dim(g, labels, V3(0, -h / 2, 0), V3(0, h / 2, 0), S.lh, C3.red, V3(-size * 0.09, 0, 0), true);
+  if (S.lg) dim(g, labels, V3(0, h / 2, 0), V3(r, -h / 2, 0), S.lg, C3.blue, V3(size * 0.1, 0, 0));
+  return { group: g, picks: [] };
+}
+
+/* ---------- planificação animada ---------- */
+function unrollCylinder(r, h, color) {
+  const U = 96; const g = new THREE.Group();
+  const geo = new THREE.BufferGeometry(); const pos = new Float32Array((U + 1) * 2 * 3); const idx = [];
+  for (let i = 0; i < U; i++) { const a = i * 2; idx.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setIndex(idx);
+  const lat = new THREE.Mesh(geo, M(color || C3.faceB, 0.93)); g.add(lat);
+  const edgeM = new THREE.MeshStandardMaterial({ color: C3.ink });
+  const capM = M(C3.yellow, 0.97);
+  const mk = (sign) => { const hinge = new THREE.Group(); hinge.position.set(0, sign * h / 2, r); const cap = new THREE.Mesh(new THREE.CircleGeometry(r, 64), capM); cap.rotation.x = -sign * Math.PI / 2; cap.position.set(0, 0, -r); const rim = new THREE.Mesh(new THREE.TorusGeometry(r, Math.max(2 * r, h) * 0.01, 6, 64), edgeM); rim.rotation.x = Math.PI / 2; rim.position.set(0, 0, -r); hinge.add(cap, rim); g.add(hinge); return hinge; };
+  const top = mk(1); const bot = mk(-1);
+  const line = new THREE.Group(); g.add(line);
+  function set(t) {
+    const k = t > 0.995 ? 0 : (1 - t) / r;
+    for (let i = 0; i <= U; i++) {
+      const s = (i / U - 0.5) * 2 * Math.PI * r; let x; let z;
+      if (k === 0) { x = s; z = r; } else { const th = s * k; x = Math.sin(th) / k; z = r - 1 / k + Math.cos(th) / k; }
+      for (let j = 0; j < 2; j++) { const p = (i * 2 + j) * 3; pos[p] = x; pos[p + 1] = j ? h / 2 : -h / 2; pos[p + 2] = z; }
+    }
+    geo.attributes.position.needsUpdate = true; geo.computeVertexNormals(); geo.computeBoundingSphere();
+    top.rotation.x = t * Math.PI / 2; bot.rotation.x = -t * Math.PI / 2;
+  }
+  set(0);
+  return { group: g, set, picks: [], labels: [] };
+}
+function unrollCone(r, h, color) {
+  const g = new THREE.Group(); const gr = Math.hypot(r, h); const a0 = Math.asin(r / gr);
+  const U = 96; const Vn = 10; const holder = new THREE.Group(); holder.position.y = h / 2; g.add(holder);
+  const geo = new THREE.BufferGeometry(); const pos = new Float32Array((U + 1) * (Vn + 1) * 3); const idx = [];
+  for (let i = 0; i < U; i++) for (let j = 0; j < Vn; j++) { const a = i * (Vn + 1) + j; const b = a + Vn + 1; idx.push(a, b, a + 1, a + 1, b, b + 1); }
+  geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setIndex(idx);
+  holder.add(new THREE.Mesh(geo, M(color || C3.faceC, 0.93)));
+  const base = new THREE.Mesh(new THREE.CircleGeometry(r, 64), M(C3.yellow, 0.95)); base.rotation.x = Math.PI / 2; base.position.y = -h; holder.add(base);
+  function set(t) {
+    const al = a0 + (Math.PI / 2 - a0) * t; const tot = (2 * Math.PI * r) / (gr * Math.sin(al));
+    for (let i = 0; i <= U; i++) for (let j = 0; j <= Vn; j++) {
+      const ph = (i / U - 0.5) * tot; const d = (j / Vn) * gr; const p = (i * (Vn + 1) + j) * 3;
+      pos[p] = d * Math.sin(al) * Math.sin(ph); pos[p + 1] = -d * Math.cos(al); pos[p + 2] = d * Math.sin(al) * Math.cos(ph);
+    }
+    geo.attributes.position.needsUpdate = true; geo.computeVertexNormals(); geo.computeBoundingSphere();
+    holder.rotation.x = t * Math.PI / 2;
+    base.visible = t < 0.05; base.material.opacity = 0.95;
+  }
+  set(0);
+  return { group: g, set, picks: [], labels: [] };
+}
+
+const numFmt = (v, d) => Number(v).toLocaleString('pt-BR', { maximumFractionDigits: d == null ? 2 : d });
+const parseBR = (s) => { const t = String(s).replace(/\s/g, '').replace(',', '.'); return t === '' || t === '.' ? NaN : Number(t); };
+
+/* ---------- teclado numérico ---------- */
+function keypad(host, o) {
+  const opt = Object.assign({ unit: '', pi: false, int: false, label: 'Sua resposta' }, o || {});
+  let val = ''; let locked = false;
+  host.innerHTML = `<div class="kp">
+    <div class="kp-screen"><span class="kp-l">${opt.label}</span><div class="kp-v"><b class="kp-num">&nbsp;</b>${opt.pi ? '<i class="kp-pi">π</i>' : ''}<span class="kp-u">${opt.unit}</span></div></div>
+    <div class="kp-keys">${['7', '8', '9', '4', '5', '6', '1', '2', '3', opt.int ? '' : ',', '0', '⌫'].map((k) => (k ? `<button type="button" data-k="${k}" ${k === '⌫' ? 'aria-label="Apagar"' : ''}>${k}</button>` : '<span></span>')).join('')}</div>
+  </div>`;
+  const num = host.querySelector('.kp-num');
+  const show = () => { num.textContent = val || ' '; num.classList.toggle('empty', !val); };
+  const press = (k) => {
+    if (locked) return;
+    if (k === '⌫') val = val.slice(0, -1);
+    else if (k === ',') { if (!val.includes(',')) val = (val || '0') + ','; } else if (val.replace(',', '').length < 9) val = val === '0' ? k : val + k;
+    show(); if (opt.onChange) opt.onChange(val);
+  };
+  host.querySelector('.kp-keys').addEventListener('click', (e) => { const b = e.target.closest('button[data-k]'); if (b) press(b.dataset.k); });
+  const kb = (e) => {
+    if (locked || e.target.tagName === 'INPUT' || document.querySelector('.veil')) return;
+    if (/^[0-9]$/.test(e.key)) press(e.key); else if ((e.key === ',' || e.key === '.') && !opt.int) press(','); else if (e.key === 'Backspace') press('⌫'); else return;
+    e.preventDefault();
+  };
+  document.addEventListener('keydown', kb);
+  KEYHANDLERS.push(() => document.removeEventListener('keydown', kb));
+  show();
+  return { get: () => parseBR(val), raw: () => val, set: (v) => { val = String(v).replace('.', ','); show(); }, lock: () => { locked = true; host.classList.add('locked'); }, unlock: () => { locked = false; host.classList.remove('locked'); }, clear: () => { val = ''; show(); } };
+}
+const KEYHANDLERS = [];
+function clearKeyHandlers() { while (KEYHANDLERS.length) KEYHANDLERS.pop()(); }
+
+
+function buzz() { try { if (navigator.vibrate) navigator.vibrate(8); } catch (e) { /* */ } }
+
+/* =========================================================
+   O CASO DA PIRÂMIDE DOURADA — roteiro
+   Personagens fictícios.
+   ========================================================= */
+const TROFEU = { l: 10, h: 12, g: 13, V: 400, AL: 260 };
+
+const SUSPECTS = [
+  { id: 'otavio', nome: 'Prof. Otávio', papel: 'Professor de Artes', av: { skin: '#C68A5E', hair: '#3B2A20', style: 'short', shirt: '#7A4E9C', glasses: true, beard: true },
+    item: 'estojo de pincéis', box: { k: 'box', a: 35, b: 8, c: 8 }, boxTxt: 'prisma retangular 35 cm × 8 cm × 8 cm (medidas internas)',
+    dep: 'Fiquei até tarde pintando os cenários da feira. Saí às 19h10 com meu estojo de pincéis debaixo do braço. Não passei perto da vitrine.', saida: '19h10' },
+  { id: 'lia', nome: 'Lia Moreira', papel: 'Monitora de Ciências', av: { skin: '#F1C7A3', hair: '#B5562A', style: 'long', shirt: '#2E7D6B' },
+    item: 'garrafa térmica', box: { k: 'cyl', r: 6, h: 30 }, boxTxt: 'cilindro com diâmetro interno de 12 cm e 30 cm de altura',
+    dep: 'Passei na biblioteca para devolver um livro de Química, por volta das 19h. A vitrine já estava vazia? Não reparei. Eu só carregava minha garrafa térmica.', saida: '19h05' },
+  { id: 'juca', nome: 'Seu Juca', papel: 'Zelador', av: { skin: '#8A5A3B', hair: '#D9D9D9', style: 'cap', shirt: '#2B5A9E', beard: true },
+    item: 'balde de limpeza', box: { k: 'cyl', r: 12, h: 30 }, boxTxt: 'cilindro com raio interno de 12 cm e 30 cm de altura',
+    dep: 'Limpei o chão da biblioteca às 19h, como todo dia. Mergulhei o pano no balde e fui embora. A câmera pode provar!', saida: '19h20' },
+  { id: 'kenji', nome: 'Prof. Kenji', papel: 'Professor de Robótica', av: { skin: '#E8C39E', hair: '#151515', style: 'neat', shirt: '#3A3A3A', glasses: true },
+    item: 'caixa de sensores', box: { k: 'box', a: 11, b: 11, c: 11 }, boxTxt: 'cubo com 11 cm de aresta interna',
+    dep: 'Eu nem entrei na biblioteca! Passei a noite inteira no laboratório de Robótica, do outro lado do corredor, e saí com minha caixa de sensores.', saida: '19h30' },
+  { id: 'dani', nome: 'Dani Freitas', papel: 'Aluna do 9º ano · comissão da feira', av: { skin: '#6B4430', hair: '#1E1410', style: 'puff', shirt: '#E0A21B' },
+    item: 'caixa de sapatos', box: { k: 'box', a: 32, b: 20, c: 13 }, boxTxt: 'prisma retangular 32 cm × 20 cm × 13 cm (medidas internas)',
+    dep: 'Eu só fui à secretaria buscar os certificados da feira. Guardei tudo numa caixa de sapatos. Biblioteca? Passei rapidinho, mas não mexi em nada.', saida: '19h25' },
+];
+
+/* provas: encontradas na cena, analisadas no laboratório */
+const CLUES = [
+  { id: 'placa', nome: 'Placa da vitrine', short: 'Ficha do troféu', x: 470, y: 391, r: 34,
+    texto: 'TROFÉU DA FEIRA DE MATEMÁTICA · pirâmide maciça de base quadrada · aresta da base 10 cm · altura 12 cm · resina dourada.',
+    lab: 'p1', titulo: 'Perícia 1 · O tamanho do troféu',
+    prompt: 'A placa diz: pirâmide de base quadrada, <b>aresta 10 cm</b> e <b>altura 12 cm</b>. Para comparar com as outras pistas, calcule o <b>volume</b> do troféu.',
+    unit: 'cm³', ans: 400, tol: 0.5, hint: 'Pirâmide: área da base × altura ÷ 3.',
+    sol: ['Área da base: 10 · 10 = 100 cm².', 'V = 100 · 12 ÷ 3 = <b>400 cm³</b>.'],
+    conclusao: 'O troféu tem 400 cm³. Qualquer pista de volume terá de bater com esse número.' },
+  { id: 'portaria', nome: 'Livro da portaria', short: 'O que cada um levou', x: 110, y: 394, r: 40,
+    texto: 'Registro de saída da noite: cada suspeito saiu com um único objeto. O troféu precisava ir em pé, pois a ponta é frágil.',
+    lab: 'p2', titulo: 'Perícia 2 · O teste do encaixe',
+    prompt: 'Pelo livro da portaria, cada suspeito saiu com <b>um único recipiente</b>. O troféu (base 10 cm × 10 cm, altura 12 cm) só pode ser levado <b>em pé</b>. Examine cada recipiente, use a vista de cima e marque se o troféu <b>cabe</b> ou <b>não cabe</b>.',
+    hint: 'Num recipiente cilíndrico, quem precisa caber no círculo é a diagonal do quadrado da base: 10 · √2 ≈ 14,14 cm.',
+    sol: ['Estojo (8 cm de largura): a base de 10 cm não cabe.', 'Garrafa térmica: a diagonal da base (≈ 14,14 cm) é maior que o diâmetro de 12 cm. <b>Não cabe</b>, mesmo parecendo que sim!', 'Caixa de sensores: altura 11 cm < 12 cm. Não cabe.', 'Balde (diâmetro 24 cm, altura 30 cm) e caixa de sapatos (32 × 20 × 13): <b>cabem</b>.'],
+    conclusao: 'Só o balde do Seu Juca e a caixa de sapatos da Dani comportam o troféu. Prof. Otávio, Lia e Prof. Kenji estão descartados.' },
+  { id: 'camera', nome: 'Monitor da câmera', short: 'O balde na câmera', x: 215, y: 340, r: 44,
+    texto: 'Gravação das 19h02: Seu Juca mergulha algo no balde. A água sobe exatamente 2 cm.',
+    lab: 'p3', titulo: 'Perícia 3 · O que caiu no balde?',
+    prompt: 'Na gravação, Seu Juca mergulha um objeto no balde (cilindro de <b>raio 12 cm</b>) e a água <b>sobe 2 cm</b>. O volume que subiu é o volume do objeto. Calcule-o com π ≈ 3,14.',
+    unit: 'cm³', ans: 904.32, tol: 0.1, hint: 'A água que subiu forma um cilindro de raio 12 cm e altura 2 cm.',
+    sol: ['V = π · r² · h = 3,14 · 12² · 2.', '3,14 · 144 · 2 = <b>904,32 cm³</b>.', 'O troféu tem 400 cm³: o objeto era outro (era o pano encharcado).'],
+    conclusao: 'O objeto tinha cerca de 904 cm³, não 400 cm³. Era o pano de chão, não o troféu: Seu Juca está descartado.' },
+  { id: 'copinho', nome: 'Copinho cônico', short: 'O copinho no chão', x: 588, y: 500, r: 30,
+    texto: 'Copinho de papel em forma de cone, ainda úmido, ao pé da vitrine. Raio da boca 3 cm, altura 8 cm.',
+    lab: 'p4', titulo: 'Perícia 4 · De onde veio o copinho?',
+    prompt: 'O copinho é um cone com <b>raio 3 cm</b> e <b>altura 8 cm</b>. A cantina usa copos de 200 mL; o bebedouro do <b>laboratório de Robótica</b> usa copinhos de cerca de 75 mL. Calcule o volume do copinho (π ≈ 3,14).',
+    unit: 'mL', ans: 75.36, tol: 0.06, hint: 'Cone: π · r² · h ÷ 3. E 1 cm³ = 1 mL.',
+    sol: ['V = 3,14 · 3² · 8 ÷ 3.', '3,14 · 9 · 8 = 226,08; ÷ 3 = <b>75,36 mL</b>.', 'É o copinho do bebedouro da Robótica.'],
+    conclusao: 'O copinho veio do laboratório de Robótica: o Prof. Kenji mentiu e esteve na biblioteca. Mas a caixa dele não comporta o troféu.' },
+  { id: 'lixeira', nome: 'Lixeira', short: 'Recortes dourados', x: 860, y: 466, r: 46,
+    texto: 'Na lixeira da sala da comissão: retalhos de papel dourado e a etiqueta do rolo. Foram usados exatamente 260 cm² de papel.',
+    lab: 'p5', titulo: 'Perícia 5 · O papel dourado',
+    prompt: 'Alguém embrulhou as <b>4 faces laterais</b> de uma pirâmide. Abra a pirâmide do troféu (aresta 10 cm, altura 12 cm) e calcule a <b>área lateral</b>. Bate com os 260 cm² de papel usados?',
+    unit: 'cm²', ans: 260, tol: 0.5, hint: 'Apótema: g² = 12² + 5². Cada face é um triângulo de base 10 e altura g.',
+    sol: ['g² = 12² + 5² = 169 ⇒ g = 13 cm.', 'Cada face: 10 · 13 ÷ 2 = 65 cm².', '4 faces: <b>260 cm²</b>. Exatamente o papel usado!'],
+    conclusao: 'Os recortes estavam na sala da comissão da feira, a sala da Dani, e a área bate exatamente com o troféu.' },
+];
+
+const CULPRIT = 'dani';
+const KEY_EVIDENCE = ['portaria', 'lixeira'];
+const ENDING = 'Dani levou o troféu na caixa de sapatos para a sala da comissão e o encapou com papel dourado novo: queria fazer uma surpresa na cerimônia de premiação. Não pediu autorização, e isso causou o maior susto da escola! O troféu voltou inteiro para a vitrine, mais brilhante do que nunca. E o Prof. Kenji? Tinha ido à biblioteca conferir a base do troféu, que ele mesmo construiu, derrubou água do copinho e ficou com vergonha de contar.';
+
+/* =========================================================
+   LABORATÓRIO DE PERÍCIA — cada laudo devolve
+   { check(): {ok,msg,soft}, reveal(), lock() }
+   ========================================================= */
+const GOLD = 0xE2B33C;
+const trophySpec = (extra) => Object.assign({ k: 'pyr', n: 4, R: TROFEU.l / Math.SQRT2, H: TROFEU.h, rot: Math.PI / 4, color: GOLD, opacity: 1 }, extra || {});
+
+function numLab(ctrl, c) {
+  const kp = keypad(ctrl, { unit: c.unit });
+  return {
+    check: () => {
+      const x = kp.get();
+      if (Number.isNaN(x)) return { ok: false, soft: true, msg: 'Digite o resultado no teclado.' };
+      return Math.abs(x - c.ans) <= c.tol ? { ok: true } : { ok: false, msg: 'O laudo não fecha. Refaça a conta.' };
+    },
+    reveal: () => kp.set(String(c.ans)),
+    lock: () => kp.lock(),
+  };
+}
+
+/* perícia 1: volume do troféu */
+function labP1(stage, ctrl, c) {
+  const v = new Viewer(stage, { tilt: 0.35 }); v.set(buildSolid(trophySpec({ ledge: '10 cm', lh: '12 cm' })));
+  return numLab(ctrl, c);
+}
+
+/* perícia 2: teste do encaixe */
+function labP2(stage, ctrl, c) {
+  const v = new Viewer(stage, { yaw: 0.6, tilt: 0.45, auto: false, fit: 0.95 });
+  const marks = {}; let cur = SUSPECTS[0].id; let top = false; let locked = false;
+  const build = (s) => {
+    const g = new THREE.Group(); const b = s.box; let H; let lab = [];
+    if (b.k === 'box') {
+      H = b.c; const sol = buildSolid({ k: 'box', a: b.a, b: b.b, c: b.c, color: 0x9FC3E8, opacity: 0.28, la: `${b.a} cm`, lb: `${b.b} cm`, lc: `${b.c} cm` });
+      g.add(sol.group); lab = sol.labels;
+    } else {
+      H = b.h; const sol = buildSolid({ k: 'cyl', r: b.r, h: b.h, color: 0x9FC3E8, opacity: 0.28, ld: `⌀ ${numFmt(2 * b.r)} cm`, lh: `${b.h} cm` });
+      g.add(sol.group); lab = sol.labels;
+    }
+    const t = buildSolid(trophySpec()); t.group.position.y = -H / 2 + TROFEU.h / 2 + 0.05; g.add(t.group);
+    // contorno da base do troféu, sempre visível por cima
+    const om = new THREE.MeshBasicMaterial({ color: C3.red, depthTest: false, transparent: true });
+    const q = TROFEU.l / 2; const y0 = -H / 2 + 0.06; const P4 = [V3(-q, y0, -q), V3(q, y0, -q), V3(q, y0, q), V3(-q, y0, q)];
+    P4.forEach((p, i) => { const r = rod(p, P4[(i + 1) % 4], 0.12, om); r.renderOrder = 10; g.add(r); });
+    return { group: g, labels: lab, picks: [] };
+  };
+  ctrl.innerHTML = `<div class="tabs">${SUSPECTS.map((s) => `<button type="button" class="tab" data-s="${s.id}">${avatar(s.av, 34)}<span>${s.item}</span><i class="mk" data-m="${s.id}"></i></button>`).join('')}</div>
+    <div class="viewbtns"><button type="button" class="vb on" data-v="3d">Vista 3D</button><button type="button" class="vb" data-v="top">Vista de cima</button></div>
+    <p class="boxtxt"></p>
+    <div class="fitq"><span>O troféu cabe em pé?</span><button type="button" class="fit" data-f="1">Cabe</button><button type="button" class="fit" data-f="0">Não cabe</button></div>`;
+  const show = () => {
+    const s = SUSPECTS.find((x) => x.id === cur);
+    v.set(build(s)); if (top) v.face(0, Math.PI / 2 - 0.02); else v.face(0.6, 0.45);
+    ctrl.querySelectorAll('.tab').forEach((t) => t.classList.toggle('on', t.dataset.s === cur));
+    ctrl.querySelector('.boxtxt').innerHTML = `<b>${s.nome}</b> levou: ${s.item}, ${s.boxTxt}.`;
+    ctrl.querySelectorAll('.fit').forEach((f) => f.classList.toggle('on', marks[cur] != null && String(+marks[cur]) === f.dataset.f));
+    ctrl.querySelectorAll('.mk').forEach((m) => { const k = marks[m.dataset.m]; m.textContent = k == null ? '' : k ? '✓' : '✗'; m.className = 'mk ' + (k == null ? '' : k ? 'y' : 'n'); });
+  };
+  ctrl.addEventListener('click', (e) => {
+    const t = e.target.closest('[data-s]'); if (t) { cur = t.dataset.s; show(); return; }
+    const vb = e.target.closest('[data-v]'); if (vb) { top = vb.dataset.v === 'top'; ctrl.querySelectorAll('.vb').forEach((x) => x.classList.toggle('on', x === vb)); v.face(top ? 0 : 0.6, top ? Math.PI / 2 - 0.02 : 0.45); return; }
+    const f = e.target.closest('[data-f]'); if (f && !locked) {
+      marks[cur] = f.dataset.f === '1'; buzz();
+      const i = SUSPECTS.findIndex((x) => x.id === cur); const next = SUSPECTS.slice(i + 1).concat(SUSPECTS.slice(0, i)).find((x) => marks[x.id] == null);
+      if (next) cur = next.id; show();
+    }
+  });
+  show();
+  const fits = (s) => (s.box.k === 'box' ? TROFEU.l <= Math.min(s.box.a, s.box.b) && TROFEU.h <= s.box.c : TROFEU.l * Math.SQRT2 <= 2 * s.box.r && TROFEU.h <= s.box.h);
+  return {
+    check: () => {
+      const miss = SUSPECTS.filter((s) => marks[s.id] == null);
+      if (miss.length) return { ok: false, soft: true, msg: `Falta examinar: ${miss.map((s) => s.item).join(', ')}.` };
+      const wrong = SUSPECTS.filter((s) => marks[s.id] !== fits(s));
+      return wrong.length ? { ok: false, msg: `${wrong.length === 1 ? 'Um recipiente está' : wrong.length + ' recipientes estão'} com a conclusão errada. Use a vista de cima para os cilindros.` } : { ok: true };
+    },
+    reveal: () => { SUSPECTS.forEach((s) => { marks[s.id] = fits(s); }); show(); },
+    lock: () => { locked = true; ctrl.querySelector('.fitq').classList.add('locked'); },
+  };
+}
+
+/* perícia 3: o balde na câmera */
+function labP3(stage, ctrl, c) {
+  const v = new Viewer(stage, { yaw: 0.4, tilt: 0.35, auto: false });
+  const g = new THREE.Group(); const R = 12; const H = 30;
+  const b = buildSolid({ k: 'cyl', r: R, h: H, color: 0xB8C2CF, opacity: 0.3, lr: '12 cm' }); g.add(b.group);
+  const water = new THREE.Mesh(new THREE.CylinderGeometry(R - 0.15, R - 0.15, 1, 64), M(0x3D8FD8, 0.75)); g.add(water);
+  const ringM = new THREE.MeshBasicMaterial({ color: C3.red }); const mark = ring(R + 0.05, 0, 0.12, ringM); g.add(mark);
+  const pano = new THREE.Mesh(new THREE.SphereGeometry(4.2, 20, 14), M(0x7A6A52, 1)); pano.scale.set(1.3, 0.6, 1.1); g.add(pano);
+  const labels = b.labels.slice(); v.set({ group: g, labels, picks: [] });
+  const tag = v.label('+2 cm', V3(R + 3, 0, 0), 'r fade');
+  let lvl = 14;
+  const setL = (L) => { water.scale.y = L; water.position.y = -H / 2 + L / 2; mark.position.y = -H / 2 + L; };
+  setL(lvl); mark.visible = false; pano.position.set(0, H / 2 + 8, 0);
+  ctrl.innerHTML = '<button type="button" class="btn play" data-play>▶ Ver a gravação das 19h02</button><div class="kpw"></div>';
+  const lab = numLab(ctrl.querySelector('.kpw'), c);
+  ctrl.querySelector('[data-play]').onclick = () => {
+    const t0 = performance.now(); mark.visible = true; setL(14); mark.position.y = -H / 2 + 14; tag.el.classList.remove('on');
+    const step = (now) => {
+      const t = Math.min(1, (now - t0) / 2600);
+      const py = H / 2 + 8 - Math.min(1, t * 1.6) * (H / 2 + 8 - (-H / 2 + 6)); pano.position.y = py;
+      const L = t < 0.5 ? 14 : 14 + 2 * Math.min(1, (t - 0.5) / 0.4); setL(L); mark.position.y = -H / 2 + 14;
+      if (t >= 0.9) { tag.pos.set(R + 3, -H / 2 + 15, 0); tag.el.classList.add('on'); }
+      if (t < 1 && !v.dead) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  return lab;
+}
+
+/* perícia 4: copinho cônico */
+function labP4(stage, ctrl, c) {
+  const v = new Viewer(stage, { tilt: 0.4 });
+  const s = buildSolid({ k: 'cone', r: 3, h: 8, color: 0xF3EFE4, lr: '3 cm', lh: '8 cm' });
+  s.group.rotation.x = Math.PI; s.labels.forEach((l) => { l.pos.y = -l.pos.y; l.pos.z = -l.pos.z; });
+  v.set(s);
+  return numLab(ctrl, c);
+}
+
+/* perícia 5: planificação da pirâmide */
+function labP5(stage, ctrl, c) {
+  const v = new Viewer(stage, { yaw: 0.5, tilt: 0.55, auto: false, fit: 0.85 });
+  const a = TROFEU.l / 2; const h = TROFEU.h; const g = TROFEU.g; const phi0 = Math.atan2(h, a);
+  const grp = new THREE.Group();
+  const base = new THREE.Mesh(new THREE.PlaneGeometry(TROFEU.l, TROFEU.l), M(0xC79A2E, 1)); base.rotation.x = -Math.PI / 2; base.position.y = -h / 2; grp.add(base);
+  const sides = [];
+  const corners = [V3(-a, -h / 2, a), V3(a, -h / 2, a), V3(a, -h / 2, -a), V3(-a, -h / 2, -a)];
+  for (let i = 0; i < 4; i++) {
+    const A = corners[i]; const B = corners[(i + 1) % 4]; const Mm = A.clone().add(B).multiplyScalar(0.5);
+    const out = V3(Mm.x, 0, Mm.z).normalize();
+    const geo = new THREE.BufferGeometry(); geo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(9), 3));
+    const mesh = new THREE.Mesh(geo, M(i === 0 ? 0xF2CF63 : GOLD, 1)); grp.add(mesh);
+    const lg = new THREE.BufferGeometry(); lg.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(12), 3));
+    const ln = new THREE.Line(lg, new THREE.LineBasicMaterial({ color: C3.ink })); grp.add(ln);
+    sides.push({ A, B, Mm, out, geo, lg });
+  }
+  const apo = new THREE.BufferGeometry(); apo.setAttribute('position', new THREE.Float32BufferAttribute(new Float32Array(6), 3));
+  grp.add(new THREE.Line(apo, new THREE.LineBasicMaterial({ color: C3.blue })));
+  const set = (t) => {
+    const al = (Math.PI - phi0) * (1 - t); let front = null;
+    sides.forEach((s, i) => {
+      const P = s.Mm.clone().add(s.out.clone().multiplyScalar(g * Math.cos(al))).add(V3(0, g * Math.sin(al), 0));
+      const p = s.geo.attributes.position; p.setXYZ(0, s.A.x, s.A.y, s.A.z); p.setXYZ(1, s.B.x, s.B.y, s.B.z); p.setXYZ(2, P.x, P.y, P.z); p.needsUpdate = true; s.geo.computeVertexNormals(); s.geo.computeBoundingSphere();
+      const q = s.lg.attributes.position; [s.A, s.B, P, s.A].forEach((X, k) => q.setXYZ(k, X.x, X.y, X.z)); q.needsUpdate = true;
+      if (i === 0) front = P;
+    });
+    const s0 = sides[0]; const q = apo.attributes.position; q.setXYZ(0, s0.Mm.x, s0.Mm.y + 0.02, s0.Mm.z); q.setXYZ(1, front.x, front.y + 0.02, front.z); q.needsUpdate = true;
+    lg1.pos.copy(s0.Mm.clone().add(front).multiplyScalar(0.5)).add(V3(1.6, 0.3, 0.6));
+  };
+  // enquadra a planificação aberta
+  const frame = new THREE.Mesh(new THREE.BoxGeometry(TROFEU.l + 2 * g, 2, TROFEU.l + 2 * g), new THREE.MeshBasicMaterial({ visible: false })); frame.position.y = -h / 2; grp.add(frame);
+  v.set({ group: grp, picks: [], labels: [{ text: '10 cm', pos: V3(-a - 1.6, -h / 2, 0), cls: 'r' }] });
+  const lg1 = v.label('g', V3(0, 0, 0), 'b');
+  set(0);
+  ctrl.innerHTML = '<label class="range"><span>Abrir a pirâmide</span><input type="range" min="0" max="100" value="0"></label><div class="kpw"></div>';
+  ctrl.querySelector('input').addEventListener('input', (e) => { const t = e.target.value / 100; set(t); if (t > 0.5) v.face(0.25, 1.0); });
+  return numLab(ctrl.querySelector('.kpw'), c);
+}
+
+const LABS = { p1: labP1, p2: labP2, p3: labP3, p4: labP4, p5: labP5 };
+
+/* ---------- retratos (ilustração própria) ---------- */
+function avatar(a, size) {
+  const s = size || 120; const id = 'av' + Math.random().toString(36).slice(2, 7);
+  let hair = '';
+  if (a.style === 'short') hair = `<path d="M36 52c0-20 12-30 24-30s24 10 24 30c-4-8-12-12-24-12s-20 4-24 12z" fill="${a.hair}"/>`;
+  if (a.style === 'long') hair = `<path d="M30 92c-4-30 2-70 30-70s34 40 30 70l-8 0c2-20 0-34-4-44-6 6-14 8-22 8s-12-2-16-6c-4 10-4 26-2 42z" fill="${a.hair}"/>`;
+  if (a.style === 'cap') hair = `<path d="M34 46c2-16 12-24 26-24s24 8 26 24z" fill="#2B5A9E"/><rect x="58" y="42" width="34" height="6" rx="3" fill="#1F4277"/><path d="M38 52c-2 4-2 10 0 12M82 52c2 4 2 10 0 12" stroke="${a.hair}" stroke-width="4" fill="none"/>`;
+  if (a.style === 'neat') hair = `<path d="M36 50c0-18 10-28 24-28s24 8 24 26c-8-6-14-6-24-6-8 0-16 2-24 8z" fill="${a.hair}"/>`;
+  if (a.style === 'puff') hair = `<circle cx="60" cy="30" r="20" fill="${a.hair}"/><circle cx="40" cy="38" r="12" fill="${a.hair}"/><circle cx="80" cy="38" r="12" fill="${a.hair}"/>`;
+  return `<svg class="avatar" width="${s}" height="${s}" viewBox="0 0 120 120" aria-hidden="true"><defs><clipPath id="${id}"><rect width="120" height="120" rx="4"/></clipPath></defs><g clip-path="url(#${id})">
+    <rect width="120" height="120" fill="#D8D2C2"/><path d="M14 124c4-26 22-36 46-36s42 10 46 36z" fill="${a.shirt}"/><rect x="52" y="74" width="16" height="16" fill="${a.skin}"/>
+    <ellipse cx="60" cy="56" rx="22" ry="26" fill="${a.skin}"/>${hair}
+    <circle cx="51" cy="57" r="2.6" fill="#1B1B1B"/><circle cx="69" cy="57" r="2.6" fill="#1B1B1B"/>
+    ${a.glasses ? '<g fill="none" stroke="#1B1B1B" stroke-width="2"><circle cx="51" cy="57" r="7"/><circle cx="69" cy="57" r="7"/><path d="M58 57h4"/></g>' : ''}
+    ${a.beard ? `<path d="M40 64c2 16 10 22 20 22s18-6 20-22c-4 6-10 8-20 8s-16-2-20-8z" fill="${a.hair}" opacity=".85"/>` : '<path d="M53 70c4 3 10 3 14 0" stroke="#7A3B2E" stroke-width="2.4" fill="none" stroke-linecap="round"/>'}
+  </g></svg>`;
+}
+
+/* =========================================================
+   O CASO DA PIRÂMIDE DOURADA — telas e fluxo
+   ========================================================= */
+const KEY = 'caso-piramide-dourada-9ano-v1';
+const TURMAS = ['F91', 'F92'];
+const PIN_HASH = 2392177968;
+const $app = document.getElementById('app');
+const norm = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+function fnv(str) { let h = 0x811c9dc5; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 0x01000193); } return h >>> 0; }
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const SUS = {}; SUSPECTS.forEach((s) => { SUS[s.id] = s; });
+const CL = {}; CLUES.forEach((c, i) => { CL[c.id] = c; c.n = i + 1; });
+
+const store = {
+  get() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } },
+  set(o) { try { localStorage.setItem(KEY, JSON.stringify(o)); } catch (e) { /* sem armazenamento */ } },
+};
+let DB = Object.assign({ cur: null, hall: [] }, store.get());
+const save = () => store.set(DB);
+let S = DB.cur;
+let screen = S ? (S.finished ? 'closed' : 'board') : 'cover';
+let modal = null; let labId = null; let lab = null; let projection = false; let busy = false;
+
+function newCase(name, turma) {
+  S = { name, turma, found: [], clue: {}, acc: { tries: 0, done: false, ok: false, pts: 0 }, pos: {}, seen: {}, t0: Date.now(), finished: false };
+  DB.cur = S; save();
+}
+const cs = (id) => { if (!S.clue[id]) S.clue[id] = { wrong: 0, hint: false, done: false, solved: false, pts: 0 }; return S.clue[id]; };
+const solved = (id) => !!(S.clue[id] && S.clue[id].done);
+const allSolved = () => CLUES.every((c) => solved(c.id));
+const score = () => CLUES.reduce((s, c) => s + (S.clue[c.id] ? S.clue[c.id].pts : 0), 0) + S.acc.pts;
+const MAXPTS = CLUES.length * 100 + 300;
+const ptsFor = (r) => Math.max(30, 100 - 30 * r.wrong - (r.hint ? 20 : 0));
+function status(id) {
+  if (solved('portaria') && ['otavio', 'lia', 'kenji'].includes(id)) return { k: 'out', t: 'DESCARTADO', why: 'O recipiente não comporta o troféu.' };
+  if (solved('camera') && id === 'juca') return { k: 'out', t: 'DESCARTADO', why: 'O objeto no balde tinha 904 cm³, não 400 cm³.' };
+  if (solved('lixeira') && solved('portaria') && id === CULPRIT) return { k: 'hot', t: 'SUSPEITA', why: 'A caixa comporta o troféu e o papel bate com a área lateral.' };
+  return null;
+}
+/* ligações do barbante: [prova, suspeito, tipo] */
+function strings() {
+  const L = [];
+  if (solved('portaria')) { ['otavio', 'lia', 'kenji'].forEach((s) => L.push(['portaria', s, 'out'])); ['juca', 'dani'].forEach((s) => { if (!(s === 'juca' && solved('camera'))) L.push(['portaria', s, 'in']); }); }
+  if (solved('camera')) L.push(['camera', 'juca', 'out']);
+  if (solved('copinho')) L.push(['copinho', 'kenji', 'in']);
+  if (solved('lixeira')) L.push(['lixeira', 'dani', 'in']);
+  if (solved('placa')) L.push(['placa', 'camera', 'note'], ['placa', 'lixeira', 'note']);
+  return L;
+}
+
+/* ---------- máquina de escrever ---------- */
+function typewrite(el, text, speed) {
+  if (!el) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) { el.textContent = text; return; }
+  let i = 0; el.textContent = ''; el.classList.add('typing');
+  const iv = setInterval(() => { if (!el.isConnected) { clearInterval(iv); return; } i += 2; el.textContent = text.slice(0, i); if (i >= text.length) { clearInterval(iv); el.classList.remove('typing'); } }, speed || 18);
+  el.addEventListener('click', () => { i = text.length; }, { once: true });
+}
+
+/* ---------- telas ---------- */
+const logo = () => (typeof IMG !== 'undefined' && IMG.logo ? `<img class="logo" src="${IMG.logo.uri}" alt="Curso G9">` : '');
+function topbar() {
+  if (!S) return `<header class="top">${logo()}<span class="case-no">CASO Nº 09 · GEOMETRIA ESPACIAL</span><button class="lnk" data-act="teacher">Área do professor</button></header>`;
+  const tab = (k, t) => `<button class="tabb ${screen === k ? 'on' : ''}" data-act="${k}">${t}</button>`;
+  return `<header class="top">${logo()}<nav class="tabs-top">${tab('scene', 'Cena do crime')}${tab('board', 'Quadro')}${tab('notes', 'Caderno')}</nav>
+    <span class="who">Det. ${esc(S.name)} · ${esc(S.turma)} · <b>${score()}</b> pts</span></header>`;
+}
+
+function coverView() {
+  const last = DB.last || {};
+  return `<main class="cover">${topbar()}
+    <section class="folder">
+      <div class="tabtag">CONFIDENCIAL</div>
+      <div class="stamp-top">ARQUIVO G9</div>
+      <h1>O Caso da<br><span>Pirâmide Dourada</span></h1>
+      <p class="type">Na véspera da Feira de Matemática, o troféu sumiu da vitrine da biblioteca. Cinco pessoas passaram por lá. Só a geometria pode dizer quem levou.</p>
+      <form class="sheet" data-form="start" autocomplete="off">
+        <p class="sheet-h">FICHA DO(A) DETETIVE</p>
+        <label>Nome<input name="nome" maxlength="40" required value="${esc(last.name || '')}" placeholder="Nome e sobrenome"></label>
+        <fieldset><legend>Turma</legend><div class="seg">${TURMAS.map((t) => `<label><input type="radio" name="turma" value="${t}" ${t === last.turma ? 'checked' : ''} required><span>${t}</span></label>`).join('')}</div></fieldset>
+        <button class="btn red big" type="submit">Abrir o dossiê</button>
+      </form>
+    </section>
+    <ol class="how"><li><b>Vasculhe</b> a biblioteca escura com a lanterna e encontre 5 provas.</li><li><b>Analise</b> cada prova no laboratório de perícia: as contas de geometria espacial descartam suspeitos.</li><li><b>Acuse</b> o responsável e as provas que o ligam ao troféu.</li></ol>
+    <p class="center"><button class="btn ghost" data-act="hall">Detetives de destaque</button></p>
+  </main>`;
+}
+
+const BRIEF = 'Quinta-feira, 19h40. A professora de Matemática chega à biblioteca do Curso G9 e encontra a vitrine aberta e vazia. O troféu da Feira de Matemática, uma pirâmide dourada, desapareceu. Entre 19h e 19h30, cinco pessoas passaram por ali, e cada uma saiu do prédio carregando um único objeto. Ninguém viu nada. Sua missão: examinar a cena, analisar as provas e descobrir quem levou a pirâmide, e para onde.';
+function briefView() {
+  return `<main class="brief">${topbar()}
+    <section class="memo"><p class="memo-h">MEMORANDO · URGENTE</p><p class="memo-t" id="brief"></p>
+      <div class="suspects-row">${SUSPECTS.map((s) => `<figure>${avatar(s.av, 84)}<figcaption>${esc(s.nome)}<small>${esc(s.papel)}</small></figcaption></figure>`).join('')}</div>
+      <p class="center"><button class="btn red big" data-act="scene">Ir à cena do crime →</button></p></section>
+  </main>`;
+}
+
+/* cena do crime com lanterna */
+const DECOYS = [
+  { x: 330, y: 120, r: 46, t: 'A janela está trancada por dentro. Ninguém entrou por aqui.' },
+  { x: 760, y: 200, r: 50, t: 'Livros de poesia. Nada de suspeito.' },
+  { x: 700, y: 455, r: 34, t: 'Uma cadeira fora do lugar. Normal numa biblioteca.' },
+  { x: 950, y: 140, r: 34, t: 'Um globo terrestre empoeirado.' },
+];
+function sceneSVG() {
+  const books = (x0, y0, w, rows) => { let s = ''; for (let r = 0; r < rows; r++) { let x = x0 + 6; while (x < x0 + w - 14) { const bw = 8 + (fnv(`${x}${r}${x0}`) % 10); const bh = 46 + (fnv(`${r}${x}`) % 18); const c = ['#7A2E2E', '#2E4A7A', '#3F6B3A', '#8A6A2A', '#5A3A6A', '#2A5A5A'][fnv(`${x}-${r}-${x0}`) % 6]; s += `<rect x="${x}" y="${y0 + r * 74 + 70 - bh}" width="${bw}" height="${bh}" fill="${c}"/>`; x += bw + 2; } s += `<rect x="${x0}" y="${y0 + r * 74 + 70}" width="${w}" height="6" fill="#4A3424"/>`; } return s; };
+  const f = (id) => S.found.includes(id);
+  const C = (id) => CL[id];
+  return `<svg class="scene" viewBox="0 0 1000 600" role="img" aria-label="Biblioteca escura: use a lanterna para procurar provas">
+    <defs>
+      <radialGradient id="lampg"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#000"/><stop offset="1" stop-color="#fff"/></radialGradient>
+      <mask id="lampm"><rect width="1000" height="600" fill="#fff"/><circle id="lamp" cx="500" cy="300" r="130" fill="url(#lampg)"/></mask>
+      <linearGradient id="glass" x1="0" x2="1"><stop offset="0" stop-color="#BFE3F2" stop-opacity=".35"/><stop offset="1" stop-color="#BFE3F2" stop-opacity=".12"/></linearGradient>
+    </defs>
+    <rect width="1000" height="600" fill="#5A4E46"/>
+    <rect y="430" width="1000" height="170" fill="#6B4E35"/>
+    ${[...Array(10)].map((_, i) => `<rect x="${i * 100}" y="430" width="98" height="170" fill="#734F33" opacity="${i % 2 ? 0.6 : 0.3}"/>`).join('')}
+    <rect x="270" y="50" width="120" height="150" fill="#1C2A44" stroke="#3A2A1C" stroke-width="10"/><circle cx="350" cy="95" r="18" fill="#F3E9C6"/><path d="M330 50v150M270 125h120" stroke="#3A2A1C" stroke-width="6"/>
+    <rect x="20" y="40" width="230" height="230" fill="#4A3424"/>${books(26, 40, 218, 3)}
+    <rect x="640" y="60" width="250" height="300" fill="#4A3424"/>${books(646, 60, 238, 4)}
+    <g><circle cx="950" cy="140" r="26" fill="#2E6A8A"/><path d="M932 128c10 4 22 0 30 8M940 152c6-6 14-4 20 2" stroke="#6BA36A" stroke-width="5" fill="none"/><rect x="947" y="166" width="6" height="34" fill="#4A3424"/><rect x="930" y="198" width="40" height="8" fill="#4A3424"/></g>
+    <rect x="40" y="400" width="240" height="14" fill="#3A2A1C"/><rect x="52" y="414" width="12" height="100" fill="#3A2A1C"/><rect x="256" y="414" width="12" height="100" fill="#3A2A1C"/>
+    <g><rect x="160" y="300" width="110" height="78" rx="6" fill="#1D1F24"/><rect x="168" y="308" width="94" height="58" fill="${f('camera') ? '#2E5E7A' : '#2A3B48'}"/><rect x="205" y="378" width="20" height="22" fill="#1D1F24"/><text x="174" y="324" font-size="9" fill="#9CD3F0" font-family="monospace">CAM 2 · 19:02</text><circle cx="254" cy="316" r="3" fill="#E5322D"/></g>
+    <g><path d="M70 398l40-12 40 12-40 6z" fill="#EDE3C8"/><path d="M110 386v18" stroke="#9A8B6A"/><text x="78" y="392" font-size="7" fill="#5A4A2A">PORTARIA</text></g>
+    <rect x="420" y="360" width="100" height="160" fill="#3B2B20"/><rect x="408" y="352" width="124" height="12" fill="#2C2018"/>
+    <rect x="410" y="200" width="120" height="152" fill="url(#glass)" stroke="#9FC6D6" stroke-width="2"/><rect x="440" y="330" width="60" height="16" rx="4" fill="#7A1F2B"/>
+    <path d="M530 200l40 30v122l-40-0" fill="url(#glass)" stroke="#9FC6D6" stroke-width="2"/>
+    <rect x="438" y="378" width="64" height="26" rx="2" fill="#C9A646"/><text x="470" y="395" text-anchor="middle" font-size="8" fill="#3B2B20" font-family="monospace">TROFÉU</text>
+    <g><path d="M582 490l16 0-8 22z" fill="#F1ECDD" stroke="#B9B09A"/><ellipse cx="560" cy="520" rx="26" ry="6" fill="#4F86A8" opacity=".6"/></g>
+    <g><path d="M672 420h56v6h-56zM676 426v60M724 426v60M672 390h56v32h-56z" fill="#3A2A1C" stroke="#3A2A1C" stroke-width="4"/></g>
+    <g><path d="M830 430h60l-8 80h-44z" fill="#555B63"/><path d="M846 432l6-14 8 12 8-16 6 18" fill="#E2B33C"/><rect x="826" y="424" width="68" height="8" rx="2" fill="#40464D"/></g>
+    <rect width="1000" height="600" fill="#05060A" opacity=".94" mask="url(#lampm)" class="dark"/>
+    ${CLUES.map((c) => `<g class="hot ${f(c.id) ? 'got' : ''}" data-act="find" data-id="${c.id}"><circle cx="${c.x}" cy="${c.y}" r="${c.r}" class="hc"/>${f(c.id) ? `<g transform="translate(${c.x - 11} ${c.y - c.r - 26})"><path d="M11 0a9 9 0 0 1 9 9c0 7-9 15-9 15S2 16 2 9a9 9 0 0 1 9-9z" fill="#C8102E"/><text x="11" y="13" text-anchor="middle" font-size="10" fill="#fff" font-weight="700">${c.n}</text></g>` : ''}</g>`).join('')}
+    ${DECOYS.map((d, i) => `<circle cx="${d.x}" cy="${d.y}" r="${d.r}" class="decoy" data-act="decoy" data-i="${i}"/>`).join('')}
+  </svg>`;
+}
+function sceneView() {
+  const n = S.found.length;
+  return `<main class="scenescr">${topbar()}
+    <div class="scene-grid">
+      <section class="scene-box">${sceneSVG()}<p class="scene-tip">🔦 Mova a lanterna e toque no que parecer suspeito.</p><div class="toast" id="toast" role="status"></div></section>
+      <aside class="checklist">
+        <p class="cl-h">PROVAS ENCONTRADAS · ${n}/5</p>
+        <ol>${CLUES.map((c) => `<li class="${S.found.includes(c.id) ? 'ok' : ''}">${S.found.includes(c.id) ? `<b>${c.n}.</b> ${esc(c.nome)}` : '<span>? ? ? ? ? ?</span>'}</li>`).join('')}</ol>
+        <p class="cl-tip">Dica de perito: o que um ladrão deixaria para trás? Olhe perto da vitrine, na mesa da portaria e na lixeira.</p>
+        <button class="btn red" data-act="board" ${n ? '' : 'disabled'}>Ir para o quadro →</button>
+      </aside>
+    </div>
+  </main>`;
+}
+function bindLamp() {
+  const svg = $app.querySelector('svg.scene'); if (!svg) return;
+  const lamp = svg.querySelector('#lamp');
+  const move = (e) => { const r = svg.getBoundingClientRect(); lamp.setAttribute('cx', ((e.clientX - r.left) / r.width) * 1000); lamp.setAttribute('cy', ((e.clientY - r.top) / r.height) * 600); };
+  svg.addEventListener('pointermove', move); svg.addEventListener('pointerdown', move);
+}
+function toast(t) { const el = document.getElementById('toast'); if (!el) return; el.textContent = t; el.classList.add('on'); clearTimeout(toast.tm); toast.tm = setTimeout(() => el.classList.remove('on'), 2600); }
+
+/* quadro de cortiça */
+const DEF_POS = () => {
+  const P = {}; SUSPECTS.forEach((s, i) => { P['s-' + s.id] = [3 + i * 19.5, 4 + (i % 2) * 5]; });
+  CLUES.forEach((c, i) => { P['c-' + c.id] = [5 + i * 19, 60 + (i % 2) * 7]; }); return P;
+};
+function boardView() {
+  const pos = Object.assign(DEF_POS(), S.pos);
+  const card = (key, inner, cls, act, id) => `<div class="pin-card ${cls}" data-key="${key}" data-act="${act}" data-id="${id}" style="left:${pos[key][0]}%;top:${pos[key][1]}%;--rot:${((fnv(key) % 9) - 4)}deg" tabindex="0" role="button"><span class="pushpin"></span>${inner}</div>`;
+  const sus = SUSPECTS.map((s) => { const st = status(s.id); return card('s-' + s.id, `${avatar(s.av, 112)}<b>${esc(s.nome)}</b><small>${esc(s.papel)}</small>${st ? `<span class="st ${st.k}">${st.t}</span>` : ''}`, 'polaroid' + (st ? ' ' + st.k : ''), 'dep', s.id); }).join('');
+  const clues = CLUES.filter((c) => S.found.includes(c.id)).map((c) => card('c-' + c.id, `<span class="num">PROVA ${c.n}</span><b>${esc(c.short)}</b><small>${esc(c.nome)}</small><span class="lst ${solved(c.id) ? (S.clue[c.id].solved ? 'ok' : 'no') : ''}">${solved(c.id) ? 'laudo pronto ✓' : 'analisar →'}</span>`, 'index' + (solved(c.id) ? ' done' : ''), 'lab', c.id)).join('');
+  const missing = CLUES.length - S.found.length;
+  return `<main class="boardscr">${topbar()}
+    <div class="board-head"><p>Arraste os cartões pelo quadro. Toque num suspeito para ler o depoimento e numa prova para abrir a perícia.</p>
+      <button class="btn red" data-act="accuse" ${allSolved() && !S.acc.done ? '' : 'disabled'}>⚖ Fazer a acusação</button></div>
+    ${missing ? `<p class="miss">Ainda faltam ${missing} prova(s) na cena do crime. <button class="lnk2" data-act="scene">Voltar à cena</button></p>` : ''}
+    <section class="cork" id="cork"><svg class="yarn" id="yarn"></svg>${sus}${clues}</section>
+  </main>`;
+}
+function drawYarn() {
+  const cork = document.getElementById('cork'); const svg = document.getElementById('yarn'); if (!cork || !svg) return;
+  const R = cork.getBoundingClientRect(); svg.setAttribute('viewBox', `0 0 ${R.width} ${R.height}`);
+  const at = (key) => { const el = cork.querySelector(`[data-key="${key}"] .pushpin`); if (!el) return null; const r = el.getBoundingClientRect(); return [r.left - R.left + r.width / 2, r.top - R.top + r.height / 2]; };
+  svg.innerHTML = strings().map(([c, s, k]) => {
+    const a = at('c-' + c); const b = at(k === 'note' ? 'c-' + s : 's-' + s); if (!a || !b) return '';
+    const mx = (a[0] + b[0]) / 2; const my = Math.max(a[1], b[1]) + 30;
+    return `<path d="M${a[0]},${a[1]} Q${mx},${my} ${b[0]},${b[1]}" class="yarn-${k}"/>`;
+  }).join('');
+}
+function bindBoard() {
+  const cork = document.getElementById('cork'); if (!cork) return;
+  drawYarn();
+  let d = null;
+  cork.addEventListener('pointerdown', (e) => {
+    const c = e.target.closest('.pin-card'); if (!c || window.innerWidth < 760) return;
+    const R = cork.getBoundingClientRect(); const r = c.getBoundingClientRect();
+    d = { c, key: c.dataset.key, dx: e.clientX - r.left, dy: e.clientY - r.top, R, moved: 0, x0: e.clientX, y0: e.clientY };
+  });
+  window.addEventListener('pointermove', bindBoard.mv = (e) => {
+    if (!d) return; d.moved = Math.max(d.moved, Math.abs(e.clientX - d.x0) + Math.abs(e.clientY - d.y0)); if (d.moved < 6) return;
+    d.c.classList.add('drag');
+    const x = Math.max(0, Math.min(88, ((e.clientX - d.R.left - d.dx) / d.R.width) * 100)); const y = Math.max(0, Math.min(84, ((e.clientY - d.R.top - d.dy) / d.R.height) * 100));
+    d.c.style.left = x + '%'; d.c.style.top = y + '%'; S.pos[d.key] = [x, y]; drawYarn();
+  });
+  window.addEventListener('pointerup', bindBoard.up = () => { if (!d) return; if (d.moved >= 6) { d.c.classList.remove('drag'); save(); bindBoard.block = true; setTimeout(() => { bindBoard.block = false; }, 0); } d = null; });
+  window.addEventListener('resize', bindBoard.rs = drawYarn);
+  CLEANUP.push(() => { window.removeEventListener('pointermove', bindBoard.mv); window.removeEventListener('pointerup', bindBoard.up); window.removeEventListener('resize', bindBoard.rs); });
+}
+
+function notesView() {
+  const done = CLUES.filter((c) => solved(c.id));
+  return `<main class="notesscr">${topbar()}
+    <section class="notebook">
+      <h2>Caderno do(a) detetive</h2>
+      <h3>Depoimentos</h3>
+      <ul>${SUSPECTS.map((s) => `<li><b>${esc(s.nome)}</b> (${esc(s.papel)}) saiu às ${s.saida} levando ${s.item}.${status(s.id) ? ` <em class="${status(s.id).k}">${status(s.id).t}: ${status(s.id).why}</em>` : ''}</li>`).join('')}</ul>
+      <h3>Conclusões das perícias</h3>
+      ${done.length ? `<ol>${done.map((c) => `<li><b>Prova ${c.n}, ${esc(c.short)}:</b> ${c.conclusao}</li>`).join('')}</ol>` : '<p class="muted">Nenhum laudo pronto ainda.</p>'}
+    </section>
+  </main>`;
+}
+
+function labView() {
+  const c = CL[labId]; const r = cs(labId);
+  return `<main class="labscr">${topbar()}
+    <header class="lab-h"><button class="btn ghost sm" data-act="board">← Quadro</button><div><p class="kick">LABORATÓRIO DE PERÍCIA · PROVA ${c.n}</p><h2>${esc(c.titulo)}</h2></div></header>
+    <p class="evid">📎 <i>${esc(c.texto)}</i></p>
+    <section class="lab">
+      <div class="stage" id="stage"></div>
+      <div class="panel">
+        <div class="prompt">${c.prompt}</div>
+        <div id="ctrl" class="ctrl"></div>
+        <div class="hintbox" id="hintbox" ${r.hint ? '' : 'hidden'}>💡 ${c.hint}</div>
+        <div class="fb" id="fb" aria-live="polite">${r.done ? solutionHTML(c, r) : ''}</div>
+        <div class="gact" id="gact">${r.done ? '<button class="btn red" data-act="board">Voltar ao quadro →</button>' : `<button class="btn ghost" data-act="hint" ${r.hint ? 'disabled' : ''}>💡 Dica <small>−20</small></button><button class="btn red" data-act="check">Emitir laudo</button>`}</div>
+      </div>
+    </section>
+  </main>`;
+}
+function solutionHTML(c, r) { return `<div class="fb-h">${r.solved ? `<b>Laudo confirmado · +${r.pts} pts</b>` : '<b>Laudo corrigido pelo perito-chefe · 0 pts</b>'}</div><ol class="steps">${c.sol.map((s) => `<li>${s}</li>`).join('')}</ol><p class="concl">🔎 ${c.conclusao}</p>`; }
+function mountLab() {
+  const c = CL[labId]; const r = cs(labId);
+  lab = LABS[c.lab](document.getElementById('stage'), document.getElementById('ctrl'), c);
+  if (r.done) { lab.reveal(); lab.lock(); document.getElementById('fb').className = 'fb ' + (r.solved ? 'ok' : 'no'); }
+}
+async function doCheck() {
+  if (busy || !lab) return;
+  const c = CL[labId]; const r = cs(labId); const fb = document.getElementById('fb'); const act = document.getElementById('gact');
+  busy = true; const res = await lab.check(); busy = false;
+  if (!res.ok && res.soft) { fb.className = 'fb warn'; fb.innerHTML = res.msg; return; }
+  if (res.ok) { r.pts = ptsFor(r); r.solved = true; r.done = true; }
+  else { r.wrong++; if (r.wrong >= 3) { r.done = true; r.pts = 0; lab.reveal(); } }
+  save();
+  if (r.done) {
+    lab.lock(); fb.className = 'fb ' + (r.solved ? 'ok' : 'no'); fb.innerHTML = solutionHTML(c, r);
+    act.innerHTML = `<button class="btn red" data-act="board">${allSolved() ? 'Todas as provas analisadas: ao quadro →' : 'Voltar ao quadro →'}</button>`;
+    $app.querySelector('.who b').textContent = score();
+    fb.scrollIntoView && fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  } else {
+    fb.className = 'fb no'; fb.innerHTML = `${res.msg} <small>Tentativas restantes: ${3 - r.wrong}. Este laudo agora vale ${ptsFor(r)} pts.</small>`;
+    const st = document.getElementById('stage'); st.classList.remove('shake'); void st.offsetWidth; st.classList.add('shake');
+  }
+}
+
+/* acusação */
+let accSel = { s: null, e: new Set() };
+function accuseView() {
+  return `<main class="accscr">${topbar()}
+    <section class="court">
+      <p class="kick">TRIBUNAL DA FEIRA · TENTATIVA ${S.acc.tries + 1} DE 2</p>
+      <h2>Quem levou a Pirâmide Dourada?</h2>
+      <div class="acc-sus">${SUSPECTS.map((s) => `<button type="button" class="acc-p ${accSel.s === s.id ? 'on' : ''} ${status(s.id) && status(s.id).k === 'out' ? 'out' : ''}" data-act="accS" data-id="${s.id}">${avatar(s.av, 96)}<b>${esc(s.nome)}</b></button>`).join('')}</div>
+      <h3>Quais provas ligam essa pessoa ao troféu?</h3>
+      <div class="acc-ev">${CLUES.map((c) => `<button type="button" class="acc-e ${accSel.e.has(c.id) ? 'on' : ''}" data-act="accE" data-id="${c.id}"><span>PROVA ${c.n}</span>${esc(c.short)}</button>`).join('')}</div>
+      <div class="fb" id="fb"></div>
+      <div class="row center"><button class="btn ghost" data-act="board">Rever o quadro</button><button class="btn red big" data-act="judge">⚖ Acusar</button></div>
+    </section>
+  </main>`;
+}
+function judge() {
+  const fb = document.getElementById('fb');
+  if (!accSel.s) { fb.className = 'fb warn'; fb.textContent = 'Escolha um suspeito.'; return; }
+  if (!accSel.e.size) { fb.className = 'fb warn'; fb.textContent = 'Escolha ao menos uma prova.'; return; }
+  const okS = accSel.s === CULPRIT; const okE = KEY_EVIDENCE.every((k) => accSel.e.has(k)) && !accSel.e.has('camera');
+  S.acc.tries++;
+  if (okS && okE) { S.acc.ok = true; S.acc.done = true; S.acc.pts = S.acc.tries === 1 ? 300 : 150; save(); closeCase(); return; }
+  if (S.acc.tries >= 2) { S.acc.done = true; S.acc.pts = 0; save(); closeCase(); return; }
+  save();
+  fb.className = 'fb no';
+  fb.innerHTML = okS ? 'Você apontou a pessoa certa, mas as provas não sustentam a acusação. Quais provas mostram que ela <b>podia carregar</b> o troféu e que <b>mexeu nele</b>? <small>Última tentativa.</small>' : `${esc(SUS[accSel.s].nome)} tem álibi. Releia o caderno: quem ainda não foi descartado? <small>Última tentativa.</small>`;
+  $app.querySelector('.court .kick').textContent = 'TRIBUNAL DA FEIRA · TENTATIVA 2 DE 2';
+}
+function closeCase() {
+  S.finished = true; const d = new Date();
+  DB.hall = DB.hall.filter((h) => h.id !== S.t0);
+  DB.hall.push({ id: S.t0, name: S.name, turma: S.turma, pts: score(), ok: S.acc.ok, t: d.getTime(), date: d.toLocaleDateString('pt-BR') });
+  save(); go('closed');
+}
+const rank = (p) => (p >= 700 ? 'Sherlock do G9' : p >= 520 ? 'Inspetor(a)-chefe' : p >= 350 ? 'Detetive' : 'Detetive júnior');
+function certCode() { const base = `${norm(S.name)}|${S.turma}|${score()}|g9-piramide`; return (fnv(base) % 46656).toString(36).toUpperCase().padStart(3, '0') + '-' + (fnv(base + '#') % 46656).toString(36).toUpperCase().padStart(3, '0'); }
+function closedView() {
+  const p = score(); const d = new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  const clean = CLUES.filter((c) => S.clue[c.id] && S.clue[c.id].solved && S.clue[c.id].wrong === 0).length;
+  return `<main class="closedscr">${topbar()}
+    <article class="paper">
+      <header class="mast"><p>${esc(d)} · Edição extra · Curso G9</p><h1>Gazeta do G9</h1></header>
+      <h2 class="headline">${S.acc.ok ? `${esc(S.name)} desvenda o Caso da Pirâmide Dourada` : 'Caso da Pirâmide Dourada é encerrado pela perícia'}</h2>
+      <p class="deck">${S.acc.ok ? `Com cálculos de volume, área e um teste de encaixe, ${esc(rank(p).toLowerCase())} da turma ${esc(S.turma)} apontou a responsável e as provas certas.` : 'A acusação não se sustentou, mas os laudos levaram à resposta.'}</p>
+      <div class="cols">
+        <div class="col"><p class="drop">${ENDING}</p></div>
+        <aside class="box">
+          <svg viewBox="0 0 120 120" class="trophy" aria-hidden="true"><path d="M60 10L100 92H20z" fill="#E2B33C"/><path d="M60 10L100 92H60z" fill="#C79A2E"/><rect x="34" y="92" width="52" height="12" fill="#5A3E2B"/></svg>
+          <dl><div><dt>Pontuação</dt><dd>${p} / ${MAXPTS}</dd></div><div><dt>Título</dt><dd>${rank(p)}</dd></div><div><dt>Laudos sem erro</dt><dd>${clean} de 5</dd></div><div><dt>Acusação</dt><dd>${S.acc.ok ? `certa na ${S.acc.tries}ª tentativa` : 'não sustentada'}</dd></div></dl>
+          <p class="code">Código <b>${certCode()}</b></p>
+        </aside>
+      </div>
+    </article>
+    <p class="row center"><button class="btn red" data-act="copy">Copiar resultado</button><button class="btn ghost" data-act="notes">Rever o caderno</button><button class="btn ghost" data-act="hall">Detetives de destaque</button><button class="btn ghost" data-act="newcase">Novo detetive</button></p>
+  </main>`;
+}
+
+const sortedHall = () => DB.hall.slice().sort((a, b) => b.pts - a.pts || a.t - b.t);
+function hallList(rows) {
+  if (!rows.length) return '<p class="muted">Nenhum caso encerrado neste computador ainda.</p>';
+  return `<ol class="hall">${rows.map((h, k) => `<li><span class="pos">${k + 1}º</span><span class="nm">${esc(h.name)} <small>${esc(h.turma)}</small></span><span class="pz">${h.pts} pts ${h.ok ? '✓' : ''}</span><span class="dt">${esc(h.date)}</span></li>`).join('')}</ol>`;
+}
+function hallView() { return `<main class="page">${topbar()}<h2>Detetives de destaque</h2><p class="muted">Casos encerrados neste computador.</p>${hallList(sortedHall().slice(0, 20))}<p><button class="btn ghost" data-act="${S ? (S.finished ? 'closed' : 'board') : 'cover'}">← Voltar</button></p></main>`; }
+function teacherView() {
+  return `<main class="page">${topbar()}<h2>Área do professor</h2>
+    <div class="tcards"><section><h3>Modo projeção</h3><p>Letras e laboratório maiores para investigar com a turma no projetor.</p><button class="btn red" data-act="proj">${projection ? 'Desligar' : 'Ligar'}</button></section>
+    <section><h3>Investigação da turma</h3><p>Começa um caso coletivo com o nome “Turma”.</p><div class="row">${TURMAS.map((t) => `<button class="btn ghost" data-act="classcase" data-t="${t}">Com a ${t}</button>`).join('')}</div></section></div>
+    ${TURMAS.map((t) => `<h3>${t}</h3>${hallList(sortedHall().filter((h) => h.turma === t))}`).join('')}
+    <details class="gab"><summary>Gabarito do caso</summary><ol>${CLUES.map((c) => `<li><b>${esc(c.titulo)}:</b> ${c.sol.join(' ')}</li>`).join('')}<li><b>Acusação:</b> Dani Freitas, com as provas 2 (teste do encaixe) e 5 (papel dourado).</li></ol></details>
+    <p><button class="btn ghost" data-act="${S ? (S.finished ? 'closed' : 'board') : 'cover'}">← Voltar</button> <button class="btn ghost danger" data-act="wipe">Apagar caso atual e destaques deste computador</button></p></main>`;
+}
+
+function modalView() {
+  if (!modal) return '';
+  let inner = '';
+  if (modal.type === 'found') { const c = CL[modal.id]; inner = `<p class="kick">PROVA ${c.n} ENCONTRADA</p><h3>${esc(c.nome)}</h3><p class="evid-big">${esc(c.texto)}</p><div class="row"><button class="btn red" data-act="close">Guardar no dossiê</button>${S.found.length === 5 ? '<button class="btn ghost" data-act="board">Ir para o quadro →</button>' : ''}</div>`; }
+  if (modal.type === 'dep') { const s = SUS[modal.id]; const st = status(s.id); inner = `<div class="dep">${avatar(s.av, 110)}<div><p class="kick">DEPOIMENTO</p><h3>${esc(s.nome)}</h3><p class="muted">${esc(s.papel)} · saiu às ${s.saida}</p></div></div><p class="quote" id="quote"></p><p class="carry">🧳 Levava: <b>${esc(s.item)}</b>, ${esc(s.boxTxt)}.</p>${st ? `<p class="st-line ${st.k}">${st.t}: ${st.why}</p>` : ''}<div class="row"><button class="btn red" data-act="close">Fechar</button></div>`; }
+  if (modal.type === 'pin') inner = `<h3>Área do professor</h3><form data-form="pin" autocomplete="off"><label>Senha<input name="pin" type="password" required></label>${modal.err ? '<p class="err">Senha incorreta.</p>' : ''}<div class="row"><button class="btn red" type="submit">Entrar</button><button class="btn ghost" type="button" data-act="close">Cancelar</button></div></form>`;
+  return `<div class="veil" data-act="veil"><div class="modal ${modal.type}" role="dialog" aria-modal="true">${inner}</div></div>`;
+}
+
+const CLEANUP = [];
+function render() {
+  Viewer.all.forEach((v) => v.dispose()); clearKeyHandlers(); while (CLEANUP.length) CLEANUP.pop()(); lab = null;
+  document.body.classList.toggle('proj', projection);
+  const V = { cover: coverView, brief: briefView, scene: sceneView, board: boardView, notes: notesView, lab: labView, accuse: accuseView, closed: closedView, hall: hallView, teacher: teacherView }[screen];
+  $app.innerHTML = V() + modalView();
+  if (screen === 'brief') typewrite(document.getElementById('brief'), BRIEF, 16);
+  if (screen === 'scene') bindLamp();
+  if (screen === 'board') bindBoard();
+  if (screen === 'lab') mountLab();
+  afterModal();
+}
+function afterModal() {
+  const f = $app.querySelector('.modal input'); if (f) f.focus();
+  if (modal && modal.type === 'dep') typewrite(document.getElementById('quote'), `“${SUS[modal.id].dep}”`, 14);
+}
+function renderModal() { const o = $app.querySelector('.veil'); if (o) o.remove(); if (modal) { $app.insertAdjacentHTML('beforeend', modalView()); afterModal(); } }
+const go = (s) => { screen = s; modal = null; render(); window.scrollTo(0, 0); };
+
+function copyText() {
+  const t = `O Caso da Pirâmide Dourada · Geometria Espacial\nDetetive: ${S.name} (${S.turma})\n${score()} de ${MAXPTS} pts · ${rank(score())}\nAcusação: ${S.acc.ok ? 'certa' : 'não sustentada'}\nCódigo: ${certCode()}\n${new Date().toLocaleString('pt-BR')}`;
+  const done = () => { const b = $app.querySelector('[data-act="copy"]'); if (b) b.textContent = 'Copiado!'; };
+  if (navigator.clipboard) navigator.clipboard.writeText(t).then(done, () => window.prompt('Copie o resultado:', t)); else window.prompt('Copie o resultado:', t);
+}
+function act(a, el, e) {
+  switch (a) {
+    case 'veil': if (e && e.target === el) { modal = null; renderModal(); } break;
+    case 'close': modal = null; if (screen === 'scene') render(); else renderModal(); break;
+    case 'teacher': modal = { type: 'pin' }; renderModal(); break;
+    case 'hall': go('hall'); break;
+    case 'cover': go('cover'); break;
+    case 'scene': if (S) go('scene'); break;
+    case 'board': if (S) go(S.finished ? 'closed' : 'board'); break;
+    case 'notes': if (S) go('notes'); break;
+    case 'closed': go('closed'); break;
+    case 'find': { const id = el.dataset.id; if (!S.found.includes(id)) { S.found.push(id); save(); buzz(); } modal = { type: 'found', id }; render(); break; }
+    case 'decoy': toast(DECOYS[+el.dataset.i].t); break;
+    case 'dep': if (bindBoard.block) return; modal = { type: 'dep', id: el.dataset.id }; renderModal(); break;
+    case 'lab': if (bindBoard.block) return; labId = el.dataset.id; go('lab'); break;
+    case 'hint': { const r = cs(labId); r.hint = true; save(); document.getElementById('hintbox').hidden = false; el.disabled = true; break; }
+    case 'check': doCheck(); break;
+    case 'accuse': accSel = { s: null, e: new Set() }; go('accuse'); break;
+    case 'accS': accSel.s = el.dataset.id; $app.querySelectorAll('.acc-p').forEach((b) => b.classList.toggle('on', b === el)); buzz(); break;
+    case 'accE': { const id = el.dataset.id; if (accSel.e.has(id)) accSel.e.delete(id); else accSel.e.add(id); el.classList.toggle('on'); buzz(); break; }
+    case 'judge': judge(); break;
+    case 'copy': copyText(); break;
+    case 'newcase': DB.cur = null; S = null; save(); go('cover'); break;
+    case 'proj': projection = !projection; render(); break;
+    case 'classcase': newCase('Turma', el.dataset.t); projection = true; go('brief'); break;
+    case 'wipe': if (window.confirm('Apagar o caso atual e todos os destaques deste computador?')) { DB = { cur: null, hall: [] }; S = null; save(); go('cover'); } break;
+    default: break;
+  }
+}
+$app.addEventListener('click', (e) => { const el = e.target.closest('[data-act]'); if (el && !el.disabled && el.dataset.act) act(el.dataset.act, el, e); });
+$app.addEventListener('keydown', (e) => { if ((e.key === 'Enter' || e.key === ' ') && e.target.matches('.pin-card, g[data-act]')) { e.preventDefault(); act(e.target.dataset.act, e.target, e); } });
+$app.addEventListener('submit', (e) => {
+  e.preventDefault(); const f = e.target;
+  if (f.dataset.form === 'start') { const name = f.nome.value.trim().replace(/\s+/g, ' '); const tr = f.querySelector('input[name="turma"]:checked'); if (!name || !tr) return; DB.last = { name, turma: tr.value }; newCase(name, tr.value); go('brief'); }
+  if (f.dataset.form === 'pin') { if (fnv('missao:' + norm(f.pin.value)) === PIN_HASH) go('teacher'); else { modal = { type: 'pin', err: true }; renderModal(); } }
+});
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && modal) { modal = null; renderModal(); } });
+render();
+
+</script>
+</body>
+</html>
