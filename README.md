@@ -19,6 +19,8 @@ Jogo de perguntas com escada de prêmios, 16 perguntas inéditas (as medidas mud
 
 ## Volta ao Brasil
 
-Viagem por 10 cidades (2 por região), com 3 desafios de geometria espacial em contexto em cada uma. O aluno escolhe a ordem, ganha milhas e carimbos no passaporte e recebe um certificado ao voltar para Itajubá.
+Jogo com cara de aeroporto: check-in com cartão de embarque, painel de partidas, mapa real do Brasil e voo animado entre as cidades. Em cada um dos 10 portões há um laboratório 3D com sólidos para girar e tocar: contar arestas, pintar faces, carregar um contêiner, fatiar, desenrolar, montar fórmulas, prever e simular, projetar um silo.
 
 **Acesse:** https://mateusbibiano.github.io/missao-geometria-espacial/volta/
+
+Mapa do Brasil: [SVG Maps](https://github.com/VictorCazanave/svg-maps) (CC BY 4.0). 3D: [three.js](https://threejs.org) (MIT).
