@@ -235,6 +235,55 @@ body.proj .ask { font-size: 22px; }
 body.proj .task h2 { font-size: 32px; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 
+/* ---------- ranking online ---------- */
+.pod-box { margin: 18px auto 4px; max-width: 620px; text-align: left; background: rgba(0,0,0,.25); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; }
+.pod-box h3 { margin: 0 0 10px; font: 600 12px var(--fm); letter-spacing: .14em; text-transform: uppercase; color: var(--amber); display: flex; gap: 8px; align-items: center; }
+.podium { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.podium li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto auto; gap: 10px; align-items: center; padding: 8px 12px; border-radius: 8px; background: var(--panel2); border: 1px solid var(--line); font-size: 15px; }
+.podium.prof li { grid-template-columns: 34px minmax(0, 1fr) auto auto auto auto; }
+.podium li.top { border-color: rgba(255, 176, 103, .45); }
+.podium li.me { background: rgba(54, 211, 194, .14); border-color: var(--teal); }
+.podium .p-n { font: 700 18px var(--fd); text-align: center; color: var(--dim); }
+.podium b { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.podium .p-t { font: 12px var(--fm); color: var(--mute); }
+.podium .p-r { font-size: 12px; color: var(--mute); }
+.podium .p-p { font: 700 18px var(--fd); color: var(--amber); }
+.podium:not(.prof) li { grid-template-columns: 34px minmax(0, 1fr) auto auto; }
+.podium:not(.prof) li .p-r { display: none; }
+.p-mine { margin: 10px 0 0; font-size: 14px; color: var(--teal); }
+.pulse { animation: pulse 1.4s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: .45; } }
+.pod-links { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 14px; }
+.pod-links span { font: 600 11px var(--fm); letter-spacing: .14em; text-transform: uppercase; color: var(--dim); margin-right: 4px; }
+.modal #podio-m { max-height: 60vh; overflow: auto; }
+.live-h { display: flex; align-items: center; gap: 8px; font: 700 20px var(--fd); margin: 22px 0 8px; }
+.dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #4A3A34; flex: none; }
+.dot.on { background: var(--ok); box-shadow: 0 0 0 3px rgba(76, 211, 138, .2); animation: pulse 1.6s infinite; }
+.dot.fim { background: var(--amber); }
+.prof-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.live-tag { display: inline-flex; align-items: center; gap: 6px; font: 12px var(--fm); }
+.seg-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg-tabs button { padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line2); background: transparent; font: 600 13px var(--fd); }
+.seg-tabs button.on { background: var(--rust); border-color: var(--rust); color: #1A0905; }
+.seg-tabs.big { margin: 4px 0 12px; }
+.seg-tabs.big button { padding: 8px 14px; font-size: 14px; }
+.tscroll { overflow-x: auto; }
+table.live { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 620px; }
+table.live th { text-align: left; font: 600 11px var(--fm); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); padding: 6px 8px; border-bottom: 1px solid var(--line); }
+table.live td { padding: 8px; border-bottom: 1px solid rgba(67, 41, 31, .6); vertical-align: middle; }
+table.live td small { display: block; color: var(--mute); font-size: 12px; }
+table.live tr.on td { background: rgba(76, 211, 138, .05); }
+table.live .num { font: 600 15px var(--fd); white-space: nowrap; }
+table.live .ok { color: var(--amber); }
+.mini-o2 { display: inline-block; width: 36px; height: 5px; border-radius: 3px; background: #0A2F2B; overflow: hidden; margin-right: 6px; vertical-align: middle; }
+.mini-o2 i { display: block; height: 100%; background: var(--teal); }
+.feed-h { margin: 18px 0 6px; font: 600 12px var(--fm); letter-spacing: .14em; text-transform: uppercase; color: var(--mute); }
+.feed { list-style: none; padding: 0; margin: 0; display: grid; gap: 4px; font-size: 14px; }
+.feed li { padding: 6px 10px; border-radius: 6px; background: rgba(0,0,0,.2); }
+details.local { margin-top: 18px; color: var(--mute); }
+details.local summary { cursor: pointer; font-size: 14px; }
+@media (max-width: 560px) { .podium.prof li { grid-template-columns: 30px minmax(0, 1fr) auto; } .podium.prof .p-r, .podium.prof .muted, .podium.prof .p-t { display: none; } }
+
 [hidden]{display:none!important}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
@@ -943,6 +992,133 @@ function buildColony(doneSet) {
 }
 
 /* =========================================================
+   MISSÃO MARTE — ranking online e painel ao vivo do professor
+   (servidor Apps Script, projeto p = 'marte')
+   ========================================================= */
+const SYNC_URL = 'https://script.google.com/macros/s/AKfycbzYd8FOYRRHc4YmuPpa1jbLA6UvFyTrqyZy0cbdCebQs22HiBGS7kv6wGJZ2DZ2wVRxZg/exec';
+const syncOn = () => /^https:\/\/script\.google\.com\//.test(SYNC_URL) && !/claude/i.test(location.hostname);
+let teacherKey = '';
+let onlineWhere = '';
+let hbTimer = 0; let profTimer = 0;
+let pubCache = null; let pubAt = 0;
+let prof = { data: null, filtro: 'todas', aba: 'vivo', pod: 0, err: false };
+
+const slugOf = (s) => norm(s).replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 50);
+function snapshot() {
+  const solsArr = SOLS.map((s) => ({ pts: s.stages.reduce((a, st) => a + ((S.st[st.id] && S.st[st.id].pts) || 0), 0), em: (S.solAt && S.solAt[s.id]) || 0 }));
+  const cur = SOLS.find((s) => !solDone(s.id));
+  return {
+    id: S.sid, nome: S.name, turma: S.turma, tent: S.seed.toString(36), pts: score(), rank: rankOf(score()),
+    pecas: STAGES.filter((st) => isDone(st.id)).length, ft: STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length,
+    o2: Math.round(S.o2), sol: cur ? cur.n : 5, peca: onlineWhere || 'Na base', sols: solsArr, fim: S.finished ? S.t1 || Date.now() : 0,
+  };
+}
+function syncPost(ev, batida) {
+  if (!syncOn() || !S || !S.sid || projection) return;
+  try {
+    fetch(SYNC_URL, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ p: 'marte', s: snapshot(), ev: (ev || []).map((x) => Object.assign({ t: Date.now() }, x)), batida: !!batida }) }).catch(() => {});
+  } catch (e) { /* sem rede */ }
+}
+const syncEv = (ev) => syncPost(ev, false);
+function heartbeat() {
+  clearInterval(hbTimer); hbTimer = 0;
+  if (!syncOn() || !S || S.finished) return;
+  hbTimer = setInterval(() => { if (!document.hidden && S && !S.finished) syncPost([], true); }, 30000);
+}
+let jsonpN = 0;
+function jsonp(params) {
+  return new Promise((res, rej) => {
+    const cb = '__marte' + (++jsonpN) + '_' + Date.now();
+    const tag = document.createElement('script');
+    const done = (v, err) => { clearTimeout(tm); try { delete window[cb]; } catch (e) { window[cb] = undefined; } tag.remove(); err ? rej(err) : res(v); };
+    const tm = setTimeout(() => done(null, new Error('tempo')), 15000);
+    window[cb] = (d) => done(d);
+    tag.onerror = () => done(null, new Error('rede'));
+    tag.src = `${SYNC_URL}?${new URLSearchParams(Object.assign({ p: 'marte', callback: cb, _: Date.now() }, params))}`;
+    document.head.appendChild(tag);
+  });
+}
+async function getPub(force) {
+  if (!force && pubCache && Date.now() - pubAt < 15000) return pubCache;
+  const d = await jsonp({ acao: 'publico' });
+  if (d && d.ok) { pubCache = d; pubAt = Date.now(); }
+  return d;
+}
+const MEDAL = ['🥇', '🥈', '🥉'];
+const shortName = (n) => { const p = String(n).trim().split(/\s+/); return p[0] + (p.length > 1 ? ' ' + p[p.length - 1].charAt(0).toUpperCase() + '.' : ''); };
+const isMe = (r) => S && r.turma === S.turma && r.nome === shortName(S.name);
+const hhmm = (t) => (t ? new Date(t).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : '');
+function podiumHTML(rows, kind, limit) {
+  if (!rows || !rows.length) return '<p class="muted">Ninguém concluiu esta etapa ainda. Você pode ser o primeiro!</p>';
+  const lim = limit || 10; let list = rows.slice(0, lim);
+  const mine = rows.findIndex(isMe);
+  const li = (r, i) => `<li class="${isMe(r) ? 'me' : ''} ${i < 3 ? 'top' : ''}"><span class="p-n">${MEDAL[i] || i + 1}</span><b>${esc(r.nome)}</b><span class="p-t">${esc(r.turma)}</span>${kind === 'final' ? `<span class="p-r">${esc(r.rank || '')}</span>` : ''}<b class="p-p">${r.pts}</b></li>`;
+  let h = `<ol class="podium">${list.map(li).join('')}</ol>`;
+  if (mine >= lim) h += `<p class="p-mine">Sua posição: <b>${mine + 1}º</b> de ${rows.length}, com ${rows[mine].pts} pontos.</p>`;
+  else if (mine >= 0) h += `<p class="p-mine">Você está em <b>${mine + 1}º</b> lugar de ${rows.length}!</p>`;
+  return h;
+}
+async function fillPodium(el, idx, kind, limit) {
+  if (!el) return;
+  if (!syncOn()) { el.innerHTML = '<p class="muted">O ranking online aparece no site publicado.</p>'; return; }
+  el.innerHTML = '<p class="muted pulse">Buscando o ranking da colônia…</p>';
+  try {
+    const d = await getPub(true);
+    if (!el.isConnected) return;
+    el.innerHTML = podiumHTML(kind === 'final' ? d.final : d.sois[idx], kind, limit);
+  } catch (e) { if (el.isConnected) el.innerHTML = '<p class="muted">Sem conexão com o controle da missão. Tente de novo em instantes.</p>'; }
+}
+
+/* ---------- painel do professor ---------- */
+const agoTxt = (t, now) => { if (!t) return '—'; const s = Math.max(0, Math.round((now - t) / 1000)); return s < 60 ? 'agora' : s < 3600 ? `há ${Math.round(s / 60)} min` : `há ${Math.round(s / 3600)} h`; };
+function profHTML() {
+  if (!syncOn()) return '<p class="muted">O painel ao vivo funciona no site publicado (mateusbibiano.github.io).</p>';
+  if (!teacherKey) return '<p class="muted">Entre de novo pela senha para ver o painel ao vivo.</p>';
+  const d = prof.data;
+  if (!d) return `<p class="muted pulse">${prof.err ? 'Sem conexão com o servidor. Tentando de novo…' : 'Conectando ao controle da missão…'}</p>`;
+  if (!d.ok) return '<p class="err">O servidor recusou a senha. Saia e entre de novo.</p>';
+  const now = d.agora; const f = prof.filtro;
+  const byT = (a) => f === 'todas' || a.turma === f;
+  const alunos = d.alunos.filter(byT).sort((a, b) => (b.visto || 0) - (a.visto || 0));
+  const online = alunos.filter((a) => !a.fim && a.visto && now - a.visto < 90000);
+  const tabs = [['vivo', `Ao vivo (${online.length})`], ['pod', 'Pódios dos sóis'], ['final', `Ranking final (${d.final.filter(byT).length})`], ['todos', `Todos (${alunos.length})`]];
+  let body = '';
+  const row = (a) => {
+    const on = !a.fim && a.visto && now - a.visto < 90000;
+    return `<tr class="${on ? 'on' : ''}"><td><span class="dot ${on ? 'on' : a.fim ? 'fim' : ''}"></span></td><td><b>${esc(a.nome)}</b><small>${esc(a.turma)}</small></td>
+      <td>${a.fim ? '<b class="ok">Missão concluída</b>' : `Sol ${a.sol} <small>${esc(a.peca || '')}</small>`}</td><td class="num">${a.pecas}/20</td><td class="num">${a.pts}</td>
+      <td class="num"><span class="mini-o2"><i style="width:${a.o2}%"></i></span>${a.o2}%</td><td class="muted">${agoTxt(a.visto, now)}</td></tr>`;
+  };
+  const table = (arr) => (arr.length ? `<div class="tscroll"><table class="live"><thead><tr><th></th><th>Tripulante</th><th>Onde está</th><th>Peças</th><th>Pontos</th><th>O₂</th><th>Visto</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>` : '<p class="muted">Ninguém por aqui ainda.</p>');
+  if (prof.aba === 'vivo') body = `${table(online)}<h3 class="feed-h">Atividade recente</h3><ul class="feed">${d.eventos.filter(byT).slice(0, 18).map((e) => `<li><span class="muted">${hhmm(e.t)}</span> <b>${esc(e.nome)}</b> (${esc(e.turma)}) · ${esc(e.ev)}${e.det ? ` · ${esc(e.det)}` : ''}${e.ev === 'Concluiu o sol' || e.ev === 'Concluiu a missão' ? ` · <b>${e.pts} pts</b>` : ''}</li>`).join('') || '<li class="muted">Nada ainda.</li>'}</ul>`;
+  if (prof.aba === 'todos') body = table(alunos);
+  if (prof.aba === 'pod') {
+    body = `<div class="seg-tabs">${SOLS.map((s, i) => `<button class="${prof.pod === i ? 'on' : ''}" data-act="prof-pod" data-i="${i}">Sol ${s.n}</button>`).join('')}</div>
+      <p class="muted">${SOLS[prof.pod].nome} · ${SOLS[prof.pod].tema}. Melhor tentativa de cada aluno; no empate, quem terminou primeiro.</p>
+      ${profRank(d.sois[prof.pod].filter(byT), false)}`;
+  }
+  if (prof.aba === 'final') body = profRank(d.final.filter(byT), true);
+  return `<div class="prof-bar"><div class="seg-tabs">${['todas'].concat(TURMAS).map((t) => `<button class="${f === t ? 'on' : ''}" data-act="prof-filtro" data-id="${t}">${t === 'todas' ? 'Todas' : t}</button>`).join('')}</div>
+    <span class="muted live-tag"><span class="dot on"></span> atualiza sozinho · ${hhmm(now)}</span></div>
+    <div class="seg-tabs big">${tabs.map(([k, t]) => `<button class="${prof.aba === k ? 'on' : ''}" data-act="prof-aba" data-id="${k}">${t}</button>`).join('')}</div>
+    <div class="prof-body">${body}</div>
+    ${d.planilha ? `<p><a class="link" href="${esc(d.planilha)}" target="_blank" rel="noopener">Abrir a planilha completa</a></p>` : ''}`;
+}
+function profRank(rows, fin) {
+  if (!rows.length) return '<p class="muted">Ninguém concluiu ainda.</p>';
+  return `<ol class="podium prof">${rows.map((r, i) => `<li class="${i < 3 ? 'top' : ''}"><span class="p-n">${MEDAL[i] || i + 1}</span><b>${esc(r.nome)}</b><span class="p-t">${esc(r.turma)}</span>${fin ? `<span class="p-r">${esc(r.rank)} · ${r.ft}/20 de primeira · O₂ ${r.o2}%</span>` : ''}<span class="muted">${hhmm(r.em)}</span><b class="p-p">${r.pts}</b></li>`).join('')}</ol>`;
+}
+function renderProf() { const el = document.getElementById('prof-live'); if (el) el.innerHTML = profHTML(); }
+async function loadProf() {
+  if (!syncOn() || !teacherKey) { renderProf(); return; }
+  try { prof.data = await jsonp({ chave: teacherKey }); prof.err = false; } catch (e) { prof.err = true; }
+  renderProf();
+}
+function startProf() { clearInterval(profTimer); renderProf(); loadProf(); profTimer = setInterval(() => { if (!document.hidden) loadProf(); }, 8000); }
+function stopProf() { clearInterval(profTimer); profTimer = 0; }
+
+/* =========================================================
    MISSÃO MARTE — telas e fluxo
    ========================================================= */
 const KEY = 'missao-marte-9ano-v1';
@@ -963,6 +1139,7 @@ const store = {
 let DB = Object.assign({ cur: null, hall: [] }, store.get());
 const save = () => store.set(DB);
 let S = DB.cur;
+if (S && !S.sid) { S.sid = `${slugOf(S.name)}-${S.turma.toLowerCase()}-${S.seed.toString(36)}`; S.solAt = S.solAt || {}; }
 let screen = S ? (S.finished ? 'final' : 'base') : 'cover';
 let solId = null; let stIdx = 0; let modal = null; let projection = false; let busy = false;
 let viewer = null; let colonyV = null; let kp = null; let mcSel = null; let reveal = false;
@@ -970,8 +1147,10 @@ let viewer = null; let colonyV = null; let kp = null; let mcSel = null; let reve
 function mulberry(a) { return () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; }
 function newGame(name, turma) {
   const seed = (Date.now() ^ fnv(name + turma)) >>> 0;
-  S = { name, turma, seed, P: rollParams(mulberry(seed)), st: {}, o2: 100, t0: Date.now(), finished: false, seenBrief: false };
+  S = { name, turma, seed, P: rollParams(mulberry(seed)), st: {}, o2: 100, t0: Date.now(), finished: false, seenBrief: false, solAt: {} };
+  S.sid = `${slugOf(name)}-${turma.toLowerCase()}-${seed.toString(36)}`;
   DB.cur = S; save();
+  syncEv([{ ev: 'Entrou na missão', det: '', pts: 0 }]);
 }
 const rec = (id) => { if (!S.st[id]) S.st[id] = { w: 0, hint: false, done: false, ok: false, pts: 0 }; return S.st[id]; };
 const isDone = (id) => !!(S && S.st[id] && S.st[id].done);
@@ -1071,6 +1250,7 @@ function baseView() {
     <section class="colony-wrap"><div class="colony" id="colony"></div><p class="colony-cap">Colônia Ares-9 · arraste para girar. Peças em azul ainda são projeto.</p></section>
     <aside class="sols"><h2>Cronograma</h2><ol>${cards}</ol>
       ${all ? '<button class="btn hot big" data-act="final">Ver a colônia completa →</button>' : ''}
+      ${SOLS.some((s) => solDone(s.id)) ? `<div class="pod-links"><span>Pódios</span>${SOLS.filter((s) => solDone(s.id)).map((s) => `<button class="btn ghost sm" data-act="podio" data-i="${s.n - 1}">Sol ${s.n}</button>`).join('')}</div>` : ''}
       <div class="row"><button class="link" data-act="hall">Tripulação de destaque</button><button class="link" data-act="menu">Menu</button></div>
     </aside>
   </main>`;
@@ -1134,6 +1314,7 @@ function solDoneView() {
       <div class="stamp">${s.nome}<br><b>OPERACIONAL</b></div>
       <p class="big-stars">${'★'.repeat(stars)}<span>${'★'.repeat(3 - stars)}</span></p>
       <p>Sol ${s.n} concluído com <b>${pts}</b> de ${s.stages.length * 100} pontos.</p>
+      <div class="pod-box"><h3>${ic('radio')} Pódio do Sol ${s.n}</h3><div id="podio"></div></div>
       <div class="row center">${nx ? `<button class="btn hot big" data-act="base">Ver na base →</button>` : '<button class="btn hot big" data-act="final">Lançar o foguete →</button>'}</div>
     </section>
   </main>`;
@@ -1148,6 +1329,7 @@ function finalView() {
       <p>${esc(S.name)} · ${esc(S.turma)}</p>
       <div class="ref final-ref"><div><span>Pontos</span><b>${p} / ${MAXPTS}</b></div><div><span>Oxigênio restante (bônus)</span><b>${Math.round(S.o2)}%</b></div><div><span>Peças de primeira</span><b>${STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length}/${STAGES.length}</b></div><div><span>Código de verificação</span><b>${certCode()}</b></div></div>
       <textarea id="copy-box" class="copy" hidden readonly></textarea>
+      <div class="pod-box"><h3>${ic('radio')} Ranking da missão · quem completou a colônia</h3><div id="podio"></div></div>
       <div class="row center"><button class="btn hot" data-act="copy">Copiar resultado</button><button class="btn ghost" data-act="hall">Tripulação de destaque</button><button class="btn ghost" data-act="again">Nova missão (outras medidas)</button></div>
     </section>
   </main>`;
@@ -1160,25 +1342,36 @@ function teacherView() {
     <h2>Área do professor</h2>
     <div class="tcards"><div><h3>Modo projeção</h3><p>Libera todos os sóis e mostra o botão “Mostrar resposta” em cada peça, para resolver com a turma no projetor.</p><button class="btn hot" data-act="proj">${projection ? 'Desligar' : 'Ligar'} projeção</button></div>
     <div><h3>Como os alunos jogam</h3><p>Cada aluno recebe medidas sorteadas, então o gabarito muda de um para outro. A resolução aparece depois de cada peça. O resultado copiado traz um código de verificação.</p></div></div>
-    ${TURMAS.map((t) => `<h3>${t}</h3>${hallList(sortedHall().filter((h) => h.turma === t))}`).join('')}
+    <h3 class="live-h"><span class="dot on"></span> Tripulação ao vivo</h3>
+    <div id="prof-live"></div>
+    <details class="local"><summary>Missões concluídas neste aparelho</summary>${TURMAS.map((t) => `<h3>${t}</h3>${hallList(sortedHall().filter((h) => h.turma === t))}`).join('')}</details>
     <p class="row"><button class="btn ghost" data-act="${S ? (S.finished ? 'final' : 'base') : 'cover'}">← Voltar</button><button class="btn ghost danger" data-act="wipe">Apagar missão atual e destaques deste aparelho</button></p>
   </section></main>`;
 }
 function modalView() {
   let inner = '';
   if (modal.type === 'pin') inner = `<h3>Área do professor</h3><form data-form="pin" autocomplete="off"><label class="fld"><span>Senha</span><input name="pin" type="password" required></label>${modal.err ? '<p class="err">Senha incorreta.</p>' : ''}<div class="row"><button class="btn hot" type="submit">Entrar</button><button class="btn ghost" type="button" data-act="close">Cancelar</button></div></form>`;
+  if (modal.type === 'podio') inner = `<h3>Pódio do Sol ${modal.i + 1} · ${SOLS[modal.i].nome}</h3><div id="podio-m"></div><div class="row"><button class="btn ghost" data-act="close">Fechar</button></div>`;
   if (modal.type === 'menu') inner = `<h3>Menu</h3><div class="menu"><button class="btn ghost" data-act="brief">Rever a transmissão inicial</button><button class="btn ghost" data-act="cover">Tela inicial</button><button class="btn ghost" data-act="pin">Área do professor</button><button class="btn ghost" data-act="close">Fechar</button></div>`;
   return `<div class="veil" data-act="close-veil"><div class="modal" role="dialog" aria-modal="true">${inner}</div></div>`;
 }
 
 /* ---------- render ---------- */
-function killViews() { if (viewer) { viewer.dispose(); viewer = null; } if (colonyV) { colonyV.dispose(); colonyV = null; } clearKeyHandlers(); kp = null; }
+function killViews() { stopProf(); if (viewer) { viewer.dispose(); viewer = null; } if (colonyV) { colonyV.dispose(); colonyV = null; } clearKeyHandlers(); kp = null; }
 function render() {
   killViews();
   const V = { cover: coverView, brief: briefView, base: baseView, solintro: solIntroView, stage: stageView, soldone: solDoneView, final: finalView, hall: hallView, teacher: teacherView }[screen] || coverView;
   $app.innerHTML = V() + '<div class="toast" id="toast" role="status"></div>' + (modal ? modalView() : '');
   document.body.dataset.screen = screen; document.body.classList.toggle('proj', projection);
   mount();
+  const prevWhere = onlineWhere;
+  onlineWhere = screen === 'stage' ? `Sol ${SOL[solId].n} · ${SOL[solId].stages[stIdx].titulo}` : screen === 'solintro' ? `Sol ${SOL[solId].n} · manual técnico` : screen === 'soldone' ? `Sol ${SOL[solId].n} · concluído` : 'Na base';
+  if (S && !S.finished && onlineWhere !== prevWhere && ['stage', 'solintro', 'base', 'soldone'].includes(screen)) syncPost([], true);
+  if (!hbTimer) heartbeat();
+  if (screen === 'soldone') fillPodium(document.getElementById('podio'), SOL[solId].n - 1, 'sol', 10);
+  if (screen === 'final') fillPodium(document.getElementById('podio'), 0, 'final', 50);
+  if (modal && modal.type === 'podio') fillPodium(document.getElementById('podio-m'), modal.i, 'sol', 15);
+  if (screen === 'teacher') startProf();
 }
 const doneSet = () => new Set(STAGES.filter((st) => isDone(st.id)).map((st) => st.id));
 function mount() {
@@ -1221,13 +1414,16 @@ function send() {
     const v = kp ? kp.get() : NaN; if (Number.isNaN(v)) { toast('Digite um número no teclado.'); return; }
     ok = Math.abs(v - st.ans(S.P)) < 1e-6;
   }
+  const sol = SOL[solId]; const tag = `Sol ${sol.n} · ${st.titulo}`;
+  const closeSol = () => { if (solDone(solId) && !S.solAt[solId]) { S.solAt[solId] = Date.now(); save(); return [{ ev: 'Concluiu o sol', det: `Sol ${sol.n} · ${sol.nome}`, pts: sol.stages.reduce((a, x) => a + rec(x.id).pts, 0) }]; } return []; };
   if (ok) {
     r.done = true; r.ok = true; r.pts = ptsFor(r); save(); mcSel = null; reveal = false;
+    syncEv([{ ev: 'Acertou', det: tag, pts: r.pts }].concat(closeSol()));
     render(); celebratePiece();
   } else {
     r.w += 1; S.o2 = Math.max(0, S.o2 - 5); buzz();
-    if (r.w >= 3) { r.done = true; r.ok = false; r.pts = 0; save(); mcSel = null; reveal = false; render(); return; }
-    save(); const keep = kp ? kp.raw() : null; const sel = mcSel; render(); if (kp && keep != null) kp.set(keep); mcSel = sel;
+    if (r.w >= 3) { r.done = true; r.ok = false; r.pts = 0; save(); mcSel = null; reveal = false; syncEv([{ ev: 'Corrigida', det: tag, pts: 0 }].concat(closeSol())); render(); return; }
+    save(); syncEv([{ ev: 'Errou', det: `${tag} · ${r.w}º erro`, pts: 0 }]); const keep = kp ? kp.raw() : null; const sel = mcSel; render(); if (kp && keep != null) kp.set(keep); mcSel = sel;
     const k = document.querySelector('.task'); if (k) { k.classList.remove('shake'); void k.offsetWidth; k.classList.add('shake'); }
   }
 }
@@ -1248,6 +1444,7 @@ function finish() {
     DB.hall.push({ name: S.name, turma: S.turma, pts: score(), rank: rankOf(score()), t: Date.now() });
     if (DB.hall.length > 200) DB.hall = sortedHall().slice(0, 200);
     save();
+    syncEv([{ ev: 'Concluiu a missão', det: rankOf(score()), pts: score() }]);
   }
   go('final');
 }
@@ -1278,6 +1475,10 @@ $app.addEventListener('click', (e) => {
   else if (a === 'menu') { modal = { type: 'menu' }; render(); }
   else if (a === 'close') { modal = null; render(); }
   else if (a === 'proj') { projection = !projection; render(); }
+  else if (a === 'podio') { modal = { type: 'podio', i: +b.dataset.i }; render(); }
+  else if (a === 'prof-filtro') { prof.filtro = b.dataset.id; renderProf(); }
+  else if (a === 'prof-aba') { prof.aba = b.dataset.id; renderProf(); }
+  else if (a === 'prof-pod') { prof.pod = +b.dataset.i; renderProf(); }
   else if (a === 'copy') copyResult();
   else if (a === 'again') { DB.cur = null; S = null; save(); go('cover'); }
   else if (a === 'wipe') { if (confirm('Apagar a missão atual e os destaques deste aparelho?')) { DB = { cur: null, hall: [] }; S = null; save(); go('cover'); } }
@@ -1291,7 +1492,7 @@ $app.addEventListener('submit', (e) => {
     if (!t) { err.textContent = 'Escolha sua turma.'; err.hidden = false; return; }
     newGame(name, t.value); go('brief');
   }
-  if (f.dataset.form === 'pin') { if (fnv('missao:' + norm(f.pin.value)) === PIN_HASH) { modal = null; go('teacher'); } else { modal = { type: 'pin', err: true }; render(); } }
+  if (f.dataset.form === 'pin') { if (fnv('missao:' + norm(f.pin.value)) === PIN_HASH) { teacherKey = norm(f.pin.value); modal = null; go('teacher'); } else { modal = { type: 'pin', err: true }; render(); } }
 });
 render();
 
