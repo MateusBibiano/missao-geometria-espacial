@@ -284,6 +284,22 @@ details.local { margin-top: 18px; color: var(--mute); }
 details.local summary { cursor: pointer; font-size: 14px; }
 @media (max-width: 560px) { .podium.prof li { grid-template-columns: 30px minmax(0, 1fr) auto; } .podium.prof .p-r, .podium.prof .muted, .podium.prof .p-t { display: none; } }
 
+/* ---------- modo segurança ---------- */
+#guard { position: fixed; inset: 0; z-index: 9999; display: grid; place-items: center; padding: 16px; background: rgba(8, 3, 2, .94); backdrop-filter: blur(8px); }
+#guard[hidden] { display: none; }
+.guard-box { width: min(440px, 100%); text-align: center; display: grid; gap: 10px; justify-items: center; background: linear-gradient(180deg, var(--panel), var(--bg2)); border: 1px solid var(--bad); border-top: 4px solid var(--bad); border-radius: 14px; padding: 26px 22px; box-shadow: 0 0 80px -10px rgba(255, 90, 95, .35); }
+.guard-ic { width: 58px; height: 58px; border-radius: 50%; display: grid; place-items: center; font-size: 28px; background: rgba(255, 90, 95, .15); color: var(--bad); animation: pulse 1.4s infinite; }
+.guard-box small { font: 600 11px var(--fm); letter-spacing: .16em; color: var(--bad); }
+.guard-box h2 { margin: 0; font: 700 26px var(--fd); }
+.guard-box p { margin: 0; color: var(--mute); }
+.guard-box dl { display: flex; gap: 10px; margin: 4px 0; }
+.guard-box dl div { background: rgba(0,0,0,.3); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; }
+.guard-box dt { font: 10px var(--fm); letter-spacing: .1em; text-transform: uppercase; color: var(--dim); }
+.guard-box dd { margin: 2px 0 0; font: 700 22px var(--fd); color: var(--amber); }
+.guard-box .btn { width: 100%; }
+.warn { color: #FFB3B5; }
+table.live td.warn { color: #FFB3B5; }
+
 [hidden]{display:none!important}
 </style>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js"}}</script>
@@ -1010,7 +1026,7 @@ function snapshot() {
   return {
     id: S.sid, nome: S.name, turma: S.turma, tent: S.seed.toString(36), pts: score(), rank: rankOf(score()),
     pecas: STAGES.filter((st) => isDone(st.id)).length, ft: STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length,
-    o2: Math.round(S.o2), sol: cur ? cur.n : 5, peca: onlineWhere || 'Na base', sols: solsArr, fim: S.finished ? S.t1 || Date.now() : 0,
+    o2: Math.round(S.o2), sol: cur ? cur.n : 5, peca: onlineWhere || 'Na base', sols: solsArr, fim: S.finished ? S.t1 || Date.now() : 0, saidas: S.saidas || 0,
   };
 }
 function syncPost(ev, batida) {
@@ -1088,9 +1104,9 @@ function profHTML() {
     const on = !a.fim && a.visto && now - a.visto < 90000;
     return `<tr class="${on ? 'on' : ''}"><td><span class="dot ${on ? 'on' : a.fim ? 'fim' : ''}"></span></td><td><b>${esc(a.nome)}</b><small>${esc(a.turma)}</small></td>
       <td>${a.fim ? '<b class="ok">Missão concluída</b>' : `Sol ${a.sol} <small>${esc(a.peca || '')}</small>`}</td><td class="num">${a.pecas}/20</td><td class="num">${a.pts}</td>
-      <td class="num"><span class="mini-o2"><i style="width:${a.o2}%"></i></span>${a.o2}%</td><td class="muted">${agoTxt(a.visto, now)}</td></tr>`;
+      <td class="num"><span class="mini-o2"><i style="width:${a.o2}%"></i></span>${a.o2}%</td><td class="num ${a.saidas ? 'warn' : ''}">${a.saidas || 0}</td><td class="muted">${agoTxt(a.visto, now)}</td></tr>`;
   };
-  const table = (arr) => (arr.length ? `<div class="tscroll"><table class="live"><thead><tr><th></th><th>Tripulante</th><th>Onde está</th><th>Peças</th><th>Pontos</th><th>O₂</th><th>Visto</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>` : '<p class="muted">Ninguém por aqui ainda.</p>');
+  const table = (arr) => (arr.length ? `<div class="tscroll"><table class="live"><thead><tr><th></th><th>Tripulante</th><th>Onde está</th><th>Peças</th><th>Pontos</th><th>O₂</th><th>Saídas</th><th>Visto</th></tr></thead><tbody>${arr.map(row).join('')}</tbody></table></div>` : '<p class="muted">Ninguém por aqui ainda.</p>');
   if (prof.aba === 'vivo') body = `${table(online)}<h3 class="feed-h">Atividade recente</h3><ul class="feed">${d.eventos.filter(byT).slice(0, 18).map((e) => `<li><span class="muted">${hhmm(e.t)}</span> <b>${esc(e.nome)}</b> (${esc(e.turma)}) · ${esc(e.ev)}${e.det ? ` · ${esc(e.det)}` : ''}${e.ev === 'Concluiu o sol' || e.ev === 'Concluiu a missão' ? ` · <b>${e.pts} pts</b>` : ''}</li>`).join('') || '<li class="muted">Nada ainda.</li>'}</ul>`;
   if (prof.aba === 'todos') body = table(alunos);
   if (prof.aba === 'pod') {
@@ -1107,7 +1123,7 @@ function profHTML() {
 }
 function profRank(rows, fin) {
   if (!rows.length) return '<p class="muted">Ninguém concluiu ainda.</p>';
-  return `<ol class="podium prof">${rows.map((r, i) => `<li class="${i < 3 ? 'top' : ''}"><span class="p-n">${MEDAL[i] || i + 1}</span><b>${esc(r.nome)}</b><span class="p-t">${esc(r.turma)}</span>${fin ? `<span class="p-r">${esc(r.rank)} · ${r.ft}/20 de primeira · O₂ ${r.o2}%</span>` : ''}<span class="muted">${hhmm(r.em)}</span><b class="p-p">${r.pts}</b></li>`).join('')}</ol>`;
+  return `<ol class="podium prof">${rows.map((r, i) => `<li class="${i < 3 ? 'top' : ''}"><span class="p-n">${MEDAL[i] || i + 1}</span><b>${esc(r.nome)}</b><span class="p-t">${esc(r.turma)}</span>${fin ? `<span class="p-r">${esc(r.rank)} · ${r.ft}/20 de primeira · O₂ ${r.o2}%${r.saidas ? ` · <span class="warn">${r.saidas} ${r.saidas === 1 ? 'saída' : 'saídas'} da tela</span>` : ''}</span>` : ''}<span class="muted">${hhmm(r.em)}</span><b class="p-p">${r.pts}</b></li>`).join('')}</ol>`;
 }
 function renderProf() { const el = document.getElementById('prof-live'); if (el) el.innerHTML = profHTML(); }
 async function loadProf() {
@@ -1117,6 +1133,57 @@ async function loadProf() {
 }
 function startProf() { clearInterval(profTimer); renderProf(); loadProf(); profTimer = setInterval(() => { if (!document.hidden) loadProf(); }, 8000); }
 function stopProf() { clearInterval(profTimer); profTimer = 0; }
+
+/* =========================================================
+   MODO SEGURANÇA — tela cheia durante as peças e registro de saídas
+   ========================================================= */
+const DOCEL = document.documentElement;
+const fsOK = () => !!(DOCEL.requestFullscreen || DOCEL.webkitRequestFullscreen) && !/claude/i.test(location.hostname);
+const isFull = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+const focoOn = () => !!S && !S.finished && !projection && screen === 'stage';
+let awayAt = 0;
+function enterFull() { if (!fsOK() || isFull()) return; try { const r = (DOCEL.requestFullscreen || DOCEL.webkitRequestFullscreen).call(DOCEL); if (r && r.catch) r.catch(() => {}); } catch (e) { /* ok */ } }
+function exitFull() { if (!isFull()) return; try { const r = (document.exitFullscreen || document.webkitExitFullscreen).call(document); if (r && r.catch) r.catch(() => {}); } catch (e) { /* ok */ } }
+function guard(kind, dur) {
+  let g = document.getElementById('guard');
+  if (!g) { g = document.createElement('div'); g.id = 'guard'; g.setAttribute('role', 'alertdialog'); g.setAttribute('aria-modal', 'true'); document.body.appendChild(g); }
+  const n = (S && S.saidas) || 0;
+  g.innerHTML = `<div class="guard-box"><span class="guard-ic">⚠</span>
+    <small>ALERTA DO CONTROLE DA MISSÃO</small>
+    <h2>${kind === 'away' ? 'Você saiu da estação' : 'A bancada trava fora da tela cheia'}</h2>
+    <p>${kind === 'away' ? 'Sair para outra guia ou aplicativo fica registrado e aparece para o professor.' : 'Volte para a tela cheia para continuar calculando. Saídas para outras guias ficam registradas.'}</p>
+    <dl><div><dt>Saídas registradas</dt><dd>${n}</dd></div>${kind === 'away' ? `<div><dt>Tempo fora</dt><dd>${dur} s</dd></div>` : ''}</dl>
+    <button type="button" class="btn hot big" id="guard-back">${fsOK() ? 'Voltar para a tela cheia' : 'Voltar para a missão'}</button></div>`;
+  g.hidden = false;
+  const b = document.getElementById('guard-back');
+  b.onclick = () => { g.hidden = true; enterFull(); };
+  try { b.focus(); } catch (e) { /* ok */ }
+}
+function hideGuard() { const g = document.getElementById('guard'); if (g) g.hidden = true; }
+function leaveStation() {
+  if (!focoOn() || awayAt) return;
+  awayAt = Date.now(); S.saidas = (S.saidas || 0) + 1; save();
+}
+function backToStation() {
+  if (!awayAt) return;
+  const dur = Math.max(1, Math.round((Date.now() - awayAt) / 1000)); awayAt = 0;
+  if (!S) return;
+  S.foraSeg = (S.foraSeg || 0) + dur; save();
+  const st = SOL[solId] && SOL[solId].stages[stIdx];
+  syncEv([{ ev: 'Saiu da tela', det: `${st ? `Sol ${SOL[solId].n} · ${st.titulo} · ` : ''}${dur} s fora`, pts: 0 }]);
+  guard('away', dur);
+}
+function syncFull() {
+  if (focoOn()) enterFull();
+  else { exitFull(); hideGuard(); awayAt = 0; }
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) leaveStation(); else backToStation(); });
+window.addEventListener('blur', () => { setTimeout(() => { if (!document.hasFocus()) leaveStation(); }, 150); });
+window.addEventListener('focus', backToStation);
+const onFsChange = () => { if (!isFull() && fsOK() && focoOn() && !awayAt) { const g = document.getElementById('guard'); if (!g || g.hidden) guard('fs'); } };
+document.addEventListener('fullscreenchange', onFsChange);
+document.addEventListener('webkitfullscreenchange', onFsChange);
+const foraTxt = () => { const n = (S && S.saidas) || 0; const t = (S && S.foraSeg) || 0; return n ? `${n} (${t >= 60 ? Math.round(t / 60) + ' min' : t + ' s'} fora)` : '0'; };
 
 /* =========================================================
    MISSÃO MARTE — telas e fluxo
@@ -1230,7 +1297,7 @@ function briefView() {
     <section class="console">
       <div class="console-h">${ic('radio')} TRANSMISSÃO · CONTROLE DA MISSÃO</div>
       <p class="tw" id="tw"></p>
-      <ul class="rules"><li><b>100 pontos</b> por cálculo certo de primeira</li><li>Cada erro: <b>−30 pontos</b> e <b>−5% de oxigênio</b></li><li>A dica aparece depois do 1º erro e custa 20 pontos</li><li>No 3º erro, o controle da missão mostra a solução</li><li>Oxigênio que sobrar vira <b>pontos bônus</b> no final</li></ul>
+      <ul class="rules"><li><b>Modo segurança:</b> durante os cálculos a missão fica em <b>tela cheia</b>; sair para outra guia é registrado</li><li><b>100 pontos</b> por cálculo certo de primeira</li><li>Cada erro: <b>−30 pontos</b> e <b>−5% de oxigênio</b></li><li>A dica aparece depois do 1º erro e custa 20 pontos</li><li>No 3º erro, o controle da missão mostra a solução</li><li>Oxigênio que sobrar vira <b>pontos bônus</b> no final</li></ul>
       <button class="btn hot big" data-act="base">Ir para a base →</button>
     </section>
   </main>`;
@@ -1327,7 +1394,7 @@ function finalView() {
       <div class="console-h">${ic('radio')} CONTROLE DA MISSÃO · COLÔNIA COMPLETA</div>
       <h2 class="final-t">${rk}</h2>
       <p>${esc(S.name)} · ${esc(S.turma)}</p>
-      <div class="ref final-ref"><div><span>Pontos</span><b>${p} / ${MAXPTS}</b></div><div><span>Oxigênio restante (bônus)</span><b>${Math.round(S.o2)}%</b></div><div><span>Peças de primeira</span><b>${STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length}/${STAGES.length}</b></div><div><span>Código de verificação</span><b>${certCode()}</b></div></div>
+      <div class="ref final-ref"><div><span>Pontos</span><b>${p} / ${MAXPTS}</b></div><div><span>Oxigênio restante (bônus)</span><b>${Math.round(S.o2)}%</b></div><div><span>Peças de primeira</span><b>${STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length}/${STAGES.length}</b></div><div><span>Saídas da tela</span><b>${foraTxt()}</b></div><div><span>Código de verificação</span><b>${certCode()}</b></div></div>
       <textarea id="copy-box" class="copy" hidden readonly></textarea>
       <div class="pod-box"><h3>${ic('radio')} Ranking da missão · quem completou a colônia</h3><div id="podio"></div></div>
       <div class="row center"><button class="btn hot" data-act="copy">Copiar resultado</button><button class="btn ghost" data-act="hall">Tripulação de destaque</button><button class="btn ghost" data-act="again">Nova missão (outras medidas)</button></div>
@@ -1364,6 +1431,7 @@ function render() {
   $app.innerHTML = V() + '<div class="toast" id="toast" role="status"></div>' + (modal ? modalView() : '');
   document.body.dataset.screen = screen; document.body.classList.toggle('proj', projection);
   mount();
+  syncFull();
   const prevWhere = onlineWhere;
   onlineWhere = screen === 'stage' ? `Sol ${SOL[solId].n} · ${SOL[solId].stages[stIdx].titulo}` : screen === 'solintro' ? `Sol ${SOL[solId].n} · manual técnico` : screen === 'soldone' ? `Sol ${SOL[solId].n} · concluído` : 'Na base';
   if (S && !S.finished && onlineWhere !== prevWhere && ['stage', 'solintro', 'base', 'soldone'].includes(screen)) syncPost([], true);
@@ -1449,7 +1517,7 @@ function finish() {
   go('final');
 }
 function copyResult() {
-  const txt = `Missão Marte · Colônia Ares-9 (9º ano)\n${S.name} · ${S.turma}\nPontos: ${score()} de ${MAXPTS} · ${rankOf(score())}\nPeças de primeira: ${STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length}/${STAGES.length} · Oxigênio restante: ${Math.round(S.o2)}%\nCódigo de verificação: ${certCode()}`;
+  const txt = `Missão Marte · Colônia Ares-9 (9º ano)\n${S.name} · ${S.turma}\nPontos: ${score()} de ${MAXPTS} · ${rankOf(score())}\nPeças de primeira: ${STAGES.filter((st) => S.st[st.id] && S.st[st.id].ok && !S.st[st.id].w).length}/${STAGES.length} · Oxigênio restante: ${Math.round(S.o2)}%\nSaídas da tela: ${foraTxt()}\nCódigo de verificação: ${certCode()}`;
   const fall = () => { const b = document.getElementById('copy-box'); b.hidden = false; b.value = txt; b.select(); toast('Copie o texto selecionado.'); };
   try { navigator.clipboard.writeText(txt).then(() => toast('Resultado copiado. Agora é só colar e enviar.'), fall); } catch (e) { fall(); }
 }
